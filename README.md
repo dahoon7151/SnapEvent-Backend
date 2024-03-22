@@ -6,4 +6,7 @@
 
 feature / develop(default) / main
 
-(핫픽스, 릴리스는 굳이 안써도 될것같습니다)
+
+
+Progress
+- Swagger 의존성 추가
