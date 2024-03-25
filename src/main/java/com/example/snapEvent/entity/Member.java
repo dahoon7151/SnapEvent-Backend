@@ -11,7 +11,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class Member {
     @Id
-    @GeneratedValue
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
     private Long memberId;
     @Column
     private String userId;
