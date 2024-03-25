@@ -1,2 +1,4 @@
-package com.example.snapEvent.entity;public class Comment {
+package com.example.snapEvent.entity;
+
+public class Comment {
 }
