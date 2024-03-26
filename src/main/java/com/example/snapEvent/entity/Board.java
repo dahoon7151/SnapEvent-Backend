@@ -1,5 +1,6 @@
 package com.example.snapEvent.entity;
 
+import com.example.snapEvent.entity.audit.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -8,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Board {
+public class Board extends BaseEntity {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     private Long boardId;

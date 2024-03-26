@@ -1,5 +1,6 @@
 package com.example.snapEvent.entity;
 
+import com.example.snapEvent.entity.audit.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -11,7 +12,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Comment {
+public class Comment extends BaseEntity {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     private Long commentId;
