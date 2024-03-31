@@ -4,7 +4,8 @@ import com.example.snapEvent.entity.audit.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Builder(toBuilder = true)
@@ -21,4 +22,16 @@ public class Member extends BaseTimeEntity {
     private String userPassword;
     @Column
     private String nickname;
+
+    @OneToMany
+    @Builder.Default
+    private List<Subscription> subscriptions = new ArrayList<>();
+
+    @OneToMany
+    @Builder.Default
+    private List<Follower> followers = new ArrayList<>();
+
+    @OneToMany
+    @Builder.Default
+    private List<Notification> notifications = new ArrayList<>();
 }
