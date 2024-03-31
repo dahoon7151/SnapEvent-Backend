@@ -1,15 +1,17 @@
 package com.example.snapEvent.entity;
 
+import com.example.snapEvent.entity.audit.BaseTimeEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 
 @Entity
+@Builder(toBuilder = true)
 @AllArgsConstructor
-@NoArgsConstructor
-public class Member {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+public class Member extends BaseTimeEntity {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     private Long memberId;
