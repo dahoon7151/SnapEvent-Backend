@@ -15,18 +15,24 @@ import java.sql.Timestamp;
 public class Post extends BaseEntity {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
-    private Long postId;
+    @Column(name = "POST_ID")
+    private Long id;
+
     @Column
     private String title;
+
     @Column
     private String content;
+
     @CreationTimestamp
     @Column
     private Timestamp postTime;
-    @ManyToOne
-    @JoinColumn(name = "memberId")
-    private Member memberId;
-    @ManyToOne
-    @JoinColumn(name = "boardId")
-    private Board boardId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MEMBER_ID")
+    private Member member;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "BOARD_ID")
+    private Board board;
 }

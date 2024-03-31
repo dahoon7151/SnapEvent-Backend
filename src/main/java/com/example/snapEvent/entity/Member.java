@@ -14,11 +14,15 @@ import java.io.Serializable;
 public class Member extends BaseTimeEntity {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
-    private Long memberId;
+    @Column(name = "MEMBER_ID")
+    private Long id;
+
     @Column
     private String userId;
+
     @Column
     private String userPassword;
+
     @Column
     private String nickname;
 }
