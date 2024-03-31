@@ -12,9 +12,12 @@ import lombok.*;
 public class Board extends BaseEntity {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
-    private Long boardId;
+    @Column(name = "BOARD_ID")
+    private Long id;
+
     @Column
     private String boardName;
+
     @Column
     private String description;
 }

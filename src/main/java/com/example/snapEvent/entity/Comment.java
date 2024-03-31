@@ -15,16 +15,21 @@ import java.sql.Timestamp;
 public class Comment extends BaseEntity {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
-    private Long commentId;
+    @Column(name = "COMMENT_ID")
+    private Long id;
+
     @Column
     private String commentContent;
+
     @CreationTimestamp
     @Column
     private Timestamp commentTime;
-    @ManyToOne
-    @JoinColumn(name = "postId")
-    private Post postId;
-    @ManyToOne
-    @JoinColumn(name = "memberId")
-    private Member memberId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "POST_ID")
+    private Post post;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MEMBER_ID")
+    private Member member;
 }

@@ -16,13 +16,17 @@ import java.util.Map;
 public class Follower extends BaseTimeEntity {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
-    private String followerId;
+    @Column(name = "FOLLOWER_ID")
+    private String id;
+
     @Column
     private String followerNickname;
+
     @Type(JsonType.class)
     @Column
     private Map<String, String> subList;
-    @ManyToOne
-    @JoinColumn(name = "memberId")
-    private Member memberId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MEMBER_ID")
+    private Member member;
 }
