@@ -19,9 +19,9 @@ public class Follower extends BaseTimeEntity {
     private String followerId;
     @Column
     private String followerNickname;
-    @Type(JsonType.class)
+    /*@Type(JsonType.class)
     @Column
-    private Map<String, String> subList;
+    private Map<String, String> subList;*/
     @ManyToOne
     @JoinColumn(name = "memberId")
     private Member memberId;
