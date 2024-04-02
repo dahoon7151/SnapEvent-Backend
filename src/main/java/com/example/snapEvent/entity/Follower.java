@@ -1,12 +1,10 @@
 package com.example.snapEvent.entity;
 
 import com.example.snapEvent.entity.audit.BaseTimeEntity;
-import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Type;
 
-import java.util.Map;
+import java.util.List;
 
 @Entity
 @Builder(toBuilder = true)
@@ -22,9 +20,8 @@ public class Follower extends BaseTimeEntity {
     @Column
     private String followerNickname;
 
-    @Type(JsonType.class)
-    @Column
-    private Map<String, String> subList;
+    @ElementCollection(fetch = FetchType.LAZY)
+    private List<String> subList;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
