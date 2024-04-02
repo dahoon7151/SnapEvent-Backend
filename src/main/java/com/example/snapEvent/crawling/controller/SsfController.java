@@ -16,7 +16,7 @@ public class SsfController {
 
     private final SsfService ssfService;
 
-    @GetMapping("/crawling/ssfShop")
+    @GetMapping("/crawling/ssf-shop")
     public String ssf(Model model) throws IOException {
         List<SsfDto> ssfList = ssfService.getSsfDatas();
         model.addAttribute("ssf", ssfList);

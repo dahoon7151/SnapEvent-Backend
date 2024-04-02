@@ -16,7 +16,7 @@ public class OliveYoungController {
 
     private final OliveYoungService oliveYoungService;
 
-    @GetMapping("/crawling/oliveYoung")
+    @GetMapping("/crawling/olive-young")
     public String oliveYoung(Model model) throws IOException {
         List<OliveYoungDto> oliveYoungList = oliveYoungService.getOliveYoungDatas();
         model.addAttribute("oliveYoung", oliveYoungList);
