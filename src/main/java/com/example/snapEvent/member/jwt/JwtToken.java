@@ -1,4 +1,4 @@
-package com.example.snapEvent.jwt;
+package com.example.snapEvent.member.jwt;
 
 import lombok.*;
 
@@ -7,6 +7,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class JwtToken {
+    private String grantType;
     private String accessToken;
     private String refreshToken;
 }

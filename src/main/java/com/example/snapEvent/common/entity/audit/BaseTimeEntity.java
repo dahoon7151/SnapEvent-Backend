@@ -1,6 +1,7 @@
-package com.example.snapEvent.entity.audit;
+package com.example.snapEvent.common.entity.audit;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;

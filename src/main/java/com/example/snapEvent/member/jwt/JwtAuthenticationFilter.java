@@ -1,4 +1,4 @@
-package com.example.snapEvent.jwt;
+package com.example.snapEvent.member.jwt;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
