@@ -29,7 +29,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         return User.builder()
                 .username(member.getUsername())
                 .password(member.getPassword())
-//                .password(passwordEncoder.encode(member.getPassword())) // 검증객체 생성할때 인코딩
+//                .password(passwordEncoder.encode(member.getPassword())) // 검증객체 생성할때 인코딩(테스트용)
                 .roles(member.getRoles().toArray(new String[0]))
                 .build();
     }
