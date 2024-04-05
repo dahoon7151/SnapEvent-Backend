@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@EqualsAndHashCode(of = "id")
 public class Member extends BaseTimeEntity implements UserDetails {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
@@ -24,10 +25,10 @@ public class Member extends BaseTimeEntity implements UserDetails {
     private Long id;
 
     @Column(nullable = false)
-    private String userId;
+    private String username;
 
     @Column(nullable = false)
-    private String userPassword;
+    private String password;
 
     @Column
     private String nickname;
@@ -41,16 +42,6 @@ public class Member extends BaseTimeEntity implements UserDetails {
         return this.roles.stream()
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
-    }
-
-    @Override
-    public String getUsername() {
-        return userId;
-    }
-
-    @Override
-    public String getPassword() {
-        return userPassword;
     }
 
     @Override
