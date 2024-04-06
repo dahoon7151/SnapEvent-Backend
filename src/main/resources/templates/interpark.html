@@ -1,0 +1,16 @@
+<html>
+<div>
+    <table class="table">
+        <tr>
+            <th>이미지</th>
+            <th>제목</th>
+            <th>날짜</th>
+        </tr>
+        <tr th:each="interpark : ${interpark}">
+            <td><a th:href="${interpark.href}"><img th:src="${interpark.image}"></a></td>
+            <td><a th:href="${interpark.href}"><span th:text="${interpark.title}"></span></a></td>
+            <td th:text="${interpark.ticketOpenDate}"></td>
+        </tr>
+    </table>
+</div>
+</html>
