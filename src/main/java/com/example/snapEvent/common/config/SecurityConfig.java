@@ -1,5 +1,6 @@
 package com.example.snapEvent.common.config;
 
+import com.example.snapEvent.member.jwt.ExceptionHandlerFilter;
 import com.example.snapEvent.member.jwt.JwtAuthenticationFilter;
 import com.example.snapEvent.member.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final JwtTokenProvider jwtTokenProvider;
+    private final ExceptionHandlerFilter exceptionHandlerFilter;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -39,6 +41,7 @@ public class SecurityConfig {
                         .anyRequest().permitAll())
                 // JWT 인증을 위하여 직접 구현한 필터를 UsernamePasswordAuthenticationFilter 전에 실행
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(exceptionHandlerFilter, JwtAuthenticationFilter.class)
                 .build();
     }
 

@@ -1,7 +1,7 @@
 package com.example.snapEvent.member.controller;
 
 import com.example.snapEvent.common.dto.MemberDto;
-import com.example.snapEvent.member.dto.JoinInDto;
+import com.example.snapEvent.member.dto.JoinDto;
 import com.example.snapEvent.member.dto.LogInDto;
 import com.example.snapEvent.member.jwt.JwtToken;
 import com.example.snapEvent.member.service.MemberService;
@@ -14,7 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.mapping.Join;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,19 +40,17 @@ public class MemberController {
             @Parameter(name = "username", description = "아이디", example = "dahoon1234"),
             @Parameter(name = "password", description = "비밀번호", example = "abcd1234")
     })
-    public JwtToken logIn(@RequestBody LogInDto logInDto) {
-        String username = logInDto.getUsername();
-        String password = logInDto.getPassword();
-        JwtToken jwtToken = memberService.logIn(username, password);
-        log.info("request username = {}, password = {}", username, password);
-        log.info("jwtToken accessToken = {}, refreshToken = {}", jwtToken.getAccessToken(), jwtToken.getRefreshToken());
-        return jwtToken;
+    public ResponseEntity<JwtToken> logIn(@RequestBody LogInDto logInDto) {
+        JwtToken jwtToken = memberService.logIn(logInDto);
+
+        return ResponseEntity.status(HttpStatus.OK).body(jwtToken);
     }
 
     @PostMapping("/join")
-    public ResponseEntity<MemberDto> join(@RequestBody JoinInDto joinInDto) {
-        MemberDto savedMemberDto = memberService.join(joinInDto);
-        return ResponseEntity.ok(savedMemberDto);
+    public ResponseEntity<MemberDto> join(@RequestBody JoinDto joinDto) {
+        MemberDto savedMemberDto = memberService.join(joinDto);
+
+        return ResponseEntity.status(HttpStatus.OK).body(savedMemberDto);
     }
 
     @Operation(summary = "JWT 검증 테스트", description = "로그인 성공시 발급된 토큰을 검증하기 위한 테스트 API")

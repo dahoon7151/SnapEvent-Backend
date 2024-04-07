@@ -1,13 +1,13 @@
 package com.example.snapEvent.member.service;
 
 import com.example.snapEvent.common.dto.MemberDto;
-import com.example.snapEvent.member.dto.JoinInDto;
+import com.example.snapEvent.member.dto.JoinDto;
+import com.example.snapEvent.member.dto.LogInDto;
 import com.example.snapEvent.member.jwt.JwtToken;
 import com.example.snapEvent.member.jwt.JwtTokenProvider;
 import com.example.snapEvent.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -31,7 +31,11 @@ public class MemberServiceImpl implements MemberService{
 
     @Transactional
     @Override
-    public JwtToken logIn(String username, String password) {
+    public JwtToken logIn(LogInDto logInDto) {
+        String username = logInDto.getUsername();
+        String password = logInDto.getPassword();
+        log.info("request username = {}, password = {}", username, password);
+
         // 1. username + password 를 기반으로 Authentication 객체 생성
         // 이때 authentication 은 인증 여부를 확인하는 authenticated 값이 false
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
@@ -42,21 +46,27 @@ public class MemberServiceImpl implements MemberService{
 
         // 3. 인증 정보를 기반으로 JWT 토큰 생성
         JwtToken jwtToken = jwtTokenProvider.generateToken(authentication);
+        log.info("jwtToken accessToken = {}, refreshToken = {}", jwtToken.getAccessToken(), jwtToken.getRefreshToken());
 
         return jwtToken;
     }
 
     @Transactional
     @Override
-    public MemberDto join(JoinInDto joinInDto) {
-        if (memberRepository.existsByUsername(joinInDto.getUsername())) {
+    public MemberDto join(JoinDto joinDto) {
+        if (memberRepository.existsByUsername(joinDto.getUsername())) {
             throw new IllegalArgumentException("이미 사용 중인 사용자 이름입니다.");
         }
+
+        if(!joinDto.getPassword().equals(joinDto.getCheckPassword())){
+            throw new IllegalArgumentException("비밀번호가 재입력된 비밀번호와 동일하지 않습니다.");
+        }
+
         // Password 암호화
-        String encodedPassword = passwordEncoder.encode(joinInDto.getPassword());
+        String encodedPassword = passwordEncoder.encode(joinDto.getPassword());
         List<String> roles = new ArrayList<>();
         roles.add("USER");  // USER 권한 부여
-        return MemberDto.toDto(memberRepository.save(joinInDto.toEntity(encodedPassword, roles)));
+        return MemberDto.toDto(memberRepository.save(joinDto.toEntity(encodedPassword, roles)));
     }
 
 }
