@@ -34,8 +34,8 @@ public class InterParkService {
                     .href(content.select("a").attr("abs:href"))
                     .build();
             interParkDtoList.add(interParkDto);
+            log.debug("interParkDto={}", interParkDto);
         }
-
         return interParkDtoList;
     }
 
@@ -49,10 +49,5 @@ public class InterParkService {
             return elements.attr("abs:src"); // src로 대체
         }
         return cleanedReplaced;
-    }
-
-    public static void main(String[] args) throws IOException {
-        InterParkService interParkService = new InterParkService();
-        interParkService.getInterParkDatas();
     }
 }

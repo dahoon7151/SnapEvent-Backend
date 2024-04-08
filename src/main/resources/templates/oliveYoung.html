@@ -8,8 +8,8 @@
             <th>날짜</th>
         </tr>
         <tr th:each="oliveYoung : ${oliveYoung}">
-            <td><img th:src="${oliveYoung.image}"/></td>
-            <td><a th:text="${oliveYoung.title}"></a></td>
+            <td><a th:href="${oliveYoung.href}"><img th:src="${oliveYoung.image}"></a></td>
+            <td><a th:href="${oliveYoung.href}"><span th:text="${oliveYoung.title}"></span></a></td>
             <td th:text="${oliveYoung.description}"></td>
             <td th:text="${oliveYoung.date}"></td>
         </tr>

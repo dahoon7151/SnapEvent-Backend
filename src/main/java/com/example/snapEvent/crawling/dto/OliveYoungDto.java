@@ -12,4 +12,5 @@ public class OliveYoungDto {
     private String description;
     private String date;
     private String image;
+    private String href;
 }
