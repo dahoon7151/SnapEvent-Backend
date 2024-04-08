@@ -1,4 +1,4 @@
-package com.example.snapEvent.member.jwt;
+package com.example.snapEvent.member.dto;
 
 import lombok.*;
 

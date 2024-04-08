@@ -1,4 +1,4 @@
-package com.example.snapEvent.common.dto;
+package com.example.snapEvent.member.dto;
 
 import com.example.snapEvent.common.entity.Member;
 import lombok.*;

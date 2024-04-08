@@ -1,5 +1,7 @@
 package com.example.snapEvent.member.jwt;
 
+import com.example.snapEvent.member.dto.JwtToken;
+import com.example.snapEvent.member.repository.RefreshTokenRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -23,6 +25,7 @@ import java.util.stream.Collectors;
 @Component
 public class JwtTokenProvider {
     private final Key key;
+    private RefreshTokenRepository refreshTokenRepository;
 
     // properties 파일에서 jwt.secret 값 가져와서 key에 저장
     public JwtTokenProvider(@Value("${jwt.secret}") String secretKey) {
@@ -39,8 +42,8 @@ public class JwtTokenProvider {
 
         long now = (new Date()).getTime();
 
-        // Access Token 생성 (24시간)
-        Date accessTokenExpiresIn = new Date(now + 86400000);
+        // Access Token 생성 (1시간)
+        Date accessTokenExpiresIn = new Date(now + 86400000/24);
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim("auth", authorities)
@@ -48,9 +51,9 @@ public class JwtTokenProvider {
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
-        // Refresh Token 생성 (24시간)
+        // Refresh Token 생성 (7일)
         String refreshToken = Jwts.builder()
-                .setExpiration(new Date(now + 86400000))
+                .setExpiration(new Date(now + 86400000*7))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
@@ -94,7 +97,9 @@ public class JwtTokenProvider {
             throw new TokenNotValidateException("유효하지 않은 토큰입니다.", e);
         } catch (ExpiredJwtException e) {
             log.info("Expired JWT Token", e);
-            throw new TokenNotValidateException("유효하지 않은 토큰입니다.", e);
+            refreshTokenRepository.delete(refreshTokenRepository.findByRefreshToken(token)
+                    .orElseThrow(() -> new TokenNotValidateException("만료된 토큰입니다.", e)));
+            throw new TokenNotValidateException("만료된 토큰입니다.", e);
         } catch (UnsupportedJwtException e) {
             log.info("Unsupported JWT Token", e);
             throw new TokenNotValidateException("유효하지 않은 토큰입니다.", e);

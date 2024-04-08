@@ -1,9 +1,6 @@
 package com.example.snapEvent.member.controller;
 
-import com.example.snapEvent.common.dto.MemberDto;
-import com.example.snapEvent.member.dto.JoinDto;
-import com.example.snapEvent.member.dto.LogInDto;
-import com.example.snapEvent.member.jwt.JwtToken;
+import com.example.snapEvent.member.dto.*;
 import com.example.snapEvent.member.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -12,15 +9,15 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -41,18 +38,49 @@ public class MemberController {
             @Parameter(name = "username", description = "아이디", example = "dahoon1234"),
             @Parameter(name = "password", description = "비밀번호", example = "abcd1234")
     })
-    public ResponseEntity<JwtToken> logIn(@RequestBody LogInDto logInDto) {
-        JwtToken jwtToken = memberService.logIn(logInDto);
+    public ResponseEntity<JwtToken> logIn(@RequestBody LoginDto loginDto, HttpServletResponse response) {
+        log.info("로그인 - 아이디 : {}, 비밀번호 : {}",
+                loginDto.getUsername(),
+                loginDto.getPassword()
+        );
+        JwtToken jwtToken = memberService.login(loginDto);
+        response.addHeader("Authorization", "Bearer " + jwtToken.getAccessToken());
 
         return ResponseEntity.status(HttpStatus.OK).body(jwtToken);
     }
 
+
     @PostMapping("/join")
     public ResponseEntity<MemberDto> join(@RequestBody @Valid JoinDto joinDto) {
+        log.info("회원가입 - 아이디 : {}, 비밀번호 : {}, 재확인 비밀번호 : {}, 닉네임 : {}",
+                joinDto.getUsername(),
+                joinDto.getPassword(),
+                joinDto.getCheckPassword(),
+                joinDto.getNickname()
+        );
         MemberDto savedMemberDto = memberService.join(joinDto);
 
         return ResponseEntity.status(HttpStatus.OK).body(savedMemberDto);
     }
+
+    @PostMapping("/reissue")
+    public ResponseEntity<JwtToken> reissue(@RequestBody ReissueDto reissueDto, HttpServletResponse response) {
+        JwtToken jwtToken = memberService.reissue(reissueDto);
+        response.addHeader("Authorization", "Bearer " + jwtToken.getAccessToken());
+
+        return ResponseEntity.status(HttpStatus.OK).body(jwtToken);
+    }
+
+
+//    @DeleteMapping("/logout")
+//    public ResponseEntity<?> logout(HttpServletRequest request) {
+//        log.info("로그아웃 - 액세스 토큰 : {}, 유저 정보 : {}",
+//                request.getHeader("Authorization"),
+//                request.getUserPrincipal()
+//        );
+//        return memberService.logout(request);
+//    }
+
 
     @Operation(summary = "JWT 검증 테스트", description = "로그인 성공시 발급된 토큰을 검증하기 위한 테스트 API")
     @Parameters({

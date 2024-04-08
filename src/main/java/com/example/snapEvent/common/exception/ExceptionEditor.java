@@ -1,5 +1,6 @@
 package com.example.snapEvent.common.exception;
 
+import com.example.snapEvent.member.jwt.TokenNotValidateException;
 import jakarta.persistence.ElementCollection;
 import lombok.Builder;
 import lombok.Getter;
@@ -35,6 +36,14 @@ public class ExceptionEditor {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleIllegalArgumentException(
             final IllegalArgumentException e
+    ) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    }
+
+    // 서비스 단에서 사용되는 validationToken 메소드 때문에 추가
+    @ExceptionHandler(TokenNotValidateException.class)
+    public ResponseEntity<String> handleTokenException(
+            final TokenNotValidateException e
     ) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     }

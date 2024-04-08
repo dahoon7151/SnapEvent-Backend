@@ -1,16 +1,16 @@
 package com.example.snapEvent.member.service;
 
-import com.example.snapEvent.common.dto.MemberDto;
-import com.example.snapEvent.member.dto.JoinDto;
-import com.example.snapEvent.member.dto.LogInDto;
-import com.example.snapEvent.member.jwt.JwtToken;
+import com.example.snapEvent.member.dto.*;
+import com.example.snapEvent.member.entity.RefreshToken;
 import com.example.snapEvent.member.jwt.JwtTokenProvider;
 import com.example.snapEvent.member.repository.MemberRepository;
+import com.example.snapEvent.member.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +24,7 @@ import java.util.List;
 @Slf4j
 public class MemberServiceImpl implements MemberService{
     private final MemberRepository memberRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -31,7 +32,7 @@ public class MemberServiceImpl implements MemberService{
 
     @Transactional
     @Override
-    public JwtToken logIn(LogInDto logInDto) {
+    public JwtToken login(LoginDto logInDto) {
         String username = logInDto.getUsername();
         String password = logInDto.getPassword();
         log.info("request username = {}, password = {}", username, password);
@@ -47,6 +48,9 @@ public class MemberServiceImpl implements MemberService{
         // 3. 인증 정보를 기반으로 JWT 토큰 생성
         JwtToken jwtToken = jwtTokenProvider.generateToken(authentication);
         log.info("jwtToken accessToken = {}, refreshToken = {}", jwtToken.getAccessToken(), jwtToken.getRefreshToken());
+
+        // db에 리프레시 토큰 저장
+        refreshTokenRepository.save(logInDto.toEntity(username, jwtToken.getRefreshToken()));
 
         return jwtToken;
     }
@@ -68,5 +72,30 @@ public class MemberServiceImpl implements MemberService{
         roles.add("USER");  // USER 권한 부여
         return MemberDto.toDto(memberRepository.save(joinDto.toEntity(encodedPassword, roles)));
     }
+
+    @Transactional
+    @Override
+    public JwtToken reissue(ReissueDto reissueDto) {
+        String username = reissueDto.getUsername();
+        RefreshToken refreshToken = refreshTokenRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("해당하는 회원의 refresh Token을 찾을 수 없습니다."));
+
+        if (!reissueDto.getRefreshToken().equals(refreshToken.getRefreshToken())) {
+            throw new IllegalArgumentException("DB에 저장되어 있는 refreshToken과 다릅니다. 다시 로그인 해주세요.");
+        }
+        // 리프레시 토큰을 검증한 후 토큰 재발급
+        if (jwtTokenProvider.validateToken(reissueDto.getRefreshToken())) {
+            Authentication authentication = jwtTokenProvider.getAuthentication(reissueDto.getRefreshToken());
+            return jwtTokenProvider.generateToken(authentication);
+        }
+        throw new IllegalArgumentException("비정상 에러");
+    }
+
+//    @Transactional
+//    @Override
+//    public JwtToken logout(HttpServletRequest request) {
+//        String accessToken = JwtAuthenticationFilter.resolveToken(request);
+//        return ;
+//    }
 
 }
