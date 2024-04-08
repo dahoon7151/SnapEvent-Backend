@@ -48,12 +48,12 @@ public class ExceptionEditor {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     }
 
-//    @ExceptionHandler(UsernameNotFoundException.class)
-//    public ResponseEntity<String> handleNoUsernameException(
-//            final UsernameNotFoundException e
-//    ) {
-//        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-//    }
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<String> handleNoUsernameException(
+            final UsernameNotFoundException e
+    ) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    }
 
     @Getter
     @Builder

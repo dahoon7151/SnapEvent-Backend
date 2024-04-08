@@ -2,9 +2,11 @@ package com.example.snapEvent.member.service;
 
 import com.example.snapEvent.member.dto.*;
 import com.example.snapEvent.member.entity.RefreshToken;
+import com.example.snapEvent.member.jwt.JwtAuthenticationFilter;
 import com.example.snapEvent.member.jwt.JwtTokenProvider;
 import com.example.snapEvent.member.repository.MemberRepository;
 import com.example.snapEvent.member.repository.RefreshTokenRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -91,11 +93,20 @@ public class MemberServiceImpl implements MemberService{
         throw new IllegalArgumentException("비정상 에러");
     }
 
-//    @Transactional
-//    @Override
-//    public JwtToken logout(HttpServletRequest request) {
-//        String accessToken = JwtAuthenticationFilter.resolveToken(request);
-//        return ;
-//    }
+    @Transactional
+    @Override
+    public void logout(String username) {
+        refreshTokenRepository.delete(refreshTokenRepository.findByUsername(username)
+                    .orElseThrow(() -> new UsernameNotFoundException("비정상 에러(incorrect username).")));
+    }
 
+    @Transactional
+    @Override
+    public void withdraw(String username) {
+        refreshTokenRepository.delete(refreshTokenRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("비정상 에러(incorrect username).")));
+        //DB 삭제
+        memberRepository.delete(memberRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("비정상 에러(incorrect username).")));
+    }
 }

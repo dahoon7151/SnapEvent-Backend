@@ -28,16 +28,17 @@ public class MemberController {
 
     private final MemberService memberService;
 
+
+//    @Operation(summary = "JWT 로그인", description = "아이디,비밀번호를 입력받아 검증하고 토큰을 발급하는 API")
+//    @ApiResponses(value = {
+//            @ApiResponse(responseCode = "200", description = "로그인 성공", content = @Content(mediaType = "application/json")),
+//            @ApiResponse(responseCode = "403", description = "잘못된 회원정보", content = @Content(mediaType = "application/json"))
+//                    })
+//    @Parameters({
+//            @Parameter(name = "username", description = "아이디", example = "dahoon1234"),
+//            @Parameter(name = "password", description = "비밀번호", example = "abcd1234")
+//    })
     @PostMapping("/login")
-    @Operation(summary = "JWT 로그인", description = "아이디,비밀번호를 입력받아 검증하고 토큰을 발급하는 API")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "로그인 성공", content = @Content(mediaType = "application/json")),
-            @ApiResponse(responseCode = "403", description = "잘못된 회원정보", content = @Content(mediaType = "application/json"))
-                    })
-    @Parameters({
-            @Parameter(name = "username", description = "아이디", example = "dahoon1234"),
-            @Parameter(name = "password", description = "비밀번호", example = "abcd1234")
-    })
     public ResponseEntity<JwtToken> logIn(@RequestBody LoginDto loginDto, HttpServletResponse response) {
         log.info("로그인 - 아이디 : {}, 비밀번호 : {}",
                 loginDto.getUsername(),
@@ -72,23 +73,31 @@ public class MemberController {
     }
 
 
-//    @DeleteMapping("/logout")
-//    public ResponseEntity<?> logout(HttpServletRequest request) {
-//        log.info("로그아웃 - 액세스 토큰 : {}, 유저 정보 : {}",
-//                request.getHeader("Authorization"),
-//                request.getUserPrincipal()
-//        );
-//        return memberService.logout(request);
-//    }
+    @DeleteMapping("/logout/{username}")
+    public ResponseEntity<String> logout(
+            @PathVariable(value = "username") String username) {
+        log.info("유저 이름 : {}", username);
+        memberService.logout(username);
 
+        return ResponseEntity.status(HttpStatus.OK).body("로그아웃 성공");
+    }
 
-    @Operation(summary = "JWT 검증 테스트", description = "로그인 성공시 발급된 토큰을 검증하기 위한 테스트 API")
-    @Parameters({
-            @Parameter(name = "grantType", description = "인증 타입", example = "bearer"),
-            @Parameter(name = "accessToken")
-    })
+    @DeleteMapping("/withdraw/{username}")
+    public ResponseEntity<String> withdraw(
+            @PathVariable(value = "username") String username) {
+        log.info("탈퇴 유저 이름 : {}", username);
+        memberService.withdraw(username);
+
+        return ResponseEntity.status(HttpStatus.OK).body("회원탈퇴 성공");
+    }
+
+//    @Operation(summary = "JWT 검증 테스트", description = "로그인 성공시 발급된 토큰을 검증하기 위한 테스트 API")
+//    @Parameters({
+//            @Parameter(name = "grantType", description = "인증 타입", example = "bearer"),
+//            @Parameter(name = "accessToken")
+//    })
     @PostMapping("/test")
     public String test() {
-        return "success";
+        return "토큰 테스트 성공";
     }
 }

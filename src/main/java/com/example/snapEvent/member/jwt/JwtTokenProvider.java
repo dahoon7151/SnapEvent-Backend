@@ -97,8 +97,8 @@ public class JwtTokenProvider {
             throw new TokenNotValidateException("유효하지 않은 토큰입니다.", e);
         } catch (ExpiredJwtException e) {
             log.info("Expired JWT Token", e);
-            refreshTokenRepository.delete(refreshTokenRepository.findByRefreshToken(token)
-                    .orElseThrow(() -> new TokenNotValidateException("만료된 토큰입니다.", e)));
+//            refreshTokenRepository.delete(refreshTokenRepository.findByRefreshToken(token)
+//                    .orElseThrow(() -> new TokenNotValidateException("만료된 토큰입니다.", e)));
             throw new TokenNotValidateException("만료된 토큰입니다.", e);
         } catch (UnsupportedJwtException e) {
             log.info("Unsupported JWT Token", e);
