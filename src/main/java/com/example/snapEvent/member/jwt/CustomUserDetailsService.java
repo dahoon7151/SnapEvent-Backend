@@ -1,4 +1,4 @@
-package com.example.snapEvent.member.service;
+package com.example.snapEvent.member.jwt;
 
 import com.example.snapEvent.common.entity.Member;
 import com.example.snapEvent.member.repository.MemberRepository;

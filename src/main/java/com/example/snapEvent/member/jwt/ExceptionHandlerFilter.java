@@ -10,6 +10,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+// exceptionhandler로는 필터에서의 예외를 처리할수 없어서 필터를 새로 추가함.
 @Component
 public class ExceptionHandlerFilter extends OncePerRequestFilter {
 
@@ -21,6 +22,8 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } catch (TokenNotValidateException ex) {
             setErrorResponse(HttpStatus.UNAUTHORIZED, request, response, ex);
+//        } catch (UsernameNotFoundException ex) {
+//            setErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, request, response, ex);
         }
     }
 
@@ -31,7 +34,7 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
         response.setContentType("application/json; charset=UTF-8");
 
         response.getWriter().write(
-                ErrorResponse.of(
+                TokenErrorResponse.of(
                                 HttpStatus.UNAUTHORIZED,
                                 ex.getMessage(),
                                 request
