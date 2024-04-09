@@ -2,15 +2,13 @@ package com.example.snapEvent.member.controller;
 
 import com.example.snapEvent.member.dto.*;
 import com.example.snapEvent.member.service.MemberService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
+//import io.swagger.v3.oas.annotations.Operation;
+//import io.swagger.v3.oas.annotations.Parameter;
+//import io.swagger.v3.oas.annotations.Parameters;
+//import io.swagger.v3.oas.annotations.media.Content;
+//import io.swagger.v3.oas.annotations.responses.ApiResponse;
+//import io.swagger.v3.oas.annotations.responses.ApiResponses;
+//import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/members")
-@Tag(name = "회원관리 API")
+//@Tag(name = "회원관리 API")
 public class MemberController {
 
     private final MemberService memberService;
@@ -39,7 +37,7 @@ public class MemberController {
 //            @Parameter(name = "password", description = "비밀번호", example = "abcd1234")
 //    })
     @PostMapping("/login")
-    public ResponseEntity<JwtToken> logIn(@RequestBody LoginDto loginDto, HttpServletResponse response) {
+    public ResponseEntity<JwtToken> login(@RequestBody LoginDto loginDto, HttpServletResponse response) {
         log.info("로그인 - 아이디 : {}, 비밀번호 : {}",
                 loginDto.getUsername(),
                 loginDto.getPassword()
@@ -50,6 +48,10 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).body(jwtToken);
     }
 
+    @PostMapping("/{provider}")
+    public ResponseEntity<JwtToken> socialLogin(@PathVariable String provider, String code) {
+        
+    }
 
     @PostMapping("/join")
     public ResponseEntity<MemberDto> join(@RequestBody @Valid JoinDto joinDto) {
