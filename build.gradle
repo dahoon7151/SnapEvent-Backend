@@ -37,7 +37,7 @@ dependencies {
 	implementation 'org.jsoup:jsoup:1.17.2'
 	// thymeleaf (temporary view)
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-	// devtools (서버 재시작안하고 Shift+F9만 해도 변경된 코드 적용)
+	// devtools (서버 재시작안하고 Ctrl+Shift+F9만 해도 변경된 코드 적용)
 	implementation "org.springframework.boot:spring-boot-devtools"
 
 	// 셀레니움

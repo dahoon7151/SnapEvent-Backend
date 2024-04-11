@@ -1,6 +1,9 @@
 package com.example.snapEvent.crawling.dto;
 
+import com.example.snapEvent.crawling.entity.InterPark;
 import lombok.*;
+
+
 
 @Getter
 @Builder
@@ -13,4 +16,11 @@ public class InterParkDto {
     private String ticketOpenDate;
     private String href;
     private String image;
+
+    public InterParkDto(InterPark interPark) {
+        this.title = interPark.getTitle();
+        this.ticketOpenDate = String.valueOf(interPark.getTicketOpenDate());
+        this.href = interPark.getHref();
+        this.image = interPark.getImage();
+    }
 }

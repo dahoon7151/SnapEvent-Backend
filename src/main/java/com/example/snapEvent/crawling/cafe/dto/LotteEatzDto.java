@@ -1,6 +1,9 @@
 package com.example.snapEvent.crawling.cafe.dto;
 
+import com.example.snapEvent.crawling.cafe.entity.LotteEatz;
+import com.example.snapEvent.crawling.embedded.DateRange;
 import lombok.*;
+
 
 @Getter
 @Builder
@@ -10,8 +13,16 @@ import lombok.*;
 public class LotteEatzDto {
 
     private String title;
-    private String date;
+    private DateRange dateRange;
     private String image;
     private String href;
     private String field; // 카테고리 분류
+
+    public LotteEatzDto(LotteEatz lotteEatz) {
+        this.title = lotteEatz.getTitle();
+        this.dateRange = lotteEatz.getDateRange();
+        this.image = lotteEatz.getImage();
+        this.href = lotteEatz.getHref();
+        this.field = lotteEatz.getField();
+    }
 }
