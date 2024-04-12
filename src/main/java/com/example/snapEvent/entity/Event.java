@@ -28,6 +28,7 @@ public class Event extends BaseTimeEntity {
     @JoinColumn(name = "SITE_ID")
     private Site site;
 
+    // 연관관계 편의 메서드
     public void addNotification(Notification notification) {
         this.notification = notification;
         notification.setEvent(this);

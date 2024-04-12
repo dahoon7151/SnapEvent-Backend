@@ -37,4 +37,9 @@ public class Notification extends BaseTimeEntity {
         member.getNotifications().add(this);
     }
 
+    public void removeMember(Member member) {
+        this.member = null;
+        member.getNotifications().remove(this);
+    }
+
 }
