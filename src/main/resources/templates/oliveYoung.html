@@ -1,0 +1,18 @@
+<html>
+<div>
+    <table class="table">
+        <tr>
+            <th>이미지</th>
+            <th>제목</th>
+            <th>본문</th>
+            <th>날짜</th>
+        </tr>
+        <tr th:each="oliveYoung : ${oliveYoung}">
+            <td><a th:href="${oliveYoung.href}"><img th:src="${oliveYoung.image}"></a></td>
+            <td><a th:href="${oliveYoung.href}"><span th:text="${oliveYoung.title}"></span></a></td>
+            <td th:text="${oliveYoung.description}"></td>
+            <td th:text="${oliveYoung.date}"></td>
+        </tr>
+    </table>
+</div>
+</html>

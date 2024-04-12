@@ -30,20 +30,26 @@ dependencies {
 
 	// p6spy 디펜던시 (쿼리 파라미터 출력)
 	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
+	// jsoup HTML parser library
+	implementation 'org.jsoup:jsoup:1.17.2'
+	// thymeleaf (temporary view)
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	// devtools (서버 재시작안하고 Ctrl+Shift+F9만 해도 변경된 코드 적용)
+	implementation "org.springframework.boot:spring-boot-devtools"
+
+	// 셀레니움
+	implementation 'org.seleniumhq.selenium:selenium-java:4.19.1'
+	implementation 'org.seleniumhq.selenium:selenium-chrome-driver:4.19.1'
 
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	annotationProcessor 'org.projectlombok:lombok'
-	// 롬복보다 뒤에 추가해야함(mapstruct: DTO <-> Entity)
-	implementation 'org.mapstruct:mapstruct:1.5.5.Final'
-	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	// to test with Logger
 	testCompileOnly 'org.projectlombok:lombok'
 	testAnnotationProcessor 'org.projectlombok:lombok'
-	// If you are using mapstruct in test code
-	testAnnotationProcessor "org.mapstruct:mapstruct-processor:1.5.5.Final"
+
 }
 
 tasks.named('test') {

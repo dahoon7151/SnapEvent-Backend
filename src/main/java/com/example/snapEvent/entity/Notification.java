@@ -32,9 +32,9 @@ public class Notification extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
-    /*public void addMember(Member member) {
+    public void addMember(Member member) {
         this.member = member;
         member.getNotifications().add(this);
-    }*/
+    }
 
 }
