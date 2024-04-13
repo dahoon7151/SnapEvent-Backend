@@ -26,15 +26,25 @@ public class Subscription extends BaseTimeEntity {
     @JoinColumn(name = "SITE_ID")
     private Site site;
 
-    /*public void addMember(Member member) {
+    // 연관관계 편의 메서드
+    public void addMember(Member member) {
         this.member = member;
-        member.getSubscriptions.add(this);
-    }*/
+        member.getSubscriptions().add(this);
+    }
 
     public void addSite(Site site) {
         this.site = site;
         site.getSubscriptions().add(this);
     }
 
+    public void removeMember(Member member) {
+        this.member = null;
+        member.getSubscriptions().remove(this);
+    }
+
+    public void removeSite(Site site) {
+        this.site = null;
+        site.getSubscriptions().remove(this);
+    }
 
 }

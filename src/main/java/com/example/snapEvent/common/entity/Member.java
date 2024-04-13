@@ -33,6 +33,18 @@ public class Member extends BaseTimeEntity implements UserDetails {
     @Column
     private String nickname;
 
+    @OneToMany
+    @Builder.Default
+    private List<Subscription> subscriptions = new ArrayList<>();
+
+    @OneToMany
+    @Builder.Default
+    private List<Follower> followers = new ArrayList<>();
+
+    @OneToMany
+    @Builder.Default
+    private List<Notification> notifications = new ArrayList<>();
+
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
     private List<String> roles = new ArrayList<>();
