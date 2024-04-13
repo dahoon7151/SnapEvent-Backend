@@ -48,10 +48,10 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).body(jwtToken);
     }
 
-    @PostMapping("/{provider}")
-    public ResponseEntity<JwtToken> socialLogin(@PathVariable String provider, String code) {
-        
-    }
+//    @PostMapping("/{provider}")
+//    public ResponseEntity<JwtToken> socialLogin(@PathVariable String provider, String code) {
+//
+//    }
 
     @PostMapping("/join")
     public ResponseEntity<MemberDto> join(@RequestBody @Valid JoinDto joinDto) {

@@ -8,14 +8,14 @@ import org.springframework.security.oauth2.client.registration.InMemoryClientReg
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
-@RequiredArgsConstructor
-@Slf4j
-public class SocialService {
-    private final InMemoryClientRegistrationRepository clientRegistrationRepository;
-
-    public LoginDto socialLogin(String providerName, String code) {
-        ClientRegistration provider = clientRegistrationRepository.findByRegistrationId(providerName);
-
-    }
-}
+//@Service
+//@RequiredArgsConstructor
+//@Slf4j
+//public class SocialService {
+//    private final InMemoryClientRegistrationRepository clientRegistrationRepository;
+//
+//    public LoginDto socialLogin(String providerName, String code) {
+//        ClientRegistration provider = clientRegistrationRepository.findByRegistrationId(providerName);
+//
+//    }
+//}
