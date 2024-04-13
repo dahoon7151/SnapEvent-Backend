@@ -33,7 +33,7 @@ public class CafeController {
     public List<HollysDto> hollys() {
         try {
             return hollysService.getHollysDatas();
-        } catch (IOException e) {
+        } catch (RuntimeException e) {
             throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE);
         }
     }
