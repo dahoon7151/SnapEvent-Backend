@@ -1,21 +1,7 @@
 spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/snapevent_03?serverTimezone=Asia/Seoul
-    username: ${datasource.username}
-    password: ${datasource.password}
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  jpa:
-    hibernate:
-      ddl-auto: create # 실제 운영 서버에서는 validate로 변경할 것
-    properties:
-      hibernate:
-        format_sql: true
-        default_batch_fetch_size: 100
-
-  # 스프링 시큐리티 설정
-  security:
-    user:
-      name: admin
-      password: event1234
-
-
+  config:
+    import:
+      - classpath:/yaml/application-dev.yml
+      - classpath:/yaml/application-local.yml
+  profiles:
+    active: dev
