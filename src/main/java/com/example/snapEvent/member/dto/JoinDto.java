@@ -33,6 +33,7 @@ public class JoinDto {
     @Size(max = 20, min = 1, message = "닉네임은 20자 이하로 가능합니다.")
     private String nickname;
 
+    @Builder.Default
     private List<String> roles = new ArrayList<>();
 
     public Member toEntity(String encodedPassword, List<String> roles) {
