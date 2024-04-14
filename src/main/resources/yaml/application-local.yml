@@ -1,0 +1,9 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    driver-class-name: # 로컬에서 사용하실 DB driver를 작성하시면 됩니다
+    url:
+    username:
+    password:
