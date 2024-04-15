@@ -1,5 +1,6 @@
 package com.example.snapevent.member.service;
 
+import com.example.snapevent.common.entity.Member;
 import com.example.snapevent.member.dto.*;
 import com.example.snapevent.member.entity.RefreshToken;
 import com.example.snapevent.member.jwt.JwtTokenProvider;
@@ -105,5 +106,20 @@ public class MemberServiceImpl implements MemberService{
         //DB 삭제
         memberRepository.delete(memberRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("비정상 에러(incorrect username).")));
+    }
+
+    @Transactional
+    @Override
+    public void modify(String username, ModifyDto modifyDto) {
+        if(!modifyDto.getPassword().equals(modifyDto.getCheckPassword())){
+            throw new IllegalArgumentException("비밀번호가 재입력된 비밀번호와 동일하지 않습니다.");
+        }
+
+        String encodedPassword = passwordEncoder.encode(modifyDto.getPassword());
+        Member member = memberRepository.findByUsername(username)
+                .map(entity -> entity.update(encodedPassword, modifyDto.getNickname()))
+                .orElseThrow(() -> new UsernameNotFoundException("비정상 에러(incorrect username)."));
+
+        memberRepository.save(member);
     }
 }

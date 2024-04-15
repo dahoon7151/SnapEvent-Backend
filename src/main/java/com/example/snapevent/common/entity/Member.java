@@ -74,4 +74,10 @@ public class Member extends BaseTimeEntity implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    public Member update(String encodedPassword, String nickname) {
+        this.password = encodedPassword;
+        this.nickname = nickname;
+        return this;
+    }
 }

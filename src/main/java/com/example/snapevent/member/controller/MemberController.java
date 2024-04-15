@@ -88,6 +88,14 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).body("회원탈퇴 성공");
     }
 
+    @PostMapping("/modify/{username}")
+    public ResponseEntity<String> modify(
+            @PathVariable(value = "username") String username, @RequestBody @Valid ModifyDto modifyDto) {
+        memberService.modify(username, modifyDto);
+
+        return ResponseEntity.status(HttpStatus.OK).body("회원정보 수정 성공");
+    }
+
 //    @Operation(summary = "JWT 검증 테스트", description = "로그인 성공시 발급된 토큰을 검증하기 위한 테스트 API")
 //    @Parameters({
 //            @Parameter(name = "grantType", description = "인증 타입", example = "bearer"),

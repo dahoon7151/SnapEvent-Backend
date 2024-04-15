@@ -12,4 +12,6 @@ public interface MemberService {
     public void logout(String username);
 
     public void withdraw(String username);
+
+    public void modify(String username, ModifyDto modifyDto);
 }
