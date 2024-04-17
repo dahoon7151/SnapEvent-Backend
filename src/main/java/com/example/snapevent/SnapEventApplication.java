@@ -1,4 +1,4 @@
-package com.example.snapEvent;
+package com.example.snapevent;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
