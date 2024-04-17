@@ -48,11 +48,6 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).body(jwtToken);
     }
 
-//    @PostMapping("/{provider}")
-//    public ResponseEntity<JwtToken> socialLogin(@PathVariable String provider, String code) {
-//
-//    }
-
     @PostMapping("/join")
     public ResponseEntity<MemberDto> join(@RequestBody @Valid JoinDto joinDto) {
         log.info("회원가입 - 아이디 : {}, 비밀번호 : {}, 재확인 비밀번호 : {}, 닉네임 : {}",
@@ -91,6 +86,14 @@ public class MemberController {
         memberService.withdraw(username);
 
         return ResponseEntity.status(HttpStatus.OK).body("회원탈퇴 성공");
+    }
+
+    @PostMapping("/modify/{username}")
+    public ResponseEntity<String> modify(
+            @PathVariable(value = "username") String username, @RequestBody @Valid ModifyDto modifyDto) {
+        memberService.modify(username, modifyDto);
+
+        return ResponseEntity.status(HttpStatus.OK).body("회원정보 수정 성공");
     }
 
 //    @Operation(summary = "JWT 검증 테스트", description = "로그인 성공시 발급된 토큰을 검증하기 위한 테스트 API")

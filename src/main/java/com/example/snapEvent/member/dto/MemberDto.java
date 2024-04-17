@@ -14,19 +14,11 @@ public class MemberDto {
     private String password;
     private String nickname;
 
-    static public MemberDto toDto(Member member) {
+    public static MemberDto toDto(Member member) {
         return MemberDto.builder()
                 .id(member.getId())
                 .username(member.getUsername())
                 .nickname(member.getNickname())
-                .build();
-    }
-
-    public Member toEntity() {
-        return Member.builder()
-                .id(id)
-                .username(username)
-                .nickname(nickname)
                 .build();
     }
 }

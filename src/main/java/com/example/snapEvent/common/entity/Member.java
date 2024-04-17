@@ -19,7 +19,7 @@ import java.util.List;
 @ToString(of = "id")
 public class Member extends BaseTimeEntity implements UserDetails {
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MEMBER_ID", updatable = false, unique = true, nullable = false)
     private Long id;
 
@@ -73,5 +73,11 @@ public class Member extends BaseTimeEntity implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public Member update(String encodedPassword, String nickname) {
+        this.password = encodedPassword;
+        this.nickname = nickname;
+        return this;
     }
 }

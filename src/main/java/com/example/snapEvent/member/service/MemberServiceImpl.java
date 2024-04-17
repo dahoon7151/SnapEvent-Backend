@@ -1,12 +1,11 @@
 package com.example.snapEvent.member.service;
 
+import com.example.snapEvent.common.entity.Member;
 import com.example.snapEvent.member.dto.*;
 import com.example.snapEvent.member.entity.RefreshToken;
-import com.example.snapEvent.member.jwt.JwtAuthenticationFilter;
 import com.example.snapEvent.member.jwt.JwtTokenProvider;
 import com.example.snapEvent.member.repository.MemberRepository;
 import com.example.snapEvent.member.repository.RefreshTokenRepository;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,8 +13,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.registration.ClientRegistration;
-import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +28,6 @@ public class MemberServiceImpl implements MemberService{
     private final RefreshTokenRepository refreshTokenRepository;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider jwtTokenProvider;
-
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
@@ -110,5 +106,20 @@ public class MemberServiceImpl implements MemberService{
         //DB 삭제
         memberRepository.delete(memberRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("비정상 에러(incorrect username).")));
+    }
+
+    @Transactional
+    @Override
+    public void modify(String username, ModifyDto modifyDto) {
+        if(!modifyDto.getPassword().equals(modifyDto.getCheckPassword())){
+            throw new IllegalArgumentException("비밀번호가 재입력된 비밀번호와 동일하지 않습니다.");
+        }
+
+        String encodedPassword = passwordEncoder.encode(modifyDto.getPassword());
+        Member member = memberRepository.findByUsername(username)
+                .map(entity -> entity.update(encodedPassword, modifyDto.getNickname()))
+                .orElseThrow(() -> new UsernameNotFoundException("비정상 에러(incorrect username)."));
+
+        memberRepository.save(member);
     }
 }
