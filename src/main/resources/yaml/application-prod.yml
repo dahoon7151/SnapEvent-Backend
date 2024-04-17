@@ -1,0 +1,16 @@
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: jdbc:mysql://snapeventserver-mysql.c3mig2u6g7z2.ap-northeast-2.rds.amazonaws.com:3306/mydb
+    username: admin
+    password: ${MYSQL_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate # 실제 운영 서버에서는 validate로 변경할 것
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 100
