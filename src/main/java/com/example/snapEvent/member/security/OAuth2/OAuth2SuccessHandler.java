@@ -1,13 +1,15 @@
-package com.example.snapEvent.member.OAuth2;
+package com.example.snapEvent.member.security.OAuth2;
 
 import com.example.snapEvent.member.dto.JwtToken;
 import com.example.snapEvent.member.entity.RefreshToken;
-import com.example.snapEvent.member.jwt.JwtTokenProvider;
+import com.example.snapEvent.member.security.jwt.JwtTokenProvider;
 import com.example.snapEvent.member.repository.RefreshTokenRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -36,11 +38,17 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         response.addHeader("Authorization", "Bearer " + jwtToken.getAccessToken());
 
-        String targetUrl = UriComponentsBuilder.fromUriString("/")
-                .queryParam("token", jwtToken.getAccessToken())
-                .build().toUriString();
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jwtTokenJson = objectMapper.writeValueAsString(jwtToken);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(jwtTokenJson);
 
-        getRedirectStrategy().sendRedirect(request, response, targetUrl);
+//        String targetUrl = UriComponentsBuilder.fromUriString("/")
+//                .queryParam("token", jwtToken.getAccessToken())
+//                .build().toUriString();
+//
+//        getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 
     public RefreshToken toEntity(String username, String refreshToken) {

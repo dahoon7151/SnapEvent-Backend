@@ -1,11 +1,11 @@
 package com.example.snapEvent.common.config;
 
-import com.example.snapEvent.member.OAuth2.OAuth2SuccessHandler;
-import com.example.snapEvent.member.jwt.ExceptionHandlerFilter;
-import com.example.snapEvent.member.jwt.JwtAuthenticationFilter;
-import com.example.snapEvent.member.jwt.JwtTokenProvider;
+import com.example.snapEvent.member.security.OAuth2.OAuth2SuccessHandler;
+import com.example.snapEvent.member.security.jwt.ExceptionHandlerFilter;
+import com.example.snapEvent.member.security.jwt.JwtAuthenticationFilter;
+import com.example.snapEvent.member.security.jwt.JwtTokenProvider;
 import com.example.snapEvent.member.repository.RefreshTokenRepository;
-import com.example.snapEvent.member.service.CustomOAuth2UserService;
+import com.example.snapEvent.member.security.OAuth2.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,6 +29,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
+                .formLogin(AbstractHttpConfigurer::disable)
                 // REST API이므로 basic auth 및 csrf 보안을 사용하지 않음
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
@@ -37,21 +38,33 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         // 해당 API에 대해서는 모든 요청을 허가
-                        .requestMatchers("/","/oauth2/authorization/google","/members/join","/members/login").permitAll()
+                        .requestMatchers("/oauth2/authorization/google",
+                                "/oauth2/authorization/naver",
+                                "/oauth2/authorization/kakao",
+                                "/members/join",
+                                "/members/login")
+                        .permitAll()
                         // USER 권한이 있어야 요청할 수 있음
-                        .requestMatchers("/members/test").hasRole("USER")
-                        // 이 밖에 모든 요청에 대해서 인증을 필요로 한다는 설정
-                        .anyRequest().authenticated())
-                .logout((logoutConfig) ->
-                        logoutConfig.logoutSuccessUrl("/")
+                        .requestMatchers("/members/test")
+                        .hasRole("USER")
+//                        // 이 밖에 모든 요청에 대해서 인증을 필요로 한다는 설정
+//                        .anyRequest().authenticated())
+                        .anyRequest().permitAll()) // 테스트용 허용
+                .formLogin(login -> login
+                        .loginPage("/")                       //로그인 페이지 url
+//                        .loginProcessingUrl("/members/login") //이 url을 로그인 기능을 담당하게 함
+                        .defaultSuccessUrl("/"))              // 성공하면 이 url로 가게 함
+                .oauth2Login(oauth2 -> oauth2
+                        .loginPage("/")
+                        .successHandler(new OAuth2SuccessHandler(jwtTokenProvider, refreshTokenRepository))
+                        .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint
+                                .userService(customOAuth2UserService)))
+                .logout(logoutConfig -> logoutConfig
+                        .logoutSuccessUrl("/")
                 )
                 // JWT 인증을 위하여 직접 구현한 필터를 UsernamePasswordAuthenticationFilter 전에 실행
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(exceptionHandlerFilter, JwtAuthenticationFilter.class)
-                .oauth2Login((oauth2) -> oauth2
-                        .successHandler(new OAuth2SuccessHandler(jwtTokenProvider, refreshTokenRepository))
-                        .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint
-                                .userService(customOAuth2UserService)))
                 .build();
     }
 }

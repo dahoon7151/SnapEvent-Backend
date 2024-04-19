@@ -1,6 +1,6 @@
 package com.example.snapEvent.common.exception;
 
-import com.example.snapEvent.member.jwt.TokenNotValidateException;
+import com.example.snapEvent.member.security.jwt.TokenNotValidateException;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;

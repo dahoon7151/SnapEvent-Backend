@@ -1,7 +1,9 @@
-package com.example.snapEvent.member.service;
+package com.example.snapEvent.member.security.OAuth2;
 
+import com.example.snapEvent.common.entity.Member;
 import com.example.snapEvent.member.dto.OAuthAttributes;
 import com.example.snapEvent.member.repository.MemberRepository;
+import com.example.snapEvent.member.security.CustomUserDetail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -48,11 +50,11 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         roles.add("USER");
 
         //만약에 DB에 등록된 이메일이 아니라면, save하여 DB에 등록(회원가입)을 진행시켜준다.
-        memberRepository.save(memberRepository.findByUsername(attributes.getEmail())
-                .orElse(attributes.toEntity(encodedPassword, roles)));
+        Member member = memberRepository.findByUsername(attributes.getEmail())
+                .orElse(attributes.toEntity(encodedPassword, roles));
 
-        return new DefaultOAuth2User(
-                Collections.singleton(new SimpleGrantedAuthority("USER")),
-                attributes.getAttributes(), attributes.getNameAttributesKey());
+        memberRepository.save(member);
+
+        return new CustomUserDetail(member, oAuth2User.getAttributes());
     }
 }
