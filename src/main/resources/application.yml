@@ -13,19 +13,19 @@ spring:
         registration:
           google:
             client-id: "184921769583-n5cvihrs9nlagk1ueer3e6auodgslasn.apps.googleusercontent.com"
-            client-secret: "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"
+            client-secret: ${GOOGLE_CLIENT_SECRET}
             redirect-uri: "http://ec2-43-203-25-53.ap-northeast-2.compute.amazonaws:8080/login/oauth2/code/google"
             scope: "profile, email"
           naver:
             client-id: "1jjZegCdp5LDf5M_jvZt"
-            client-secret: "Y8DXJU4YOg"
+            client-secret: ${NAVER_CLIENT_SECRET}
             redirect-uri: "http://ec2-43-203-25-53.ap-northeast-2.compute.amazonaws:8080/login/oauth2/code/naver"
             authorization-grant-type: "authorization_code"
             scope: "name, email, profile_image"
             client-name: "Naver"
           kakao:
             client-id: "e1dff2ab453c01c8e979841d84605cac"
-            client-secret: "PsFBP7GuA1S8gmCIzoRBXgPjS55QJvTH"
+            client-secret: ${KAKAO_CLIENT_SECRET}
             redirect-uri: "http://ec2-43-203-25-53.ap-northeast-2.compute.amazonaws:8080/login/oauth2/code/kakao"
             client-authentication-method: "POST"
             authorization-grant-type: "authorization_code"
@@ -44,6 +44,6 @@ spring:
             user-name-attribute: "id"
 
 jwt:
-  secret: "74160734b993c14263a0d4597c5913cb52de7f59b4f7aba341a831c3c1801dfc"
+  secret: ${JWT_SECRET}
 
 ############################################################################
