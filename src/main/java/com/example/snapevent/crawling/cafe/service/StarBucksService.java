@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Slf4j(topic = "Scheduler")
+@Slf4j
 @RequiredArgsConstructor
 public class StarBucksService {
 
@@ -49,6 +49,15 @@ public class StarBucksService {
             String image = element.findElement(By.cssSelector("a img")).getAttribute("src");
             String href = extractHref(element);
 
+            if (isTitleExist(title)) {
+                log.debug("Skipping duplicate title: {}", title);
+                StarBucks existingStarBucks = starBucksRepository.findByTitle(title);
+                if (existingStarBucks != null) {
+                    starBucksDtoList.add(new StarBucksDto(existingStarBucks));
+                }
+                continue;
+            }
+
             StarBucks starBucks = StarBucks.builder()
                     .title(title)
                     .dateRange(dateRange)
@@ -60,6 +69,10 @@ public class StarBucksService {
         }
         driver.quit();
         return starBucksDtoList;
+    }
+
+    private boolean isTitleExist(String title) {
+        return starBucksRepository.existsByTitle(title);
     }
 
 

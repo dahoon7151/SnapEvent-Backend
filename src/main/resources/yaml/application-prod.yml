@@ -9,7 +9,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: validate # 실제 운영 서버에서는 validate로 변경할 것
+      ddl-auto: create # 실제 운영 서버에서는 validate로 변경할 것
     properties:
       hibernate:
         format_sql: true

@@ -4,7 +4,9 @@ import com.example.snapevent.crawling.SeleniumHelper;
 import com.example.snapevent.crawling.cafe.dto.LotteEatzDto;
 import com.example.snapevent.crawling.cafe.entity.LotteEatz;
 import com.example.snapevent.crawling.cafe.repository.LotteEatzRepository;
+import com.example.snapevent.crawling.dto.OliveYoungDto;
 import com.example.snapevent.crawling.embedded.DateRange;
+import com.example.snapevent.crawling.entity.OliveYoung;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
@@ -21,7 +23,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j(topic = "Scheduler")
+@Slf4j
 public class LotteEatzService {
 
     private final LotteEatzRepository lotteEatzRepository;
@@ -46,6 +48,15 @@ public class LotteEatzService {
             String href = extractHref(element, driver);
             String field = element.findElement(By.cssSelector(".badge-wrap")).getText();
 
+            if (isTitleExist(title)) {
+                log.debug("Skipping duplicate title: {}", title);
+                LotteEatz existingLotteEatz = lotteEatzRepository.findByTitle(title);
+                if (existingLotteEatz != null) {
+                    lotteEatzDtoList.add(new LotteEatzDto(existingLotteEatz));
+                }
+                continue;
+            }
+
             LotteEatz lotteEatz = LotteEatz.builder()
                     .title(title)
                     .dateRange(dateRange)
@@ -59,6 +70,11 @@ public class LotteEatzService {
         driver.quit();
         return lotteEatzDtoList;
     }
+
+    private boolean isTitleExist(String title) {
+        return lotteEatzRepository.existsByTitle(title);
+    }
+
 
     private DateRange getDateRange(WebElement element) {
         String dateElement = element.findElement(By.cssSelector(".grid-period")).getText();

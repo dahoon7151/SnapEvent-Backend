@@ -22,7 +22,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j(topic = "Scheduler")
+@Slf4j
 public class OliveYoungService {
 
     private final OliveYoungRepository oliveYoungRepository;
@@ -46,6 +46,16 @@ public class OliveYoungService {
             String description = content.select(".evt_desc").text();
             String href = extractHref(content);
 
+            // 만약 제목이 DB에 존재한다면, 기존의 저장된 DB 크롤링 데이터를 뷰로 보여줌
+            if (isTitleExist(title)) {
+                log.debug("Skipping duplicate title: {}", title);
+                OliveYoung existingOliveYoung = oliveYoungRepository.findByTitle(title);
+                if (existingOliveYoung != null) {
+                    oliveYoungDtoList.add(new OliveYoungDto(existingOliveYoung));
+                }
+                continue;
+            }
+
             OliveYoung oliveYoung = OliveYoung.builder()
                     .title(title)
                     .dateRange(dateRange)
@@ -58,6 +68,10 @@ public class OliveYoungService {
         }
 
         return oliveYoungDtoList;
+    }
+
+    private boolean isTitleExist(String title) {
+        return oliveYoungRepository.existsByTitle(title);
     }
 
     private DateRange getDateRange(Element content) {

@@ -13,10 +13,10 @@ public class SeleniumHelper {
 
         // 크롬 드라이버 설정
         // 1번째 코드는 로컬환경 경로
-        /*System.setProperty("webdriver.chrome.driver", "drivers/chromedriver.exe");*/
+        System.setProperty("webdriver.chrome.driver", "drivers/chromedriver.exe");
 
         // 2번째 코드는 ec2 우분투 서버의 경로
-        System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver-linux64/chromedriver");
+        /*System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver-linux64/chromedriver");*/
 
         // 크롬 옵션 설정
         ChromeOptions options = new ChromeOptions();
