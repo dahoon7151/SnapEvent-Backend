@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j(topic = "Scheduler")
+@Slf4j
 public class HollysService {
 
     private final HollysRepository hollysRepository;
@@ -48,6 +48,15 @@ public class HollysService {
             DateRange dateRange = getDateRange(element);
             String href = getHref(element);
 
+            if (isTitleExist(title)) {
+                log.debug("Skipping duplicate title: {}", title);
+                Hollys existingHollys = hollysRepository.findByTitle(title);
+                if (existingHollys != null) {
+                    hollysDtoList.add(new HollysDto(existingHollys));
+                }
+                continue;
+            }
+
             Hollys hollys = Hollys.builder()
                     .title(title)
                     .dateRange(dateRange)
@@ -60,6 +69,10 @@ public class HollysService {
         }
         driver.quit();
         return hollysDtoList;
+    }
+
+    private boolean isTitleExist(String title) {
+        return hollysRepository.existsByTitle(title);
     }
 
     private String getTitle(WebElement element) {

@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Slf4j(topic = "Scheduler")
+@Slf4j
 @RequiredArgsConstructor
 public class EdiyaService {
 
@@ -46,16 +46,33 @@ public class EdiyaService {
 
             DateRange dateRange = getDateRange(content);
 
+            String title = content.select(".board_e_con a").text();
+            String image = resolveImageSrc(content.select("a img"));
+            String href = content.select("a").attr("abs:href");
+
+            if (isTitleExist(title)) {
+                log.debug("Skipping duplicate title: {}", title);
+                Ediya existingEdiya = ediyaRepository.findByTitle(title);
+                if (existingEdiya != null) {
+                    ediyaDtoList.add(new EdiyaDto(existingEdiya));
+                }
+                continue;
+            }
+
             Ediya ediya = Ediya.builder()
-                    .title(content.select(".board_e_con a").text())
+                    .title(title)
                     .dateRange(dateRange)
-                    .image(resolveImageSrc(content.select("a img")))
-                    .href(content.select("a").attr("abs:href"))
+                    .image(image)
+                    .href(href)
                     .build();
             ediyaRepository.save(ediya);
             ediyaDtoList.add(new EdiyaDto(ediya));
         }
         return ediyaDtoList;
+    }
+
+    private boolean isTitleExist(String title) {
+        return ediyaRepository.existsByTitle(title);
     }
 
     private DateRange getDateRange(Element content) {

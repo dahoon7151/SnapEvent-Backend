@@ -21,7 +21,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j(topic = "Scheduler")
+@Slf4j
 public class SsfService {
 
     private final SsfRepository ssfRepository;
@@ -39,17 +39,35 @@ public class SsfService {
 
             DateRange dateRange = getDateRange(content);
 
+            String title = content.select(".tit").text();
+            String description = content.select(".desc").text();
+            String image = resolveImageSrc(content.select("a img"));
+            String href = content.select("a").attr("abs:href");
+
+            if (isTitleExist(title)) {
+                log.debug("Skipping duplicate title: {}", title);
+                Ssf existingSsf = ssfRepository.findByTitle(title);
+                if (existingSsf != null) {
+                    ssfDtoList.add(new SsfDto(existingSsf));
+                }
+                continue;
+            }
+
             Ssf ssf = Ssf.builder()
-                    .title(content.select(".tit").text())
-                    .description(content.select(".desc").text())
+                    .title(title)
+                    .description(description)
                     .dateRange(dateRange)
-                    .image(resolveImageSrc(content.select("a img")))
-                    .href(content.select("a").attr("abs:href"))
+                    .image(image)
+                    .href(href)
                     .build();
             ssfRepository.save(ssf);
             ssfDtoList.add(new SsfDto(ssf));
         }
         return ssfDtoList;
+    }
+
+    private boolean isTitleExist(String title) {
+        return ssfRepository.existsByTitle(title);
     }
 
     private DateRange getDateRange(Element content) {

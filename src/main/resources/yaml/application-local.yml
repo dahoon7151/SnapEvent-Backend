@@ -3,7 +3,7 @@ spring:
     activate:
       on-profile: local
   datasource:
-    driver-class-name: # 로컬에서 사용하실 DB driver를 작성하시면 됩니다
-    url:
-    username:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:test
+    username: sa
     password:

@@ -3,21 +3,14 @@ spring:
     activate:
       on-profile: dev
   datasource:
-    url: jdbc:mysql://snapeventserver-mysql.c3mig2u6g7z2.ap-northeast-2.rds.amazonaws.com:3306/mydb
-    username: admin
-    password: ${MYSQL_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/snapevent_03?serverTimezone=Asia/Seoul
+    username: ${datasource.username}
+    password: ${datasource.password}
   jpa:
     hibernate:
-      ddl-auto: create # 실제 운영 서버에서는 validate로 변경할 것
+      ddl-auto: create
     properties:
       hibernate:
         format_sql: true
         default_batch_fetch_size: 100
-
-  # 스프링 시큐리티 설정
-  security:
-    user:
-      name: admin
-      password: event1234
-

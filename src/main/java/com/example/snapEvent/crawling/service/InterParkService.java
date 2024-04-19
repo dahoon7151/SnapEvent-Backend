@@ -18,7 +18,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j(topic = "Scheduler")
+@Slf4j
 public class InterParkService {
 
     private final InterParkRepository interParkRepository;
@@ -37,6 +37,15 @@ public class InterParkService {
             String title = alt.replace("https://mticket.interpark.com/Notice/", "");
             String date = content.select(".ticketOpen dd").text();
 
+            if (isTitleExist(title)) {
+                log.debug("Skipping duplicate title: {}", title);
+                InterPark existingInterPark = interParkRepository.findByTitle(title);
+                if (existingInterPark != null) {
+                    interParkDtoList.add(new InterParkDto(existingInterPark));
+                }
+                continue;
+            }
+
             InterPark interPark = InterPark.builder()
                     .title(title)
                     .image(resolveImageSrc(content.select("a img")))
@@ -49,6 +58,11 @@ public class InterParkService {
         return interParkDtoList;
     }
 
+    private boolean isTitleExist(String title) {
+        return interParkRepository.existsByTitle(title);
+    }
+
+    //? 나중에 정렬 기능같은거 있으면 추가할 예정
     /*private LocalDateTime getLocalDate(Element content) {
         String dateText = content.select(".ticketOpen dd").text();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM.dd (E) HH:mm");
