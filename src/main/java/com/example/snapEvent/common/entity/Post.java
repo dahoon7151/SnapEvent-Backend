@@ -3,6 +3,7 @@ package com.example.snapEvent.common.entity;
 import com.example.snapEvent.common.entity.audit.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
@@ -18,15 +19,23 @@ public class Post extends BaseEntity {
     @Column(name = "POST_ID")
     private Long id;
 
-    @Column
+    @Column(nullable = false)
     private String title;
 
-    @Column
+    @Column(nullable = false)
     private String content;
 
-    @CreationTimestamp
-    @Column
-    private Timestamp postTime;
+    @Column(nullable = false)
+    @ColumnDefault("0")
+    private int like;
+
+    @Column(nullable = false)
+    @ColumnDefault("0")
+    private int comment;
+
+//    @CreationTimestamp
+//    @Column
+//    private Timestamp postTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")

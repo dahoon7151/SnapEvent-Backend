@@ -21,9 +21,9 @@ public class Comment extends BaseEntity {
     @Column
     private String commentContent;
 
-    @CreationTimestamp
-    @Column
-    private Timestamp commentTime;
+//    @CreationTimestamp
+//    @Column
+//    private Timestamp commentTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "POST_ID")

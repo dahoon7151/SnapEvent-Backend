@@ -88,7 +88,7 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).body("회원탈퇴 성공");
     }
 
-    @PostMapping("/modify/{username}")
+    @PatchMapping("/modify/{username}")
     public ResponseEntity<String> modify(
             @PathVariable(value = "username") String username, @RequestBody @Valid ModifyDto modifyDto) {
         memberService.modify(username, modifyDto);
