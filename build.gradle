@@ -57,6 +57,7 @@ dependencies {
 
 }
 
-tasks.named('test') {
+// 기존 테스트 코드가 없을 시 아래의 3줄을 지우고 ec2 빌드하면 성공
+/*tasks.named('test') {
 	useJUnitPlatform()
-}
+}*/

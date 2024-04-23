@@ -5,7 +5,7 @@ spring:
       - classpath:/yaml/application-dev.yml
       - classpath:/yaml/application-local.yml
   profiles:
-    active: dev # 원하는 프로필 지정(prod, dev, local)
+    active: prod # 원하는 프로필 지정(prod, dev, local)
 
   # 스프링 시큐리티 설정
   security:
