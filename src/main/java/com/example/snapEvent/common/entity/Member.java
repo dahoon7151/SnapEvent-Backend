@@ -48,33 +48,6 @@ public class Member extends BaseTimeEntity {
     @Builder.Default
     private List<String> roles = new ArrayList<>();
 
-//    @Override
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        return this.roles.stream()
-//                .map(SimpleGrantedAuthority::new)
-//                .toList();
-//    }
-
-//    @Override
-//    public boolean isAccountNonExpired() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isAccountNonLocked() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isCredentialsNonExpired() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isEnabled() {
-//        return true;
-//    }
-
     public Member update(String encodedPassword, String nickname) {
         this.password = encodedPassword;
         this.nickname = nickname;

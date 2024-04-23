@@ -23,8 +23,8 @@ public class PostDto {
         return Post.builder()
                 .title(title)
                 .content(content)
-                .like(0)
-                .comment(0)
+                .likeCount(0)
+                .commentCount(0)
                 .member(member)
                 .build();
     }

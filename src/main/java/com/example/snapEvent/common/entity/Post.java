@@ -27,11 +27,11 @@ public class Post extends BaseEntity {
 
     @Column(nullable = false)
     @ColumnDefault("0")
-    private int like;
+    private int likeCount;
 
     @Column(nullable = false)
     @ColumnDefault("0")
-    private int comment;
+    private int commentCount;
 
 //    @CreationTimestamp
 //    @Column
@@ -44,4 +44,11 @@ public class Post extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "BOARD_ID")
     private Board board;
+
+    public Post countLike(boolean b) {
+        if (b) {this.likeCount += 1;}
+        else {this.likeCount -= 1;}
+
+        return this;
+    }
 }

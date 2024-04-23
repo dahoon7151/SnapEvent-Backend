@@ -1,8 +1,11 @@
 package com.example.snapEvent.board.service;
 
+import com.example.snapEvent.board.dto.LikeResponseDto;
+import com.example.snapEvent.board.entity.Like;
+import com.example.snapEvent.board.repository.LikeRepository;
 import com.example.snapEvent.common.entity.Member;
 import com.example.snapEvent.board.dto.PostDto;
-import com.example.snapEvent.board.dto.PostListDto;
+import com.example.snapEvent.board.dto.PostResponseDto;
 import com.example.snapEvent.board.repository.PostRepository;
 import com.example.snapEvent.common.entity.Post;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.sound.midi.MetaMessage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +27,8 @@ import java.util.List;
 @Slf4j
 public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
+    private final LikeRepository likeRepository;
+
     @Transactional
     @Override
     public Page<Post> sortPostlist(int page, int postCount, String order) {
@@ -32,9 +38,9 @@ public class PostServiceImpl implements PostService {
         } else if (order.equals("old")) {
             sorts.add(Sort.Order.asc("createdDate"));
         } else if (order.equals("comment")) {
-                sorts.add(Sort.Order.desc("comment"));
+                sorts.add(Sort.Order.desc("commentCount"));
         } else if (order.equals("like")) {
-            sorts.add(Sort.Order.desc("like"));
+            sorts.add(Sort.Order.desc("likeCount"));
         }
         Pageable pageable = PageRequest.of(page, postCount, Sort.by(sorts));
 
@@ -43,19 +49,45 @@ public class PostServiceImpl implements PostService {
 
     @Transactional
     @Override
-    public PostListDto showPost(Long id) {
+    public PostResponseDto showPost(Member member, Long id) {
         Post post = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 ID(PK)에 대한 글이 없습니다."));
         log.info("id : {}인 게시글 조회", post.getId());
 
-        return new PostListDto(post);
+        if (post.getMember().getUsername().equals(member.getUsername())) {
+            return new PostResponseDto(post, true);
+        } else {
+            return new PostResponseDto(post, false);
+        }
     }
 
     @Transactional
     @Override
-    public PostListDto writePost(Member member, PostDto postDto) {
+    public PostResponseDto writePost(Member member, PostDto postDto) {
         Post post = postRepository.save(postDto.toEntity(member));
         log.info("글 작성 완료 {}", post.getId());
 
-        return new PostListDto(post);
+        return new PostResponseDto(post);
+    }
+
+    @Transactional
+    @Override
+    public LikeResponseDto like(Member member, Long id) {
+        Post post = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 ID(PK)에 대한 글이 없습니다."));
+        log.info("id : {}인 게시글 조회", post.getId());
+
+        if (likeRepository.findByMemberAndPost(member, post).isPresent()) {
+            Like like = likeRepository.findByMemberAndPost(member, post).orElse(null);
+            likeRepository.delete(like);
+
+            return new LikeResponseDto(post.countLike(false), false);
+        } else {
+            Like like = Like.builder()
+                    .member(member)
+                    .post(post)
+                    .build();
+            likeRepository.save(like);
+
+            return new LikeResponseDto(post.countLike(true), true);
+        }
     }
 }
