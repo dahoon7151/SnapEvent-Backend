@@ -89,11 +89,11 @@ public class MemberController {
     }
 
     @PatchMapping("/modify/{username}")
-    public ResponseEntity<String> modify(
+    public ResponseEntity<ModifyResponseDto> modify(
             @PathVariable(value = "username") String username, @RequestBody @Valid ModifyDto modifyDto) {
-        memberService.modify(username, modifyDto);
+        ModifyResponseDto modifyResponseDto = memberService.modify(username, modifyDto);
 
-        return ResponseEntity.status(HttpStatus.OK).body("회원정보 수정 성공");
+        return ResponseEntity.status(HttpStatus.OK).body(modifyResponseDto);
     }
 
 //    @Operation(summary = "JWT 검증 테스트", description = "로그인 성공시 발급된 토큰을 검증하기 위한 테스트 API")

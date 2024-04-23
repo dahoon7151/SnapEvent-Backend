@@ -110,7 +110,7 @@ public class MemberServiceImpl implements MemberService{
 
     @Transactional
     @Override
-    public void modify(String username, ModifyDto modifyDto) {
+    public ModifyResponseDto modify(String username, ModifyDto modifyDto) {
         if(!modifyDto.getPassword().equals(modifyDto.getCheckPassword())){
             throw new IllegalArgumentException("비밀번호가 재입력된 비밀번호와 동일하지 않습니다.");
         }
@@ -120,6 +120,8 @@ public class MemberServiceImpl implements MemberService{
                 .map(entity -> entity.update(encodedPassword, modifyDto.getNickname()))
                 .orElseThrow(() -> new UsernameNotFoundException("비정상 에러(incorrect username)."));
 
-        memberRepository.save(member);
+        Member modifiedMember = memberRepository.save(member);
+
+        return new ModifyResponseDto(modifiedMember);
     }
 }

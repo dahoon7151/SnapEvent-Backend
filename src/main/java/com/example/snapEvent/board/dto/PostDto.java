@@ -1,4 +1,4 @@
-package com.example.snapEvent.post.dto;
+package com.example.snapEvent.board.dto;
 
 import com.example.snapEvent.common.entity.Member;
 import com.example.snapEvent.common.entity.Post;
