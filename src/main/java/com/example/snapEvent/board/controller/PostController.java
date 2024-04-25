@@ -78,4 +78,15 @@ public class PostController {
 
         return ResponseEntity.status(HttpStatus.OK).body(postResponseDto);
     }
+
+    @DeleteMapping("/{id}/delete")
+    public ResponseEntity<String> delete(@PathVariable(value = "id") Long id,
+                                         @AuthenticationPrincipal CustomUserDetail customUserDetail) {
+        Member member = customUserDetail.getMember();
+        log.info("사용자 : {}", member.getUsername());
+
+        postService.deletePost(member, id);
+
+        return ResponseEntity.status(HttpStatus.OK).body("게시글 삭제 완료");
+    }
 }

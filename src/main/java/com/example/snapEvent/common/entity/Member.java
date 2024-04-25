@@ -1,5 +1,6 @@
 package com.example.snapEvent.common.entity;
 
+import com.example.snapEvent.board.entity.Like;
 import com.example.snapEvent.common.entity.audit.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -47,6 +48,10 @@ public class Member extends BaseTimeEntity {
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
     private List<String> roles = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", orphanRemoval = true)
+    @Builder.Default
+    private List<Like> likes = new ArrayList<>();
 
     public Member update(String encodedPassword, String nickname) {
         this.password = encodedPassword;

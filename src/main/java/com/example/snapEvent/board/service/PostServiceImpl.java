@@ -103,7 +103,21 @@ public class PostServiceImpl implements PostService {
 
             return new PostResponseDto(modifiedPost);
         } else {
-            throw new IllegalArgumentException("사용자가 해당 글의 작성자와 일치하지 않습니다.");
+            throw new IllegalArgumentException("사용자에게 수정 권한이 없습니다.");
+        }
+    }
+
+    @Transactional
+    @Override
+    public void deletePost(Member member, Long id) {
+        Post post = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 ID(PK)에 대한 글이 없습니다."));
+        log.info("id : {}인 게시글 조회", post.getId());
+
+        // 해당 사용자가 게시글 작성자와 동일한지 검증(비정상적인 접근을 통해 삭제 요청 시 대비)
+        if (post.getMember().equals(member)) {
+            postRepository.delete(post);
+        } else {
+            throw new IllegalArgumentException("사용자에게 삭제 권한이 없습니다.");
         }
     }
 }

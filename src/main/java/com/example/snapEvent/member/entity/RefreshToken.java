@@ -18,4 +18,6 @@ public class RefreshToken extends BaseEntity {
 
     @Column(nullable = false)
     private String refreshToken;
+
+    // member 참조키 추가
 }
