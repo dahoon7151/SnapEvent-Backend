@@ -1,8 +1,8 @@
 package com.example.snapEvent.board.repository;
 
 import com.example.snapEvent.board.entity.Like;
-import com.example.snapEvent.common.entity.Member;
-import com.example.snapEvent.common.entity.Post;
+import com.example.snapEvent.member.entity.Member;
+import com.example.snapEvent.board.entity.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

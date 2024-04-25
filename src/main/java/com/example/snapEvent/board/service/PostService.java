@@ -1,8 +1,8 @@
 package com.example.snapEvent.board.service;
 
 import com.example.snapEvent.board.dto.LikeResponseDto;
-import com.example.snapEvent.common.entity.Member;
-import com.example.snapEvent.common.entity.Post;
+import com.example.snapEvent.member.entity.Member;
+import com.example.snapEvent.board.entity.Post;
 import com.example.snapEvent.board.dto.PostDto;
 import com.example.snapEvent.board.dto.PostResponseDto;
 import org.springframework.data.domain.Page;

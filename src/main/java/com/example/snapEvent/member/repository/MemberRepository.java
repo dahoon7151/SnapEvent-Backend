@@ -1,6 +1,6 @@
 package com.example.snapEvent.member.repository;
 
-import com.example.snapEvent.common.entity.Member;
+import com.example.snapEvent.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

@@ -1,6 +1,6 @@
-package com.example.snapEvent.common.entity;
+package com.example.snapEvent.board.entity;
 
-import com.example.snapEvent.common.entity.audit.BaseEntity;
+import com.example.snapEvent.audit.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 

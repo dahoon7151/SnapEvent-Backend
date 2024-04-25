@@ -1,6 +1,6 @@
 package com.example.snapEvent.member.dto;
 
-import com.example.snapEvent.common.entity.Member;
+import com.example.snapEvent.member.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
 

@@ -1,7 +1,6 @@
 package com.example.snapEvent.board.dto;
 
-import com.example.snapEvent.board.entity.Like;
-import com.example.snapEvent.common.entity.Post;
+import com.example.snapEvent.board.entity.Post;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

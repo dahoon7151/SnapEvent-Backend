@@ -1,4 +1,4 @@
-package com.example.snapEvent.common.entity.audit;
+package com.example.snapEvent.audit;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

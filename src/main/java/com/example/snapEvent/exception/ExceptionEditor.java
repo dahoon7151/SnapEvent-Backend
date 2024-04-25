@@ -1,4 +1,4 @@
-package com.example.snapEvent.common.exception;
+package com.example.snapEvent.exception;
 
 import com.example.snapEvent.member.security.jwt.TokenNotValidateException;
 import lombok.Builder;

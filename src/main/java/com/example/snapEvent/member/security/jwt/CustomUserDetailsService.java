@@ -1,10 +1,9 @@
 package com.example.snapEvent.member.security.jwt;
 
-import com.example.snapEvent.common.entity.Member;
+import com.example.snapEvent.member.entity.Member;
 import com.example.snapEvent.member.repository.MemberRepository;
 import com.example.snapEvent.member.security.CustomUserDetail;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

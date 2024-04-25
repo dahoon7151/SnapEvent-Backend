@@ -1,4 +1,4 @@
-package com.example.snapEvent.common.config;
+package com.example.snapEvent.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -3,11 +3,11 @@ package com.example.snapEvent.board.service;
 import com.example.snapEvent.board.dto.LikeResponseDto;
 import com.example.snapEvent.board.entity.Like;
 import com.example.snapEvent.board.repository.LikeRepository;
-import com.example.snapEvent.common.entity.Member;
+import com.example.snapEvent.member.entity.Member;
 import com.example.snapEvent.board.dto.PostDto;
 import com.example.snapEvent.board.dto.PostResponseDto;
 import com.example.snapEvent.board.repository.PostRepository;
-import com.example.snapEvent.common.entity.Post;
+import com.example.snapEvent.board.entity.Post;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -17,7 +17,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.sound.midi.MetaMessage;
 import java.util.ArrayList;
 import java.util.List;
 

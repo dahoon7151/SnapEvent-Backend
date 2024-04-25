@@ -1,8 +1,8 @@
 package com.example.snapEvent.board.controller;
 
 import com.example.snapEvent.board.dto.LikeResponseDto;
-import com.example.snapEvent.common.entity.Member;
-import com.example.snapEvent.common.entity.Post;
+import com.example.snapEvent.member.entity.Member;
+import com.example.snapEvent.board.entity.Post;
 import com.example.snapEvent.member.security.CustomUserDetail;
 import com.example.snapEvent.board.dto.PostDto;
 import com.example.snapEvent.board.dto.PostResponseDto;
@@ -14,7 +14,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j

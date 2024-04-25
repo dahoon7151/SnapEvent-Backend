@@ -1,6 +1,6 @@
 package com.example.snapEvent.board.repository;
 
-import com.example.snapEvent.common.entity.Post;
+import com.example.snapEvent.board.entity.Post;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,15 +1,14 @@
-package com.example.snapEvent.common.entity;
+package com.example.snapEvent.member.entity;
 
 import com.example.snapEvent.board.entity.Like;
-import com.example.snapEvent.common.entity.audit.BaseTimeEntity;
+import com.example.snapEvent.audit.BaseTimeEntity;
+import com.example.snapEvent.entity.Follower;
+import com.example.snapEvent.entity.Notification;
+import com.example.snapEvent.entity.Subscription;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Entity

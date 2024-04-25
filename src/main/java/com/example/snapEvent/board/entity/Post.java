@@ -1,14 +1,12 @@
-package com.example.snapEvent.common.entity;
+package com.example.snapEvent.board.entity;
 
 import com.example.snapEvent.board.dto.PostDto;
-import com.example.snapEvent.board.entity.Like;
-import com.example.snapEvent.common.entity.audit.BaseEntity;
+import com.example.snapEvent.audit.BaseEntity;
+import com.example.snapEvent.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.CreationTimestamp;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 

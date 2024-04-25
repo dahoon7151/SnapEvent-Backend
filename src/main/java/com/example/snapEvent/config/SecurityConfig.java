@@ -1,4 +1,4 @@
-package com.example.snapEvent.common.config;
+package com.example.snapEvent.config;
 
 import com.example.snapEvent.member.security.OAuth2.OAuth2SuccessHandler;
 import com.example.snapEvent.member.security.jwt.ExceptionHandlerFilter;

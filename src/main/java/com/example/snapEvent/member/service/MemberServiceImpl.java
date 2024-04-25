@@ -1,6 +1,6 @@
 package com.example.snapEvent.member.service;
 
-import com.example.snapEvent.common.entity.Member;
+import com.example.snapEvent.member.entity.Member;
 import com.example.snapEvent.member.dto.*;
 import com.example.snapEvent.member.entity.RefreshToken;
 import com.example.snapEvent.member.security.jwt.JwtTokenProvider;

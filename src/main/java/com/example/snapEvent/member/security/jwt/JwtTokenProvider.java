@@ -1,9 +1,7 @@
 package com.example.snapEvent.member.security.jwt;
 
-import com.example.snapEvent.common.entity.Member;
 import com.example.snapEvent.member.dto.JwtToken;
 import com.example.snapEvent.member.repository.RefreshTokenRepository;
-import com.example.snapEvent.member.security.CustomUserDetail;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

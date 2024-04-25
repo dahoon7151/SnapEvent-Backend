@@ -1,7 +1,7 @@
 package com.example.snapEvent.board.dto;
 
-import com.example.snapEvent.common.entity.Member;
-import com.example.snapEvent.common.entity.Post;
+import com.example.snapEvent.member.entity.Member;
+import com.example.snapEvent.board.entity.Post;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
