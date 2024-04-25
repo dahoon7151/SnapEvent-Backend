@@ -90,4 +90,20 @@ public class PostServiceImpl implements PostService {
             return new LikeResponseDto(post.countLike(true), true);
         }
     }
+
+    @Transactional
+    @Override
+    public PostResponseDto modifyPost(Member member, Long id, PostDto postDto) {
+        Post post = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 ID(PK)에 대한 글이 없습니다."));
+        log.info("id : {}인 게시글 조회", post.getId());
+
+        // 해당 사용자가 게시글 작성자와 동일한지 검증(비정상적인 접근을 통해 수정 요청 시 대비)
+        if (post.getMember().equals(member)) {
+            Post modifiedPost = post.update(postDto);
+
+            return new PostResponseDto(modifiedPost);
+        } else {
+            throw new IllegalArgumentException("사용자가 해당 글의 작성자와 일치하지 않습니다.");
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.snapEvent.common.entity;
 
+import com.example.snapEvent.board.dto.PostDto;
 import com.example.snapEvent.common.entity.audit.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -48,6 +49,13 @@ public class Post extends BaseEntity {
     public Post countLike(boolean b) {
         if (b) {this.likeCount += 1;}
         else {this.likeCount -= 1;}
+
+        return this;
+    }
+
+    public Post update(PostDto postDto) {
+        this.title = postDto.getTitle();
+        this.content = postDto.getContent();
 
         return this;
     }

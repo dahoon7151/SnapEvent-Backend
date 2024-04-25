@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -66,5 +67,15 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK).body(likeResponseDto);
     }
 
-    //게시물 수정
+    @PatchMapping("/{id}/modify")
+    public ResponseEntity<PostResponseDto> modify(@PathVariable(value = "id") Long id,
+                                                  @RequestBody @Valid PostDto postDto,
+                                                  @AuthenticationPrincipal CustomUserDetail customUserDetail) {
+        Member member = customUserDetail.getMember();
+        log.info("사용자 : {}", member.getUsername());
+
+        PostResponseDto postResponseDto = postService.modifyPost(member, id, postDto);
+
+        return ResponseEntity.status(HttpStatus.OK).body(postResponseDto);
+    }
 }

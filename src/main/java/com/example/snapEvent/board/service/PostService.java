@@ -24,4 +24,6 @@ public interface PostService {
     public PostResponseDto writePost(Member member, PostDto postDto);
 
     public LikeResponseDto like(Member member, Long id);
+
+    public PostResponseDto modifyPost(Member member, Long id, PostDto postDto);
 }

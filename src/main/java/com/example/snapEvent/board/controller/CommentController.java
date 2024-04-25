@@ -10,4 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/comments")
 public class CommentController {
+
+    //댓글 목록 조회 (내 댓글인지 여부)
+
+    // 댓글 작성
+
+    // 댓글 삭제
+
+    // 댓글 수정
 }
