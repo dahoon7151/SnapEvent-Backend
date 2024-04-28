@@ -1,6 +1,7 @@
 package com.example.snapEvent.entity;
 
-import com.example.snapEvent.entity.audit.BaseEntity;
+import com.example.snapEvent.audit.BaseEntity;
+import com.example.snapEvent.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
