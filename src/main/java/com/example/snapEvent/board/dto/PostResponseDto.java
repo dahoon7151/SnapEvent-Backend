@@ -17,6 +17,9 @@ public class PostResponseDto {
     private String writerName;
     private boolean myPost;
 
+    private String beforePost;
+    private String afterPost;
+
     public PostResponseDto(Post post) {
         this.id = post.getId();
         this.title = post.getTitle();
@@ -34,5 +37,10 @@ public class PostResponseDto {
         this.createdTime = post.getCreatedDate();
         this.writerName = post.getMember().getNickname();
         this.myPost = b;
+    }
+
+    public PostResponseDto(String before, String after) {
+        this.beforePost = before;
+        this.afterPost = after;
     }
 }

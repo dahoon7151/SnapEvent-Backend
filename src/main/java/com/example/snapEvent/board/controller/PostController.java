@@ -88,4 +88,11 @@ public class PostController {
 
         return ResponseEntity.status(HttpStatus.OK).body("게시글 삭제 완료");
     }
+
+    @GetMapping("/{id}/near")
+    public ResponseEntity<PostResponseDto> nearPost(@PathVariable(value = "id") Long id) {
+        PostResponseDto nearDto = postService.showNearPost(id);
+
+        return ResponseEntity.status(HttpStatus.OK).body(nearDto);
+    }
 }

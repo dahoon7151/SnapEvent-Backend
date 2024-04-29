@@ -35,10 +35,6 @@ public class Post extends BaseEntity {
     @ColumnDefault("0")
     private int commentCount;
 
-//    @CreationTimestamp
-//    @Column
-//    private Timestamp postTime;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
@@ -50,6 +46,10 @@ public class Post extends BaseEntity {
     @OneToMany(mappedBy = "post", orphanRemoval = true)
     @Builder.Default
     private List<Like> likes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post", orphanRemoval = true)
+    @Builder.Default
+    private List<Comment> comments = new ArrayList<>();
 
     public Post countLike(boolean b) {
         if (b) {this.likeCount += 1;}

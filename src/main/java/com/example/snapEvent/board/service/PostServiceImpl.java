@@ -19,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.OptionalInt;
 
 @Service
 @RequiredArgsConstructor
@@ -118,5 +120,23 @@ public class PostServiceImpl implements PostService {
         } else {
             throw new IllegalArgumentException("사용자에게 삭제 권한이 없습니다.");
         }
+    }
+
+    @Transactional
+    @Override
+    public PostResponseDto showNearPost(Long id) {
+        String before = "이전 게시물이 없습니다.";
+        String after = "다음 게시물이 없습니다.";
+
+        Optional<Post> beforePost = postRepository.findById(id-1);
+        if (beforePost.isPresent()) {
+            before = beforePost.get().getTitle();
+        }
+        Optional<Post> afterPost = postRepository.findById(id+1);
+        if (afterPost.isPresent()) {
+            after = afterPost.get().getTitle();
+        }
+
+        return new PostResponseDto(before, after);
     }
 }

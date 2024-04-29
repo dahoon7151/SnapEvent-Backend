@@ -1,6 +1,7 @@
 package com.example.snapEvent.board.entity;
 
 import com.example.snapEvent.audit.BaseEntity;
+import com.example.snapEvent.board.dto.CommentDto;
 import com.example.snapEvent.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
@@ -19,10 +20,6 @@ public class Comment extends BaseEntity {
     @Column
     private String commentContent;
 
-//    @CreationTimestamp
-//    @Column
-//    private Timestamp commentTime;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "POST_ID")
     private Post post;
@@ -30,4 +27,10 @@ public class Comment extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
+
+    public Comment update(CommentDto commentDto) {
+        this.commentContent = commentDto.getContent();
+
+        return this;
+    }
 }
