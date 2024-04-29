@@ -68,6 +68,6 @@ public class CommentController {
 
         commentService.deleteComment(member, commentId);
 
-        return ResponseEntity.status(HttpStatus.OK).body("댓글 삭제 완료");
+        return ResponseEntity.status(HttpStatus.OK).body("댓글 삭제 성공");
     }
 }

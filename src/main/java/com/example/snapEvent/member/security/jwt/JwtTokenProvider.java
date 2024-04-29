@@ -2,6 +2,7 @@ package com.example.snapEvent.member.security.jwt;
 
 import com.example.snapEvent.member.dto.JwtToken;
 import com.example.snapEvent.member.repository.RefreshTokenRepository;
+import com.example.snapEvent.member.security.CustomUserDetail;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -13,6 +14,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -26,6 +28,7 @@ import java.util.stream.Collectors;
 public class JwtTokenProvider {
     private final Key key;
     private RefreshTokenRepository refreshTokenRepository;
+    private CustomUserDetailsService customUserDetailsService;
 
     // properties 파일에서 jwt.secret 값 가져와서 key에 저장
     public JwtTokenProvider(@Value("${jwt.secret}") String secretKey) {
@@ -72,16 +75,19 @@ public class JwtTokenProvider {
         if (claims.get("auth") == null) {
             throw new RuntimeException("권한 정보가 없는 토큰입니다.");
         }
+        // CustomUserDetails 객체에 권한 정보가 저장될 수 있도록 변경
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername(claims.getSubject());
+        return new UsernamePasswordAuthenticationToken(userDetails, accessToken, userDetails.getAuthorities());
 
-        // 클레임에서 권한 정보 가져오기
-        Collection<? extends GrantedAuthority> authorities = Arrays.stream(claims.get("auth").toString().split(","))
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
-
-        // UserDetails 객체를 만들어서 Authentication return
-        // UserDetails: interface, User: UserDetails를 구현한 class
-        UserDetails principal = new User(claims.getSubject(), "", authorities);
-        return new UsernamePasswordAuthenticationToken(principal, "", authorities);
+//        // 클레임에서 권한 정보 가져오기
+//        Collection<? extends GrantedAuthority> authorities = Arrays.stream(claims.get("auth").toString().split(","))
+//                .map(SimpleGrantedAuthority::new)
+//                .collect(Collectors.toList());
+//
+//        // UserDetails 객체를 만들어서 Authentication return
+//        // UserDetails: interface, User: UserDetails를 구현한 class
+//        UserDetails principal = new User(claims.getSubject(), "", authorities);
+//        return new UsernamePasswordAuthenticationToken(principal, "", authorities);
     }
 
     // 토큰 정보를 검증하는 메서드

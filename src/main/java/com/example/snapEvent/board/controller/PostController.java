@@ -86,7 +86,7 @@ public class PostController {
 
         postService.deletePost(member, id);
 
-        return ResponseEntity.status(HttpStatus.OK).body("게시글 삭제 완료");
+        return ResponseEntity.status(HttpStatus.OK).body("게시글 삭제 성공");
     }
 
     @GetMapping("/{id}/near")
