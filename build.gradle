@@ -48,6 +48,9 @@ dependencies {
 	implementation 'org.seleniumhq.selenium:selenium-java:4.19.1'
 	implementation 'org.seleniumhq.selenium:selenium-chrome-driver:4.19.1'
 
+	// FCM
+	implementation 'com.google.firebase:firebase-admin:9.2.0'
+
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	// H2 (인메모리 테스트 용도)
