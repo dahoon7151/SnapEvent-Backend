@@ -2,7 +2,6 @@ package com.example.snapEvent.member.entity;
 
 import com.example.snapEvent.board.entity.Like;
 import com.example.snapEvent.audit.BaseTimeEntity;
-import com.example.snapEvent.entity.Follower;
 import com.example.snapEvent.entity.Notification;
 import com.example.snapEvent.entity.Subscription;
 import jakarta.persistence.*;
@@ -17,6 +16,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @ToString(of = "id")
+@Table(name = "MEMBERS")
 public class Member extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +24,7 @@ public class Member extends BaseTimeEntity {
     private Long id;
 
     @Column(nullable = false)
-    private String username;
+    private String username; // 활동 ID(userId -> username)
 
     @Column(nullable = false)
     private String password;
@@ -35,10 +35,6 @@ public class Member extends BaseTimeEntity {
     @OneToMany(mappedBy = "member")
     @Builder.Default
     private List<Subscription> subscriptions = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member")
-    @Builder.Default
-    private List<Follower> followers = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
     @Builder.Default
