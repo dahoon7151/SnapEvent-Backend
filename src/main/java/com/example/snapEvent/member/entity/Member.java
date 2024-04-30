@@ -44,13 +44,6 @@ public class Member extends BaseTimeEntity {
     @Builder.Default
     private List<String> roles = new ArrayList<>();
 
-    public MemberDto from(Member member) {
-        return MemberDto.builder()
-                .username(member.getUsername())
-                .nickname(member.getNickname())
-                .build();
-    }
-
 //    @Override
 //    public Collection<? extends GrantedAuthority> getAuthorities() {
 //        return this.roles.stream()

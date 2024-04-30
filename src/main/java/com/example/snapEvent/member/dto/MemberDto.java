@@ -4,7 +4,7 @@ import com.example.snapEvent.member.entity.Member;
 import lombok.*;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @AllArgsConstructor
 @ToString
 @Builder
@@ -14,8 +14,9 @@ public class MemberDto {
     private String password;
     private String nickname;
 
-    public static MemberDto from(Member member) {
+    public static MemberDto toDto(Member member) {
         return MemberDto.builder()
+                .id(member.getId())
                 .username(member.getUsername())
                 .nickname(member.getNickname())
                 .build();
