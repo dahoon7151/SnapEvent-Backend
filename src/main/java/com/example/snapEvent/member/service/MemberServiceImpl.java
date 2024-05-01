@@ -91,7 +91,7 @@ public class MemberServiceImpl implements MemberService{
 
             String accessToken = resolveToken(request);
             Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
-            
+
             JwtToken jwtToken = jwtTokenProvider.generateToken(authentication);
             log.info("재발급 토큰 생성");
 
