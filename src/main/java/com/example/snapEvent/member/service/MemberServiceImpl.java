@@ -6,6 +6,7 @@ import com.example.snapEvent.member.entity.RefreshToken;
 import com.example.snapEvent.member.security.jwt.JwtTokenProvider;
 import com.example.snapEvent.member.repository.MemberRepository;
 import com.example.snapEvent.member.repository.RefreshTokenRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,6 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,37 +77,51 @@ public class MemberServiceImpl implements MemberService{
 
     @Transactional
     @Override
-    public JwtToken reissue(ReissueDto reissueDto) {
-        String username = reissueDto.getUsername();
+    public JwtToken reissue(HttpServletRequest request, String username, ReissueDto reissueDto) {
         RefreshToken refreshToken = refreshTokenRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("해당하는 회원의 refresh Token을 찾을 수 없습니다."));
 
         if (!reissueDto.getRefreshToken().equals(refreshToken.getRefreshToken())) {
             throw new IllegalArgumentException("DB에 저장되어 있는 refreshToken과 다릅니다. 다시 로그인 해주세요.");
         }
+
         // 리프레시 토큰을 검증한 후 토큰 재발급
         if (jwtTokenProvider.validateToken(reissueDto.getRefreshToken())) {
-            Authentication authentication = jwtTokenProvider.getAuthentication(reissueDto.getRefreshToken());
-            return jwtTokenProvider.generateToken(authentication);
+            log.info("refresh Token 검증 완료");
+
+            String accessToken = resolveToken(request);
+            Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
+            
+            JwtToken jwtToken = jwtTokenProvider.generateToken(authentication);
+            log.info("재발급 토큰 생성");
+
+            refreshTokenRepository.save(reissueDto.toEntity(username, jwtToken.getRefreshToken()));
+
+            return jwtToken;
         }
         throw new IllegalArgumentException("비정상 에러");
     }
 
     @Transactional
     @Override
-    public void logout(String username) {
+    public boolean logout(String username) {
         refreshTokenRepository.delete(refreshTokenRepository.findByUsername(username)
                     .orElseThrow(() -> new UsernameNotFoundException("비정상 에러(incorrect username).")));
+        return true;
     }
 
     @Transactional
     @Override
-    public void withdraw(String username) {
+    public boolean withdraw(String username) {
         refreshTokenRepository.delete(refreshTokenRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("비정상 에러(incorrect username).")));
+        log.info("refresh 토큰 삭제");
         //DB 삭제
         memberRepository.delete(memberRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("비정상 에러(incorrect username).")));
+        log.info("회원 정보 삭제");
+
+        return true;
     }
 
     @Transactional
@@ -123,5 +139,13 @@ public class MemberServiceImpl implements MemberService{
         Member modifiedMember = memberRepository.save(member);
 
         return new ModifyResponseDto(modifiedMember);
+    }
+
+    public static String resolveToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer")) {
+            return bearerToken.substring(7);
+        }
+        return null;
     }
 }

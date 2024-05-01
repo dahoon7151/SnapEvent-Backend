@@ -10,6 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Table(name = "LIKES")
 public class Like extends BaseEntity {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )

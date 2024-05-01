@@ -5,6 +5,8 @@ import com.example.snapEvent.member.dto.OAuthAttributes;
 import com.example.snapEvent.member.repository.MemberRepository;
 import com.example.snapEvent.member.security.CustomUserDetail;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -52,6 +54,14 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         memberRepository.save(member);
 
-        return new CustomUserDetail(member, oAuth2User.getAttributes());
+        return new CustomUserDetail(createUserDetails(member), oAuth2User.getAttributes());
+    }
+
+    private UserDetails createUserDetails(Member member) {
+        return User.builder()
+                .username(member.getUsername())
+                .password(member.getPassword())
+                .roles(member.getRoles().toArray(new String[0]))
+                .build();
     }
 }

@@ -11,15 +11,15 @@ public interface PostService {
 
     public Page<Post> sortPostlist(int page, int postCount, String order);
 
-    public PostResponseDto showPost(Member member, Long id);
+    public PostResponseDto showPost(String username, Long id);
 
-    public PostResponseDto writePost(Member member, PostDto postDto);
+    public PostResponseDto writePost(String username, PostDto postDto);
 
-    public LikeResponseDto like(Member member, Long id);
+    public LikeResponseDto like(String username, Long id);
 
-    public PostResponseDto modifyPost(Member member, Long id, PostDto postDto);
+    public PostResponseDto modifyPost(String username, Long id, PostDto postDto);
 
-    public void deletePost(Member member, Long id);
+    public void deletePost(String username, Long id);
 
     public PostResponseDto showNearPost(Long id);
 }

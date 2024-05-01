@@ -1,5 +1,6 @@
 package com.example.snapEvent.config;
 
+import com.example.snapEvent.member.security.LoginFailureHandler;
 import com.example.snapEvent.member.security.OAuth2.OAuth2SuccessHandler;
 import com.example.snapEvent.member.security.jwt.ExceptionHandlerFilter;
 import com.example.snapEvent.member.security.jwt.JwtAuthenticationFilter;
@@ -9,12 +10,15 @@ import com.example.snapEvent.member.security.OAuth2.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -24,7 +28,6 @@ public class SecurityConfig {
     private final RefreshTokenRepository refreshTokenRepository;
     private final ExceptionHandlerFilter exceptionHandlerFilter;
     private final CustomOAuth2UserService customOAuth2UserService;
-    private final OAuth2SuccessHandler oAuth2SuccessHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -42,7 +45,8 @@ public class SecurityConfig {
                                 "/oauth2/authorization/naver",
                                 "/oauth2/authorization/kakao",
                                 "/members/join",
-                                "/members/login")
+                                "/members/login",
+                                "/members/reissue")
                         .permitAll()
                         // USER 권한이 있어야 요청할 수 있음
                         .requestMatchers("/members/test")
@@ -50,21 +54,25 @@ public class SecurityConfig {
 //                        // 이 밖에 모든 요청에 대해서 인증을 필요로 한다는 설정
                         .anyRequest().authenticated())
 //                        .anyRequest().permitAll()) // 테스트용 허용
-                .formLogin(login -> login
-                        .loginPage("/")                       //로그인 페이지 url
-//                        .loginProcessingUrl("/members/login") //이 url을 로그인 기능을 담당하게 함
-                        .defaultSuccessUrl("/"))              // 성공하면 이 url로 가게 함
+//                .formLogin(login -> login
+//                        .loginPage("/")                       //로그인 페이지 url
+////                        .loginProcessingUrl("/members/login") //이 url을 로그인 기능을 담당하게 함
+//                        .defaultSuccessUrl("/"))              // 성공하면 이 url로 가게 함
+                .exceptionHandling(authenticationManager -> authenticationManager
+                        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                 .oauth2Login(oauth2 -> oauth2
-                        .loginPage("/")
                         .successHandler(new OAuth2SuccessHandler(jwtTokenProvider, refreshTokenRepository))
                         .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint
                                 .userService(customOAuth2UserService)))
-                .logout(logoutConfig -> logoutConfig
-                        .logoutSuccessUrl("/")
-                )
                 // JWT 인증을 위하여 직접 구현한 필터를 UsernamePasswordAuthenticationFilter 전에 실행
+                .addFilterAfter(new UsernamePasswordAuthenticationFilter(), LogoutFilter.class)
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(exceptionHandlerFilter, JwtAuthenticationFilter.class)
                 .build();
+    }
+
+    @Bean
+    public LoginFailureHandler loginFailureHandler() {
+        return new LoginFailureHandler();
     }
 }
