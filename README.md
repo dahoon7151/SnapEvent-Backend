@@ -18,3 +18,4 @@ feature / develop(default) / main
 - fcm 의존성 추가
 ---
 🌐도메인 이름: www.snapevent.site (루트 도메인: snapevent.site)
+-> ⚠️현재는 백엔드 jar파일만 배포되서 api호출 확인만 가능
