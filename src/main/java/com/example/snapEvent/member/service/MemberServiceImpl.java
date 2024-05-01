@@ -1,5 +1,6 @@
 package com.example.snapEvent.member.service;
 
+import com.example.snapEvent.follow.service.FollowService;
 import com.example.snapEvent.member.entity.Member;
 import com.example.snapEvent.member.dto.*;
 import com.example.snapEvent.member.entity.RefreshToken;
@@ -31,6 +32,7 @@ public class MemberServiceImpl implements MemberService{
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
+    private final FollowService followService;
 
     @Transactional
     @Override
@@ -116,9 +118,15 @@ public class MemberServiceImpl implements MemberService{
         refreshTokenRepository.delete(refreshTokenRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("비정상 에러(incorrect username).")));
         log.info("refresh 토큰 삭제");
+
+        Member delmember = memberRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("비정상 에러(incorrect username)."));
+
+        //팔로우 관계 삭제
+        followService.deleteFollowRelation(delmember.getId());
+        log.info("팔로우 관계 삭제");
         //DB 삭제
-        memberRepository.delete(memberRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("비정상 에러(incorrect username).")));
+        memberRepository.delete(delmember);
         log.info("회원 정보 삭제");
 
         return true;
