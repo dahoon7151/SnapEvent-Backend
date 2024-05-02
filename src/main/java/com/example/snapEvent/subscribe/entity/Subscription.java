@@ -1,6 +1,7 @@
-package com.example.snapEvent.entity;
+package com.example.snapEvent.subscribe.entity;
 
 import com.example.snapEvent.audit.BaseTimeEntity;
+import com.example.snapEvent.entity.Site;
 import com.example.snapEvent.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
@@ -21,31 +22,9 @@ public class Subscription extends BaseTimeEntity {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
-    private String userName; // userPassword는 FCM 토큰으로 대체
+    private String username; // userPassword는 FCM 토큰으로 대체
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "SITE_ID")
     private Site site;
-
-    // 연관관계 편의 메서드
-    public void addMember(Member member) {
-        this.member = member;
-        member.getSubscriptions().add(this);
-    }
-
-    public void addSite(Site site) {
-        this.site = site;
-        site.getSubscriptions().add(this);
-    }
-
-    public void removeMember(Member member) {
-        this.member = null;
-        member.getSubscriptions().remove(this);
-    }
-
-    public void removeSite(Site site) {
-        this.site = null;
-        site.getSubscriptions().remove(this);
-    }
-
 }

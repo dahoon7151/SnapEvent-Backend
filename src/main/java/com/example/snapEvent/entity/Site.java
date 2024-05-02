@@ -1,6 +1,7 @@
 package com.example.snapEvent.entity;
 
 import com.example.snapEvent.audit.BaseTimeEntity;
+import com.example.snapEvent.subscribe.entity.Subscription;
 import jakarta.persistence.*;
 import lombok.*;
 
