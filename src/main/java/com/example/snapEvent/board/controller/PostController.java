@@ -17,6 +17,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -28,11 +30,9 @@ public class PostController {
     public ResponseEntity<Page<PostResponseDto>> posts(@PathVariable(value = "page") int page,
                                                        @PathVariable(value = "pageCount") int pageCount,
                                                        @PathVariable(value = "order") String order) {
-        Page<Post> postList = postService.sortPostlist(page, pageCount, order);
+        Page<PostResponseDto> postList = postService.sortPostlist(page-1, pageCount, order);
 
-        Page<PostResponseDto> postResponseDto = postList.map(PostResponseDto::new);
-
-        return ResponseEntity.status(HttpStatus.OK).body(postResponseDto);
+        return ResponseEntity.status(HttpStatus.OK).body(postList);
     }
 
     @GetMapping("/{id}")

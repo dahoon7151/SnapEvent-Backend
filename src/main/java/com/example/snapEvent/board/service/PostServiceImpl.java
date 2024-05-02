@@ -35,7 +35,7 @@ public class PostServiceImpl implements PostService {
 
     @Transactional
     @Override
-    public Page<Post> sortPostlist(int page, int postCount, String order) {
+    public Page<PostResponseDto> sortPostlist(int page, int postCount, String order) {
         List<Sort.Order> sorts = new ArrayList<>();
         if (order.equals("recent")) {
             sorts.add(Sort.Order.desc("createdDate"));
@@ -49,8 +49,12 @@ public class PostServiceImpl implements PostService {
             throw new IllegalArgumentException("잘못된 정렬 기준");
         }
         Pageable pageable = PageRequest.of(page, postCount, Sort.by(sorts));
+        Page<Post> postPages = postRepository.findAll(pageable);
 
-        return postRepository.findAll(pageable);
+        return postPages.map(PostResponseDto::new);
+
+//        List<Post> postContent = postPage.getContent();
+//        List<PostResponseDto> contentPage = postContent.stream().map(Post -> toDot)
     }
 
     @Transactional
