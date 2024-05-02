@@ -8,7 +8,7 @@ public interface MemberService {
 
     public MemberDto join(JoinDto joinDto);
 
-    public JwtToken reissue(HttpServletRequest request, String username, ReissueDto reissueDto);
+    public JwtToken reissue(ReissueDto reissueDto);
 
     public boolean logout(String username);
 

@@ -4,6 +4,7 @@ import com.example.snapEvent.follow.service.FollowService;
 import com.example.snapEvent.member.entity.Member;
 import com.example.snapEvent.member.dto.*;
 import com.example.snapEvent.member.entity.RefreshToken;
+import com.example.snapEvent.member.security.jwt.CustomUserDetailsService;
 import com.example.snapEvent.member.security.jwt.JwtTokenProvider;
 import com.example.snapEvent.member.repository.MemberRepository;
 import com.example.snapEvent.member.repository.RefreshTokenRepository;
@@ -13,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -33,6 +35,7 @@ public class MemberServiceImpl implements MemberService{
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
     private final FollowService followService;
+    private final CustomUserDetailsService customUserDetailsService;
 
     @Transactional
     @Override
@@ -79,20 +82,19 @@ public class MemberServiceImpl implements MemberService{
 
     @Transactional
     @Override
-    public JwtToken reissue(HttpServletRequest request, String username, ReissueDto reissueDto) {
-        RefreshToken refreshToken = refreshTokenRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("해당하는 회원의 refresh Token을 찾을 수 없습니다."));
+    public JwtToken reissue(ReissueDto reissueDto) {
+        RefreshToken refreshToken = refreshTokenRepository.findByRefreshToken(reissueDto.getRefreshToken())
+                .orElseThrow(() -> new IllegalArgumentException("DB에 저장되어 있는 refreshToken과 다릅니다. 다시 로그인 해주세요."));
 
-        if (!reissueDto.getRefreshToken().equals(refreshToken.getRefreshToken())) {
-            throw new IllegalArgumentException("DB에 저장되어 있는 refreshToken과 다릅니다. 다시 로그인 해주세요.");
-        }
+        String username = refreshToken.getUsername();
 
         // 리프레시 토큰을 검증한 후 토큰 재발급
         if (jwtTokenProvider.validateToken(reissueDto.getRefreshToken())) {
             log.info("refresh Token 검증 완료");
 
-            String accessToken = resolveToken(request);
-            Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
+            UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
+            new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+            Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
 
             JwtToken jwtToken = jwtTokenProvider.generateToken(authentication);
             log.info("재발급 토큰 생성");

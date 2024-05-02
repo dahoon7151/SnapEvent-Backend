@@ -66,13 +66,8 @@ public class MemberController {
 
     @PostMapping("/reissue")
     public ResponseEntity<JwtToken> reissue(@RequestBody ReissueDto reissueDto,
-                                            @AuthenticationPrincipal CustomUserDetail customUserDetail,
-                                            HttpServletRequest request,
                                             HttpServletResponse response) {
-        String username = customUserDetail.getUser().getUsername();
-        log.info("사용자 이름 : {}", username);
-
-        JwtToken jwtToken = memberService.reissue(request, username, reissueDto);
+        JwtToken jwtToken = memberService.reissue(reissueDto);
         response.addHeader("Authorization", "Bearer " + jwtToken.getAccessToken());
 
         return ResponseEntity.status(HttpStatus.OK).body(jwtToken);

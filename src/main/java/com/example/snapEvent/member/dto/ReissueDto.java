@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class ReissueDto {
+    private final String accessToken;
     private final String refreshToken;
 
     public RefreshToken toEntity(String username, String refreshToken) {
