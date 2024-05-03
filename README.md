@@ -17,5 +17,5 @@ feature / develop(default) / main
 - p6spy 추가
 - fcm 의존성 추가
 ---
-🌐도메인 이름: www.snapevent.site (루트 도메인: snapevent.site)
--> ⚠️현재는 백엔드 jar파일만 배포되서 api호출 확인만 가능
+🌐도메인 이름(https 적용): www.snapevent.site (루트 도메인: snapevent.site)
+-> ⚠️api 호출은 시큐리티가 적용되어 있어서 GET 방식으로 안됨(401 에러)
