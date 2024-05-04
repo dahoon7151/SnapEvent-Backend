@@ -14,6 +14,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,10 +29,10 @@ public class CommentController {
     @GetMapping("/{postId}")
     public ResponseEntity<List<CommentResponseDto>> comments(@PathVariable(value = "postId") Long postId,
                                                              @AuthenticationPrincipal CustomUserDetail customUserDetail) {
-        Member member = customUserDetail.getMember();
-        log.info("사용자 : {}", member.getUsername());
+        String username = customUserDetail.getUser().getUsername();
+        log.info("사용자 : {}", username);
 
-        List<CommentResponseDto> commentResponseDto = commentService.showCommentlist(member, postId);
+        List<CommentResponseDto> commentResponseDto = commentService.showCommentlist(username, postId);
 
         return ResponseEntity.status(HttpStatus.OK).body(commentResponseDto);
     }
@@ -40,10 +41,10 @@ public class CommentController {
     public ResponseEntity<CommentResponseDto> write(@PathVariable(value = "postId") Long postId,
                                                     @AuthenticationPrincipal CustomUserDetail customUserDetail,
                                                     @RequestBody CommentDto commentDto) {
-        Member member = customUserDetail.getMember();
-        log.info("사용자 : {}", member.getUsername());
+        String username = customUserDetail.getUser().getUsername();
+        log.info("사용자 : {}", username);
 
-        CommentResponseDto commentResponseDto = commentService.writeComment(member, postId, commentDto);
+        CommentResponseDto commentResponseDto = commentService.writeComment(username, postId, commentDto);
 
         return ResponseEntity.status(HttpStatus.OK).body(commentResponseDto);
     }
@@ -52,10 +53,10 @@ public class CommentController {
     public ResponseEntity<CommentResponseDto> modify(@PathVariable(value = "commentId") Long commentId,
                                                      @AuthenticationPrincipal CustomUserDetail customUserDetail,
                                                      @RequestBody CommentDto commentDto) {
-        Member member = customUserDetail.getMember();
-        log.info("사용자 : {}", member.getUsername());
+        String username = customUserDetail.getUser().getUsername();
+        log.info("사용자 : {}", username);
 
-        CommentResponseDto commentResponseDto = commentService.modifyComment(member, commentId, commentDto);
+        CommentResponseDto commentResponseDto = commentService.modifyComment(username, commentId, commentDto);
 
         return ResponseEntity.status(HttpStatus.OK).body(commentResponseDto);
     }
@@ -63,10 +64,10 @@ public class CommentController {
     @DeleteMapping("/{commentId}/delete")
     public ResponseEntity<String> delete(@PathVariable(value = "commentId") Long commentId,
                                          @AuthenticationPrincipal CustomUserDetail customUserDetail) {
-        Member member = customUserDetail.getMember();
-        log.info("사용자 : {}", member.getUsername());
+        String username = customUserDetail.getUser().getUsername();
+        log.info("사용자 : {}", username);
 
-        commentService.deleteComment(member, commentId);
+        commentService.deleteComment(username, commentId);
 
         return ResponseEntity.status(HttpStatus.OK).body("댓글 삭제 성공");
     }

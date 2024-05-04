@@ -11,11 +11,11 @@ public interface CommentService {
     // 댓글 삭제
 
     // 댓글 수정
-    public List<CommentResponseDto> showCommentlist(Member member, Long postId);
+    public List<CommentResponseDto> showCommentlist(String username, Long postId);
 
-    public CommentResponseDto writeComment(Member member, Long postId, CommentDto commentDto);
+    public CommentResponseDto writeComment(String username, Long postId, CommentDto commentDto);
 
-    public CommentResponseDto modifyComment(Member member, Long commentId, CommentDto commentDto);
+    public CommentResponseDto modifyComment(String username, Long commentId, CommentDto commentDto);
 
-    public void deleteComment(Member member, Long commentId);
+    public void deleteComment(String username, Long commentId);
 }

@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "request_token")
+@Table(name = "TOKEN")
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -18,6 +18,4 @@ public class RefreshToken extends BaseEntity {
 
     @Column(nullable = false)
     private String refreshToken;
-
-    // member 참조키 추가
 }

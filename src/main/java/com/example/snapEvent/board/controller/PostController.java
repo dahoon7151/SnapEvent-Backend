@@ -14,7 +14,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -27,20 +30,18 @@ public class PostController {
     public ResponseEntity<Page<PostResponseDto>> posts(@PathVariable(value = "page") int page,
                                                        @PathVariable(value = "pageCount") int pageCount,
                                                        @PathVariable(value = "order") String order) {
-        Page<Post> postList = postService.sortPostlist(page, pageCount, order);
+        Page<PostResponseDto> postList = postService.sortPostlist(page-1, pageCount, order);
 
-        Page<PostResponseDto> postResponseDto = postList.map(PostResponseDto::new);
-
-        return ResponseEntity.status(HttpStatus.OK).body(postResponseDto);
+        return ResponseEntity.status(HttpStatus.OK).body(postList);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<PostResponseDto> post(@PathVariable(value = "id") Long id,
                                                 @AuthenticationPrincipal CustomUserDetail customUserDetail) {
-        Member member = customUserDetail.getMember();
-        log.info("사용자 : {}", member.getUsername());
+        String username = customUserDetail.getUser().getUsername();
+        log.info("사용자 : {}", username);
 
-        PostResponseDto postResponseDto = postService.showPost(member, id);
+        PostResponseDto postResponseDto = postService.showPost(username, id);
 
         return ResponseEntity.status(HttpStatus.OK).body(postResponseDto);
     }
@@ -48,9 +49,9 @@ public class PostController {
     @PostMapping("/write")
     public ResponseEntity<PostResponseDto> write(@AuthenticationPrincipal CustomUserDetail customUserDetail,
                                                  @RequestBody @Valid PostDto postDto) {
-        Member member = customUserDetail.getMember();
-        log.info("작성자 : {}", member.getNickname());
-        PostResponseDto postResponseDto = postService.writePost(member, postDto);
+        String username = customUserDetail.getUser().getUsername();
+        log.info("작성자 : {}", username);
+        PostResponseDto postResponseDto = postService.writePost(username, postDto);
 
         return ResponseEntity.status(HttpStatus.OK).body(postResponseDto);
     }
@@ -58,10 +59,10 @@ public class PostController {
     @PostMapping("/{id}/like")
     public ResponseEntity<LikeResponseDto> like(@PathVariable(value = "id") Long id,
                                                 @AuthenticationPrincipal CustomUserDetail customUserDetail) {
-        Member member = customUserDetail.getMember();
-        log.info("사용자 : {}", member.getUsername());
+        String username = customUserDetail.getUser().getUsername();
+        log.info("사용자 : {}", username);
 
-        LikeResponseDto likeResponseDto = postService.like(member, id);
+        LikeResponseDto likeResponseDto = postService.like(username, id);
 
         return ResponseEntity.status(HttpStatus.OK).body(likeResponseDto);
     }
@@ -70,10 +71,10 @@ public class PostController {
     public ResponseEntity<PostResponseDto> modify(@PathVariable(value = "id") Long id,
                                                   @RequestBody @Valid PostDto postDto,
                                                   @AuthenticationPrincipal CustomUserDetail customUserDetail) {
-        Member member = customUserDetail.getMember();
-        log.info("사용자 : {}", member.getUsername());
+        String username = customUserDetail.getUser().getUsername();
+        log.info("사용자 : {}", username);
 
-        PostResponseDto postResponseDto = postService.modifyPost(member, id, postDto);
+        PostResponseDto postResponseDto = postService.modifyPost(username, id, postDto);
 
         return ResponseEntity.status(HttpStatus.OK).body(postResponseDto);
     }
@@ -81,10 +82,10 @@ public class PostController {
     @DeleteMapping("/{id}/delete")
     public ResponseEntity<String> delete(@PathVariable(value = "id") Long id,
                                          @AuthenticationPrincipal CustomUserDetail customUserDetail) {
-        Member member = customUserDetail.getMember();
-        log.info("사용자 : {}", member.getUsername());
+        String username = customUserDetail.getUser().getUsername();
+        log.info("사용자 : {}", username);
 
-        postService.deletePost(member, id);
+        postService.deletePost(username, id);
 
         return ResponseEntity.status(HttpStatus.OK).body("게시글 삭제 성공");
     }

@@ -1,13 +1,19 @@
 package com.example.snapEvent.board.dto;
 
 import com.example.snapEvent.board.entity.Post;
+import com.example.snapEvent.member.dto.MemberDto;
+import com.example.snapEvent.member.entity.Member;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class PostResponseDto {
     private Long id;
     private String title;
