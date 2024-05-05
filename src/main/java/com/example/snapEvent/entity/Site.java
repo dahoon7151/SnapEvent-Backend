@@ -28,7 +28,7 @@ public class Site extends BaseTimeEntity {
     @Builder.Default // OneToMany 관계는 빌더 패턴을 사용할 때 필수입니다
     private List<Event> events = new ArrayList<>();
 
-    @OneToMany(mappedBy = "site")
-    @Builder.Default
-    private List<Subscription> subscriptions = new ArrayList<>();
+//    @OneToMany(mappedBy = "site")
+//    @Builder.Default
+//    private List<Subscription> subscriptions = new ArrayList<>();
 }
