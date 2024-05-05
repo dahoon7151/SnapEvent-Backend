@@ -23,6 +23,9 @@ public class Ediya {
     private String image;
     private String href;
 
+    @Column(nullable = false, columnDefinition = "boolean default false")
+    private boolean isSubscribed;
+
     @Builder
     public Ediya(String title, DateRange dateRange, String image, String href) {
         this.title = title;

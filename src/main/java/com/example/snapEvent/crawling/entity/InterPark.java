@@ -21,6 +21,9 @@ public class InterPark {
     private String href;
     private String image;
 
+    @Column(nullable = false, columnDefinition = "boolean default false")
+    private boolean isSubscribed;
+
     @Builder
     public InterPark(String title, String ticketOpenDate, String href, String image) {
         this.title = title;
