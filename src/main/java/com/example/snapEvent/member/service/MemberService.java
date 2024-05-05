@@ -15,4 +15,6 @@ public interface MemberService {
     public boolean withdraw(String username);
 
     public ModifyResponseDto modify(String username, ModifyDto modifyDto);
+
+    public String checkNickname(CheckNameDto checkNameDto);
 }

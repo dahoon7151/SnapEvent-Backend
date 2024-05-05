@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/members")
+@RequestMapping("/api/members")
 public class MemberController {
 
     private final MemberService memberService;
@@ -83,6 +83,13 @@ public class MemberController {
         ModifyResponseDto modifyResponseDto = memberService.modify(username, modifyDto);
 
         return ResponseEntity.status(HttpStatus.OK).body(modifyResponseDto);
+    }
+
+    @GetMapping("/checkname")
+    public ResponseEntity<String> checkName(@RequestBody CheckNameDto checkNameDto) {
+        String checkRedundant = memberService.checkNickname(checkNameDto);
+
+        return ResponseEntity.status(HttpStatus.OK).body(checkRedundant);
     }
 
     @PostMapping("/test")

@@ -151,6 +151,18 @@ public class MemberServiceImpl implements MemberService{
         return new ModifyResponseDto(modifiedMember);
     }
 
+    @Transactional
+    @Override
+    public String checkNickname(CheckNameDto checkNameDto) {
+        String nickname = checkNameDto.getNickname();
+
+        if (memberRepository.existsByNickname(nickname)) {
+            return "이미 사용중인 닉네임입니다.";
+        } else {
+            return "사용 가능한 닉네임입니다.";
+        }
+    }
+
     public static String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer")) {
