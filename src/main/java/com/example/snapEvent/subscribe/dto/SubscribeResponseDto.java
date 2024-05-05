@@ -14,9 +14,11 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class SubscribeResponseDto {
+    private Long id;
     private SiteName subedSiteName;
 
     public SubscribeResponseDto(Subscription subscription) {
+        this.id = subscription.getId();
         this.subedSiteName = subscription.getSiteName();
     }
 }
