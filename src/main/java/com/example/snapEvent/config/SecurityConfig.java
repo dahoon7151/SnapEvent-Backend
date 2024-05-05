@@ -1,6 +1,6 @@
 package com.example.snapEvent.config;
 
-import com.example.snapEvent.member.security.LoginFailureHandler;
+import com.example.snapEvent.member.security.CustomAuthenticationEntryPoint;
 import com.example.snapEvent.member.security.OAuth2.OAuth2SuccessHandler;
 import com.example.snapEvent.member.security.jwt.ExceptionHandlerFilter;
 import com.example.snapEvent.member.security.jwt.JwtAuthenticationFilter;
@@ -10,13 +10,11 @@ import com.example.snapEvent.member.security.OAuth2.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 
@@ -58,7 +56,7 @@ public class SecurityConfig {
 ////                        .loginProcessingUrl("/members/login") //이 url을 로그인 기능을 담당하게 함
 //                        .defaultSuccessUrl("/"))              // 성공하면 이 url로 가게 함
                 .exceptionHandling(authenticationManager -> authenticationManager
-                        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
+                        .authenticationEntryPoint(new CustomAuthenticationEntryPoint()))
                 .oauth2Login(oauth2 -> oauth2
                         .successHandler(new OAuth2SuccessHandler(jwtTokenProvider, refreshTokenRepository))
                         .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint
@@ -68,10 +66,5 @@ public class SecurityConfig {
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(exceptionHandlerFilter, JwtAuthenticationFilter.class)
                 .build();
-    }
-
-    @Bean
-    public LoginFailureHandler loginFailureHandler() {
-        return new LoginFailureHandler();
     }
 }
