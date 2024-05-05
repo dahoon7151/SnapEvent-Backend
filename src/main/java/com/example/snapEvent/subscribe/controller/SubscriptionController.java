@@ -1,22 +1,47 @@
 package com.example.snapEvent.subscribe.controller;
 
+import com.example.snapEvent.member.entity.Member;
 import com.example.snapEvent.member.security.CustomUserDetail;
+import com.example.snapEvent.subscribe.dto.SubscribeDto;
 import com.example.snapEvent.subscribe.dto.SubscribeResponseDto;
+import com.example.snapEvent.subscribe.service.SubscriptionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/subs")
 public class SubscriptionController {
-    @PostMapping("/subscribe")
-    public ResponseEntity<SubscribeResponseDto> subscribe(@AuthenticationPrincipal CustomUserDetail customUserDetail) {
+    private final SubscriptionService subscriptionService;
 
+    @PostMapping("/subscribe")
+    public ResponseEntity<List<SubscribeResponseDto>> subscribe(
+            @AuthenticationPrincipal CustomUserDetail customUserDetail,
+            @RequestBody SubscribeDto subscribeDto) {
+        String username = customUserDetail.getUser().getUsername();
+        log.info("사용자 : {}", username);
+
+        List<SubscribeResponseDto> subscribeResponseDto = subscriptionService.subscribe(username, subscribeDto);
+
+        return ResponseEntity.status(HttpStatus.OK).body(subscribeResponseDto);
+    }
+
+    @GetMapping("/showlist")
+    public ResponseEntity<List<SubscribeResponseDto>> showList(
+            @AuthenticationPrincipal CustomUserDetail customUserDetail) {
+        String username = customUserDetail.getUser().getUsername();
+        log.info("사용자 : {}", username);
+
+        List<SubscribeResponseDto> subscribeResponseDto = subscriptionService.showSubList(username);
+
+        return ResponseEntity.status(HttpStatus.OK).body(subscribeResponseDto);
     }
 }

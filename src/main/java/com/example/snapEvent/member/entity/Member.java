@@ -32,7 +32,7 @@ public class Member extends BaseTimeEntity {
     @Column
     private String nickname;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", orphanRemoval = true)
     @Builder.Default
     private List<Subscription> subscriptions = new ArrayList<>();
 
