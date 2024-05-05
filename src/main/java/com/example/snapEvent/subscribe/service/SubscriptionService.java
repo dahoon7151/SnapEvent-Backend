@@ -1,5 +1,7 @@
 package com.example.snapEvent.subscribe.service;
 
+import com.example.snapEvent.member.entity.Member;
+import com.example.snapEvent.subscribe.SiteName;
 import com.example.snapEvent.subscribe.dto.SubscribeDto;
 import com.example.snapEvent.subscribe.dto.SubscribeResponseDto;
 
@@ -11,4 +13,6 @@ public interface SubscriptionService {
 
     // 구독 리스트 조회
     public List<SubscribeResponseDto> showSubList(String username);
+
+    public boolean cancelSubscription(String username, SiteName siteName);
 }

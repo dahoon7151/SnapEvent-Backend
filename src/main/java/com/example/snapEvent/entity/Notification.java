@@ -22,10 +22,6 @@ public class Notification extends BaseTimeEntity {
     private String alarmContent;
     private Boolean isEnabled; // 알람 플래그
 
-    @OneToOne(mappedBy = "notification")
-    @Setter(AccessLevel.PACKAGE)
-    private Event event;
-
     @JoinColumn(name = "SUB_ID")
     @ManyToOne(fetch = FetchType.LAZY)
     private Subscription subscription;

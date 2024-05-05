@@ -2,6 +2,7 @@ package com.example.snapEvent.subscribe.controller;
 
 import com.example.snapEvent.member.entity.Member;
 import com.example.snapEvent.member.security.CustomUserDetail;
+import com.example.snapEvent.subscribe.SiteName;
 import com.example.snapEvent.subscribe.dto.SubscribeDto;
 import com.example.snapEvent.subscribe.dto.SubscribeResponseDto;
 import com.example.snapEvent.subscribe.service.SubscriptionService;
@@ -43,5 +44,18 @@ public class SubscriptionController {
         List<SubscribeResponseDto> subscribeResponseDto = subscriptionService.showSubList(username);
 
         return ResponseEntity.status(HttpStatus.OK).body(subscribeResponseDto);
+    }
+
+    @DeleteMapping("/cancel/{sitename}")
+    public ResponseEntity<String> cancel(@PathVariable(value = "sitename") String site,
+                                         @AuthenticationPrincipal CustomUserDetail customUserDetail) {
+        SiteName siteName = SiteName.valueOf(site);
+        log.info("사이트명 Enum 변환");
+        String username = customUserDetail.getUser().getUsername();
+        log.info("사용자 : {}", username);
+
+        subscriptionService.cancelSubscription(username, siteName);
+
+        return ResponseEntity.status(HttpStatus.OK).body("구독 취소 완료");
     }
 }

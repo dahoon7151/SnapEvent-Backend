@@ -91,7 +91,7 @@ public class CommentServiceImpl implements CommentService{
 
     @Transactional
     @Override
-    public void deleteComment(String username, Long commentId) {
+    public boolean deleteComment(String username, Long commentId) {
         Member member = memberRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("비정상 접근(no such user)"));
 
@@ -101,6 +101,7 @@ public class CommentServiceImpl implements CommentService{
         // 해당 사용자가 게시글 작성자와 동일한지 검증(비정상적인 접근을 통해 삭제 요청 시 대비)
         if (comment.getMember().equals(member)) {
             commentRepository.delete(comment);
+            return true;
         } else {
             throw new IllegalArgumentException("사용자에게 삭제 권한이 없습니다.");
         }

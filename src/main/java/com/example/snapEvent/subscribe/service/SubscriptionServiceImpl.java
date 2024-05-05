@@ -60,4 +60,17 @@ public class SubscriptionServiceImpl implements SubscriptionService{
 
         return subResponseList;
     }
+
+    @Transactional
+    @Override
+    public boolean cancelSubscription(String username, SiteName siteName) {
+        Member member = memberRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("비정상 접근(no such user)"));
+
+        Subscription subscription = subscriptionRepository.findByMemberAndSiteName(member, siteName)
+                .orElseThrow(() -> new IllegalArgumentException("비정상 에러(no such subscription)"));
+
+        subscriptionRepository.delete(subscription);
+        return true;
+    }
 }
