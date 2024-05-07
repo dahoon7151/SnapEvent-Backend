@@ -17,7 +17,7 @@ public interface PostService {
 
     public PostResponseDto modifyPost(String username, Long id, PostDto postDto);
 
-    public void deletePost(String username, Long id);
+    public boolean deletePost(String username, Long id);
 
     public PostResponseDto showNearPost(Long id);
 }

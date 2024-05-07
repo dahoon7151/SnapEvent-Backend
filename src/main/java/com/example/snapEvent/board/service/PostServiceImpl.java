@@ -130,7 +130,7 @@ public class PostServiceImpl implements PostService {
 
     @Transactional
     @Override
-    public void deletePost(String username, Long id) {
+    public boolean deletePost(String username, Long id) {
         Member member = memberRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("비정상 접근(no such user)"));
 
@@ -140,6 +140,7 @@ public class PostServiceImpl implements PostService {
         // 해당 사용자가 게시글 작성자와 동일한지 검증(비정상적인 접근을 통해 삭제 요청 시 대비)
         if (post.getMember().equals(member)) {
             postRepository.delete(post);
+            return true;
         } else {
             throw new IllegalArgumentException("사용자에게 삭제 권한이 없습니다.");
         }

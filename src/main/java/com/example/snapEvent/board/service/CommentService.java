@@ -17,5 +17,5 @@ public interface CommentService {
 
     public CommentResponseDto modifyComment(String username, Long commentId, CommentDto commentDto);
 
-    public void deleteComment(String username, Long commentId);
+    public boolean deleteComment(String username, Long commentId);
 }
