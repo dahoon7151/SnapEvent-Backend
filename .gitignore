@@ -43,3 +43,6 @@ application.yml
 
 ### Init class ###
 src/main/java/com/example/snapEvent/follow/InitDb.class
+
+### sensitive file ###
+*.json

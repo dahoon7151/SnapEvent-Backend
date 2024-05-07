@@ -1,46 +1,43 @@
-package com.example.snapEvent.entity;
+package com.example.snapEvent.notification.entity;
 
 import com.example.snapEvent.audit.BaseTimeEntity;
+import com.example.snapEvent.entity.Subscription;
 import com.example.snapEvent.member.entity.Member;
+import com.example.snapEvent.notification.dto.NotificationRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Builder(toBuilder = true)
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Notification extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "NOTE_ID")
+    @Column(name = "NOTIFICATION_ID")
     private Long id;
 
     private String linkToSite;
     private String alarmContent;
     private Boolean isEnabled; // 알람 플래그
-
-    @OneToOne(mappedBy = "notification")
-    @Setter(AccessLevel.PACKAGE)
-    private Event event;
+    private String token;
 
     @JoinColumn(name = "SUB_ID")
     @ManyToOne(fetch = FetchType.LAZY)
     private Subscription subscription;
 
     @JoinColumn(name = "MEMBER_ID")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Member member;
+    @OneToOne(fetch = FetchType.LAZY)
+    private Member member; // 1대1 단방향 매핑
 
-    public void addMember(Member member) {
-        this.member = member;
-        member.getNotifications().add(this);
+    @Builder
+    public Notification(String token) {
+        this.token = token;
     }
 
-    public void removeMember(Member member) {
-        this.member = null;
-        member.getNotifications().remove(this);
+    // 단방향 연관관계 메서드
+    public void confirmMember(Member member) {
+        this.member = member;
     }
 
 }
