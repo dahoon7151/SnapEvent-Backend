@@ -55,8 +55,6 @@ public class SecurityConfig {
 //                        .loginPage("/")                       //로그인 페이지 url
 ////                        .loginProcessingUrl("/members/login") //이 url을 로그인 기능을 담당하게 함
 //                        .defaultSuccessUrl("/"))              // 성공하면 이 url로 가게 함
-                .exceptionHandling(authenticationManager -> authenticationManager
-                        .authenticationEntryPoint(new CustomAuthenticationEntryPoint()))
                 .oauth2Login(oauth2 -> oauth2
                         .successHandler(new OAuth2SuccessHandler(jwtTokenProvider, refreshTokenRepository))
                         .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint
@@ -65,6 +63,8 @@ public class SecurityConfig {
                 .addFilterAfter(new UsernamePasswordAuthenticationFilter(), LogoutFilter.class)
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(exceptionHandlerFilter, JwtAuthenticationFilter.class)
+                .exceptionHandling(authenticationManager -> authenticationManager
+                        .authenticationEntryPoint(new CustomAuthenticationEntryPoint()))
                 .build();
     }
 }
