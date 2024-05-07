@@ -26,8 +26,7 @@ public class EdiyaService {
 
     private final EdiyaRepository ediyaRepository;
 
-    // 매일 오전 2시에 업데이트
-    @Scheduled(cron = "0 0 2 * * *")
+
     public List<EdiyaDto> getEdiyaDatas() throws IOException {
 
         List<EdiyaDto> ediyaDtoList = new ArrayList<>();

@@ -27,7 +27,7 @@ public class LotteEatzService {
     private final LotteEatzRepository lotteEatzRepository;
     private final SeleniumHelper seleniumHelper;
 
-    @Scheduled(cron = "0 0 2 * * *")
+
     public List<LotteEatzDto> getLotteEatzDatas() {
         List<LotteEatzDto> lotteEatzDtoList = new ArrayList<>();
 

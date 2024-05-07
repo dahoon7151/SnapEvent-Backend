@@ -26,7 +26,7 @@ public class StarBucksService {
     private final StarBucksRepository starBucksRepository;
     private final SeleniumHelper seleniumHelper;
 
-    @Scheduled(cron = "0 0 2 * * *")
+
     public List<StarBucksDto> getStarBucksDatas() {
         List<StarBucksDto> starBucksDtoList = new ArrayList<>();
 

@@ -27,7 +27,7 @@ public class OliveYoungService {
 
     private final OliveYoungRepository oliveYoungRepository;
 
-    @Scheduled(cron = "0 0 2 * * *")
+
     public List<OliveYoungDto> getOliveYoungDatas() throws IOException {
         List<OliveYoungDto> oliveYoungDtoList = new ArrayList<>();
 
