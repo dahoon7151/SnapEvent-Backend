@@ -49,8 +49,8 @@ public class SecurityConfig {
                         // USER 권한이 있어야 요청할 수 있음
                         .requestMatchers("api/members/test").hasRole("USER")
 //                        // 이 밖에 모든 요청에 대해서 인증을 필요로 한다는 설정
-                        .anyRequest().authenticated())
-//                        .anyRequest().permitAll()) // 테스트용 허용
+//                        .anyRequest().authenticated())
+                        .anyRequest().permitAll()) // 테스트용 허용
 //                .formLogin(login -> login
 //                        .loginPage("/")                       //로그인 페이지 url
 ////                        .loginProcessingUrl("/members/login") //이 url을 로그인 기능을 담당하게 함
