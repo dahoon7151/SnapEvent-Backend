@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface SubscriptionRepository extends JpaRepository<Subscription,Long> {
     List<Subscription> findAllByMember(Member member);
 
-    Optional<Subscription> findByMemberAndSiteName(Member member, SiteName siteName);
+    Optional<Subscription> findByMemberAndSitename(Member member, SiteName siteName);
 
-    Optional<Subscription> findBySiteName(SiteName siteName);
+    Optional<Subscription> findBySitename(SiteName siteName);
 }

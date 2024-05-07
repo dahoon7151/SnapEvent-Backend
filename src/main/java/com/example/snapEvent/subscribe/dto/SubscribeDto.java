@@ -20,7 +20,7 @@ public class SubscribeDto {
     public Subscription toEntity(Member member, SiteName siteName) {
         return Subscription.builder()
                 .member(member)
-                .siteName(siteName)
+                .sitename(siteName)
                 .build();
     }
 }

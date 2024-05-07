@@ -24,6 +24,7 @@ public class Subscription extends BaseTimeEntity {
 
     private String username; // userPassword는 FCM 토큰으로 대체
 
-    @Column(nullable = false)
-    private SiteName siteName;
+    @Enumerated
+    @Column(name = "SITENAME", nullable = false)
+    private SiteName sitename;
 }

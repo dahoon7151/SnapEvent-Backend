@@ -28,13 +28,15 @@ public class SubscriptionServiceImpl implements SubscriptionService{
     @Override
     public List<SubscribeResponseDto> subscribe(String username, SubscribeDto subscribeDto) {
         List<SiteName> subList = subscribeDto.getSiteNames();
+        log.info("구독목록 : {}", subList);
         Member member = memberRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("비정상 접근(no such user)"));
 
         List<SubscribeResponseDto> subResponseList = new ArrayList<>();
 
         for (SiteName s : subList) {
-            if (subscriptionRepository.findByMemberAndSiteName(member, s).isEmpty()) {
+            log.info("{} 사이트 구독 처리", s);
+            if (subscriptionRepository.findByMemberAndSitename(member, s).isEmpty()) {
                 Subscription subscription = subscriptionRepository.save(subscribeDto.toEntity(member, s));
                 SubscribeResponseDto subResponse = new SubscribeResponseDto(subscription);
                 subResponseList.add(subResponse);
@@ -67,7 +69,7 @@ public class SubscriptionServiceImpl implements SubscriptionService{
         Member member = memberRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("비정상 접근(no such user)"));
 
-        Subscription subscription = subscriptionRepository.findByMemberAndSiteName(member, siteName)
+        Subscription subscription = subscriptionRepository.findByMemberAndSitename(member, siteName)
                 .orElseThrow(() -> new IllegalArgumentException("비정상 에러(no such subscription)"));
 
         subscriptionRepository.delete(subscription);

@@ -19,6 +19,6 @@ public class SubscribeResponseDto {
 
     public SubscribeResponseDto(Subscription subscription) {
         this.id = subscription.getId();
-        this.subedSiteName = subscription.getSiteName();
+        this.subedSiteName = subscription.getSitename();
     }
 }
