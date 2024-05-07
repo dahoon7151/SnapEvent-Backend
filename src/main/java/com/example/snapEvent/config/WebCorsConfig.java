@@ -13,7 +13,6 @@ public class WebCorsConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedMethods(ALLOWED_METHOD_NAMES.split(","))
                 .allowedOriginPatterns("http://localhost:3000", "http://localhost:5173")
-                .allowCredentials(true)
                 .exposedHeaders("Authorization");
     }
 }
