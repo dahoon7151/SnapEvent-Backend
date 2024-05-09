@@ -75,4 +75,20 @@ public class SubscriptionServiceImpl implements SubscriptionService{
         subscriptionRepository.delete(subscription);
         return true;
     }
+
+    @Override
+    public List<SubscribeResponseDto> showFollowerSubList(String followerNickname) {
+        Member follower = memberRepository.findByNickname(followerNickname)
+                .orElseThrow(() -> new UsernameNotFoundException("비정상 접근(no such user)"));
+
+        List<Subscription> followerSubList = subscriptionRepository.findAllByMember(follower);
+        List<SubscribeResponseDto> subResponseList = new ArrayList<>();
+
+        for (Subscription se : followerSubList) {
+            SubscribeResponseDto subscribeResponseDto = new SubscribeResponseDto(se);
+            subResponseList.add(subscribeResponseDto);
+        }
+
+        return subResponseList;
+    }
 }

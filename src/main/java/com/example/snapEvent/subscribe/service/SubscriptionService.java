@@ -15,4 +15,6 @@ public interface SubscriptionService {
     public List<SubscribeResponseDto> showSubList(String username);
 
     public boolean cancelSubscription(String username, SiteName siteName);
+
+    public List<SubscribeResponseDto> showFollowerSubList(String followerNickname);
 }

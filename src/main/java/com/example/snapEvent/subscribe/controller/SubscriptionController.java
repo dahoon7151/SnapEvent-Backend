@@ -58,4 +58,12 @@ public class SubscriptionController {
 
         return ResponseEntity.status(HttpStatus.OK).body("구독 취소 완료");
     }
+
+    @GetMapping("/showlist/{nickname}")
+    public ResponseEntity<List<SubscribeResponseDto>> showFollowerList(
+            @PathVariable(value = "nickname") String follwerNickname) {
+        List<SubscribeResponseDto> subscribeResponseDtos = subscriptionService.showFollowerSubList(follwerNickname);
+
+        return ResponseEntity.status(HttpStatus.OK).body(subscribeResponseDtos);
+    }
 }
