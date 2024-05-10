@@ -23,6 +23,9 @@ public class OliveYoung {
     private String image;
     private String href;
 
+    @Column(nullable = false, columnDefinition = "boolean default false")
+    private boolean isSubscribed;
+
     @Builder
     public OliveYoung(String title, String description, DateRange dateRange, String image, String href) {
         this.title = title;
