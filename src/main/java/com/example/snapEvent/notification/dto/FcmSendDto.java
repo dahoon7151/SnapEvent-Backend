@@ -7,16 +7,16 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class NotificationRequestDto {
+public class FcmSendDto {
 
-    private String title;
-    private String message;
     private String token;
+    private String title;
+    private String body;
 
-    @Builder
-    public NotificationRequestDto(String title, String message, String token) {
-        this.title = title;
-        this.message = message;
+    @Builder(toBuilder = true)
+    public FcmSendDto(String title, String body, String token) {
         this.token = token;
+        this.title = title;
+        this.body = body;
     }
 }

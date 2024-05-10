@@ -2,9 +2,7 @@ package com.example.snapEvent.notification.controller;
 
 import com.example.snapEvent.member.entity.Member;
 import com.example.snapEvent.member.security.CustomUserDetail;
-import com.example.snapEvent.notification.dto.NotificationRequestDto;
 import com.example.snapEvent.notification.service.NotificationService;
-import com.example.snapEvent.notification.service.NotificationServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -20,9 +18,9 @@ public class NotificationApiController {
 
     /**
      *
-     * 알림 설정(구독 엔티티에 대한 알림 설정)
-     * 알림일 수정하기(구독한 브랜드 리스트 각각)
-     * 알림 취소(구독한 브랜드 리스트 각각)
+     * 알림 설정(로그인 정보를 가져와서 사이트 내의 "이벤트 별"로 알림 설정)
+     * 알림일 수정하기(알림레포의 id 가져와서 하면 될듯...?)
+     * 알림 취소(수정하기와 마찬가지)
      */
 
     private final NotificationService notificationService;
@@ -59,4 +57,5 @@ public class NotificationApiController {
         notificationService.deleteNotification(member, notificationId);
         return ResponseEntity.status(HttpStatus.OK).body("알림 삭제 완료");
     }
+
 }

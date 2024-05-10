@@ -76,6 +76,8 @@ public class MemberController {
         log.info("유저 이름 : {}", username);
         memberService.logout(username);
 
+        // * 로그아웃 시
+
         return ResponseEntity.status(HttpStatus.OK).body("로그아웃 성공");
     }
 

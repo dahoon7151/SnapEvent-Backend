@@ -3,7 +3,6 @@ package com.example.snapEvent.notification.entity;
 import com.example.snapEvent.audit.BaseTimeEntity;
 import com.example.snapEvent.entity.Subscription;
 import com.example.snapEvent.member.entity.Member;
-import com.example.snapEvent.notification.dto.NotificationRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,10 +15,6 @@ public class Notification extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "NOTIFICATION_ID")
     private Long id;
-
-    private String linkToSite;
-    private String alarmContent;
-    private Boolean isEnabled; // 알람 플래그
     private String token;
 
     @JoinColumn(name = "SUB_ID")
