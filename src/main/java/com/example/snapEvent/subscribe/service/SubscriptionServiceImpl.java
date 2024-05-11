@@ -79,7 +79,7 @@ public class SubscriptionServiceImpl implements SubscriptionService{
     @Override
     public List<SubscribeResponseDto> showFollowerSubList(String followerNickname) {
         Member follower = memberRepository.findByNickname(followerNickname)
-                .orElseThrow(() -> new UsernameNotFoundException("비정상 접근(no such user)"));
+                .orElseThrow(() -> new UsernameNotFoundException("비정상 접근(no such follower)"));
 
         List<Subscription> followerSubList = subscriptionRepository.findAllByMember(follower);
         List<SubscribeResponseDto> subResponseList = new ArrayList<>();
