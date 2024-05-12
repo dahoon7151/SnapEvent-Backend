@@ -23,7 +23,6 @@ public class InterParkService {
 
     private final InterParkRepository interParkRepository;
 
-    @Scheduled(cron = "0 0 2 * * *")
     public List<InterParkDto> getInterParkDatas() throws IOException {
         List<InterParkDto> interParkDtoList = new ArrayList<>();
 

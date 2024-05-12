@@ -26,7 +26,6 @@ public class SsfService {
 
     private final SsfRepository ssfRepository;
 
-    @Scheduled(cron = "0 0 2 * * *")
     public List<SsfDto> getSsfDatas() throws IOException {
         List<SsfDto> ssfDtoList = new ArrayList<>();
 

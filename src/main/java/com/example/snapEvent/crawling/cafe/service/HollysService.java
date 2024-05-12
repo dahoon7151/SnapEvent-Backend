@@ -28,7 +28,6 @@ public class HollysService {
     private final HollysRepository hollysRepository;
     private final SeleniumHelper seleniumHelper;
 
-    @Scheduled(cron = "0 0 2 * * *")
     public List<HollysDto> getHollysDatas() {
         List<HollysDto> hollysDtoList = new ArrayList<>();
 
