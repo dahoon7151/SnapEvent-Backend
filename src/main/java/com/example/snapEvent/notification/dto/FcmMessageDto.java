@@ -4,6 +4,7 @@ import lombok.*;
 
 @Getter
 @Builder
+@AllArgsConstructor
 public class FcmMessageDto {
 
     // FCM에 실제 전송될 데이터의 Dto
@@ -15,7 +16,6 @@ public class FcmMessageDto {
     @AllArgsConstructor
     public static class Message {
         private FcmMessageDto.Notification notification;
-        private String token;
     }
 
     @Builder
@@ -25,7 +25,5 @@ public class FcmMessageDto {
         private String title;
         private String body;
     }
-
-
 
 }

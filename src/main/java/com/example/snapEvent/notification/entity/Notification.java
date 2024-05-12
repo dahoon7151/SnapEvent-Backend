@@ -1,8 +1,8 @@
 package com.example.snapEvent.notification.entity;
 
 import com.example.snapEvent.audit.BaseTimeEntity;
-import com.example.snapEvent.entity.Subscription;
 import com.example.snapEvent.member.entity.Member;
+import com.example.snapEvent.subscribe.entity.Subscription;
 import jakarta.persistence.*;
 import lombok.*;
 

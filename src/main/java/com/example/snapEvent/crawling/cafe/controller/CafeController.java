@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @RestController
@@ -44,6 +46,8 @@ public class CafeController {
             return ediyaService.getEdiyaDatas();
         } catch (IOException e) {
             throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE);
+        } catch (NoSuchAlgorithmException | KeyManagementException e) {
+            throw new RuntimeException(e);
         }
     }
 

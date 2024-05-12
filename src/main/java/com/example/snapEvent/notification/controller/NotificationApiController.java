@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -32,7 +33,8 @@ public class NotificationApiController {
      */
     @PostMapping("/new")
     public void saveNotification(@RequestBody String token, @AuthenticationPrincipal CustomUserDetail customUserDetail) {
-        Member member = customUserDetail.getMember();
+        UserDetails user = customUserDetail.getUser();
+        Member member = (Member) user;
         log.info("사용자 : {}", member.getUsername());
 
         notificationService.saveNotification(token, member);
@@ -51,7 +53,8 @@ public class NotificationApiController {
 
     @DeleteMapping("/{notificationId}/delete")
     public ResponseEntity<String> deleteNotification(@PathVariable Long notificationId, @AuthenticationPrincipal CustomUserDetail customUserDetail) {
-        Member member = customUserDetail.getMember();
+        UserDetails user = customUserDetail.getUser();
+        Member member = (Member) user;
         log.info("사용자 : {}", member.getUsername());
 
         notificationService.deleteNotification(member, notificationId);

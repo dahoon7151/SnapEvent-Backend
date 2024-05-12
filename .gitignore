@@ -46,3 +46,9 @@ src/main/java/com/example/snapEvent/follow/InitDb.class
 
 ### sensitive file ###
 *.json
+
+### presentation layer file ###
+*.js
+*.html
+*Init.java
+

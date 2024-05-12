@@ -9,13 +9,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class FcmSendDto {
 
-    private String token;
     private String title;
     private String body;
 
     @Builder(toBuilder = true)
-    public FcmSendDto(String title, String body, String token) {
-        this.token = token;
+    public FcmSendDto(String title, String body) {
         this.title = title;
         this.body = body;
     }

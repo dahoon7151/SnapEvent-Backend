@@ -13,8 +13,12 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.snapEvent.crawling.service.OliveYoungService.setSSL;
 
 @Service
 @RequiredArgsConstructor
@@ -24,10 +28,12 @@ public class InterParkService {
     private final InterParkRepository interParkRepository;
 
 
-    public List<InterParkDto> getInterParkDatas() throws IOException {
+    public List<InterParkDto> getInterParkDatas() throws IOException, NoSuchAlgorithmException, KeyManagementException {
         List<InterParkDto> interParkDtoList = new ArrayList<>();
 
         String url = "https://mticket.interpark.com/Notice/";
+
+        setSSL();
         Document docs = Jsoup.connect(url).get();
         Elements contents = docs.select("section .ticketRecomBox .item");
         List<Element> limitedContents = contents.subList(0, 10);

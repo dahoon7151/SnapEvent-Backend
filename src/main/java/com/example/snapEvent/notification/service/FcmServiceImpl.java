@@ -58,7 +58,6 @@ public class FcmServiceImpl implements FcmService{
         ObjectMapper om = new ObjectMapper();
         FcmMessageDto fcmMessageDto = FcmMessageDto.builder()
                 .message(FcmMessageDto.Message.builder()
-                        .token(fcmSendDto.getToken())
                         .notification(FcmMessageDto.Notification.builder()
                                 .title(fcmSendDto.getTitle())
                                 .body(fcmSendDto.getBody())
