@@ -35,6 +35,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         refreshTokenRepository.save(toEntity(username, jwtToken.getRefreshToken()));
 
         response.addHeader("Authorization", "Bearer " + jwtToken.getAccessToken());
+        log.info("헤더에 JWT 반환 성공");
 
         ObjectMapper objectMapper = new ObjectMapper();
         String jwtTokenJson = objectMapper.writeValueAsString(jwtToken);
