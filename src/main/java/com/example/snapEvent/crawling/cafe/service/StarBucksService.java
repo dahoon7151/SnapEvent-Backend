@@ -26,6 +26,7 @@ public class StarBucksService {
     private final StarBucksRepository starBucksRepository;
     private final SeleniumHelper seleniumHelper;
 
+
     public List<StarBucksDto> getStarBucksDatas() {
         List<StarBucksDto> starBucksDtoList = new ArrayList<>();
 

@@ -27,6 +27,7 @@ public class LotteEatzService {
     private final LotteEatzRepository lotteEatzRepository;
     private final SeleniumHelper seleniumHelper;
 
+
     public List<LotteEatzDto> getLotteEatzDatas() {
         List<LotteEatzDto> lotteEatzDtoList = new ArrayList<>();
 

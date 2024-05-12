@@ -28,6 +28,7 @@ public class HollysService {
     private final HollysRepository hollysRepository;
     private final SeleniumHelper seleniumHelper;
 
+
     public List<HollysDto> getHollysDatas() {
         List<HollysDto> hollysDtoList = new ArrayList<>();
 

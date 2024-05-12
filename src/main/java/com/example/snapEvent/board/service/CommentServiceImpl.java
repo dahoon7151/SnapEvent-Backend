@@ -8,8 +8,10 @@ import com.example.snapEvent.board.entity.Post;
 import com.example.snapEvent.board.repository.CommentRepository;
 import com.example.snapEvent.board.repository.PostRepository;
 import com.example.snapEvent.member.entity.Member;
+import com.example.snapEvent.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,10 +25,14 @@ import java.util.List;
 public class CommentServiceImpl implements CommentService{
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
+    private final MemberRepository memberRepository;
 
     @Transactional
     @Override
-    public List<CommentResponseDto> showCommentlist(Member member, Long postId) {
+    public List<CommentResponseDto> showCommentlist(String username, Long postId) {
+        Member member = memberRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("비정상 접근(no such user)"));
+
         Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("해당 ID(PK)에 대한 글이 없습니다."));
         log.info("id : {}인 게시글 조회", post.getId());
 
@@ -52,7 +58,10 @@ public class CommentServiceImpl implements CommentService{
 
     @Transactional
     @Override
-    public CommentResponseDto writeComment(Member member, Long postId, CommentDto commentDto) {
+    public CommentResponseDto writeComment(String username, Long postId, CommentDto commentDto) {
+        Member member = memberRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("비정상 접근(no such user)"));
+
         Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("해당 ID(PK)에 대한 글이 없습니다."));
         log.info("id : {}인 게시글 조회", post.getId());
 
@@ -63,7 +72,10 @@ public class CommentServiceImpl implements CommentService{
 
     @Transactional
     @Override
-    public CommentResponseDto modifyComment(Member member, Long commentId, CommentDto commentDto) {
+    public CommentResponseDto modifyComment(String username, Long commentId, CommentDto commentDto) {
+        Member member = memberRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("비정상 접근(no such user)"));
+
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("해당 ID(PK)에 대한 댓글이 없습니다."));
         log.info("id : {}인 댓글 조회", comment.getId());
 
@@ -79,13 +91,17 @@ public class CommentServiceImpl implements CommentService{
 
     @Transactional
     @Override
-    public void deleteComment(Member member, Long commentId) {
+    public boolean deleteComment(String username, Long commentId) {
+        Member member = memberRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("비정상 접근(no such user)"));
+
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("해당 ID(PK)에 대한 댓글이 없습니다."));
         log.info("id : {}인 댓글 조회", comment.getId());
 
         // 해당 사용자가 게시글 작성자와 동일한지 검증(비정상적인 접근을 통해 삭제 요청 시 대비)
         if (comment.getMember().equals(member)) {
             commentRepository.delete(comment);
+            return true;
         } else {
             throw new IllegalArgumentException("사용자에게 삭제 권한이 없습니다.");
         }

@@ -1,13 +1,16 @@
 package com.example.snapEvent.member.controller;
 
 import com.example.snapEvent.member.dto.*;
+import com.example.snapEvent.member.security.CustomUserDetail;
 import com.example.snapEvent.member.service.MemberService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -44,7 +47,8 @@ public class MemberController {
     }
 
     @PostMapping("/reissue")
-    public ResponseEntity<JwtToken> reissue(@RequestBody ReissueDto reissueDto, HttpServletResponse response) {
+    public ResponseEntity<JwtToken> reissue(@RequestBody ReissueDto reissueDto,
+                                            HttpServletResponse response) {
         JwtToken jwtToken = memberService.reissue(reissueDto);
         response.addHeader("Authorization", "Bearer " + jwtToken.getAccessToken());
 
@@ -52,34 +56,41 @@ public class MemberController {
     }
 
 
-    @DeleteMapping("/logout/{username}")
-    public ResponseEntity<String> logout(
-            @PathVariable(value = "username") String username) {
-        log.info("유저 이름 : {}", username);
+    @DeleteMapping("/logout")
+    public ResponseEntity<String> logout(@AuthenticationPrincipal CustomUserDetail customUserDetail) {
+        String username = customUserDetail.getUser().getUsername();
+        log.info("사용자 이름 : {}", username);
         memberService.logout(username);
-
-        // * 로그아웃 시
 
         return ResponseEntity.status(HttpStatus.OK).body("로그아웃 성공");
     }
 
-    @DeleteMapping("/withdraw/{username}")
-    public ResponseEntity<String> withdraw(
-            @PathVariable(value = "username") String username) {
+    @DeleteMapping("/withdraw")
+    public ResponseEntity<String> withdraw(@AuthenticationPrincipal CustomUserDetail customUserDetail) {
+        String username = customUserDetail.getUser().getUsername();
         log.info("탈퇴 유저 이름 : {}", username);
         memberService.withdraw(username);
 
         return ResponseEntity.status(HttpStatus.OK).body("회원탈퇴 성공");
     }
 
-    @PatchMapping("/modify/{username}")
+    @PatchMapping("/modify")
     public ResponseEntity<ModifyResponseDto> modify(
-            @PathVariable(value = "username") String username, @RequestBody @Valid ModifyDto modifyDto) {
+            @AuthenticationPrincipal CustomUserDetail customUserDetail,
+            @RequestBody @Valid ModifyDto modifyDto) {
+        String username = customUserDetail.getUser().getUsername();
+        log.info("사용자 이름 : {}", username);
         ModifyResponseDto modifyResponseDto = memberService.modify(username, modifyDto);
 
         return ResponseEntity.status(HttpStatus.OK).body(modifyResponseDto);
     }
 
+    @GetMapping("/checkname")
+    public ResponseEntity<String> checkName(@RequestBody CheckNameDto checkNameDto) {
+        String checkRedundant = memberService.checkNickname(checkNameDto);
+
+        return ResponseEntity.status(HttpStatus.OK).body(checkRedundant);
+    }
 
     @PostMapping("/test")
     public String test() {

@@ -26,6 +26,7 @@ public class SsfService {
 
     private final SsfRepository ssfRepository;
 
+
     public List<SsfDto> getSsfDatas() throws IOException {
         List<SsfDto> ssfDtoList = new ArrayList<>();
 

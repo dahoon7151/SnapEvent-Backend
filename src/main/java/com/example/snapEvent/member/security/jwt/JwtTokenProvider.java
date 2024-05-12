@@ -6,7 +6,9 @@ import com.example.snapEvent.member.security.CustomUserDetail;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -27,7 +29,8 @@ import java.util.stream.Collectors;
 @Component
 public class JwtTokenProvider {
     private final Key key;
-    private RefreshTokenRepository refreshTokenRepository;
+
+    @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
     // properties 파일에서 jwt.secret 값 가져와서 key에 저장
@@ -77,9 +80,10 @@ public class JwtTokenProvider {
         }
         // CustomUserDetails 객체에 권한 정보가 저장될 수 있도록 변경
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(claims.getSubject());
-        return new UsernamePasswordAuthenticationToken(userDetails, accessToken, userDetails.getAuthorities());
+        log.info("loadUserByUsername 메소드 실행 완료");
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
 
-//        // 클레임에서 권한 정보 가져오기
+        // 클레임에서 권한 정보 가져오기
 //        Collection<? extends GrantedAuthority> authorities = Arrays.stream(claims.get("auth").toString().split(","))
 //                .map(SimpleGrantedAuthority::new)
 //                .collect(Collectors.toList());

@@ -4,6 +4,8 @@ import com.example.snapEvent.board.entity.Like;
 import com.example.snapEvent.audit.BaseTimeEntity;
 import com.example.snapEvent.notification.entity.Notification;
 import com.example.snapEvent.entity.Subscription;
+import com.example.snapEvent.entity.Notification;
+import com.example.snapEvent.subscribe.entity.Subscription;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -32,7 +34,7 @@ public class Member extends BaseTimeEntity {
     @Column
     private String nickname;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", orphanRemoval = true)
     @Builder.Default
     private List<Subscription> subscriptions = new ArrayList<>();
 

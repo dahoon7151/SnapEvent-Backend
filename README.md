@@ -14,6 +14,8 @@ feature / develop(default) / main
 <--Progress-->
 
 - Swagger 의존성 추가
-- p6spy, mapstruct(DTO<->Entity) 의존성 추가
-
-http://43.203.25.53:8080/
+- p6spy 추가
+- fcm 의존성 추가
+---
+🌐도메인 이름(https 적용): www.snapevent.site (루트 도메인: snapevent.site)
+-> ⚠️api 호출은 시큐리티가 적용되어 있어서 GET 방식으로 안됨(401 에러)

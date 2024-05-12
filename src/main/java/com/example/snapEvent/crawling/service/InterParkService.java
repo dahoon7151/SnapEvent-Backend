@@ -23,6 +23,7 @@ public class InterParkService {
 
     private final InterParkRepository interParkRepository;
 
+
     public List<InterParkDto> getInterParkDatas() throws IOException {
         List<InterParkDto> interParkDtoList = new ArrayList<>();
 

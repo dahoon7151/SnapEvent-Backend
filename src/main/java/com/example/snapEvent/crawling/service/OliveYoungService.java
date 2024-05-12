@@ -27,6 +27,7 @@ public class OliveYoungService {
 
     private final OliveYoungRepository oliveYoungRepository;
 
+
     public List<OliveYoungDto> getOliveYoungDatas() throws IOException {
         List<OliveYoungDto> oliveYoungDtoList = new ArrayList<>();
 

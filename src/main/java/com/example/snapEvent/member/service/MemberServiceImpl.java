@@ -1,20 +1,25 @@
 package com.example.snapEvent.member.service;
 
+import com.example.snapEvent.follow.service.FollowService;
 import com.example.snapEvent.member.entity.Member;
 import com.example.snapEvent.member.dto.*;
 import com.example.snapEvent.member.entity.RefreshToken;
+import com.example.snapEvent.member.security.jwt.CustomUserDetailsService;
 import com.example.snapEvent.member.security.jwt.JwtTokenProvider;
 import com.example.snapEvent.member.repository.MemberRepository;
 import com.example.snapEvent.member.repository.RefreshTokenRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +34,8 @@ public class MemberServiceImpl implements MemberService{
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
+    private final FollowService followService;
+    private final CustomUserDetailsService customUserDetailsService;
 
     @Transactional
     @Override
@@ -76,36 +83,55 @@ public class MemberServiceImpl implements MemberService{
     @Transactional
     @Override
     public JwtToken reissue(ReissueDto reissueDto) {
-        String username = reissueDto.getUsername();
-        RefreshToken refreshToken = refreshTokenRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("해당하는 회원의 refresh Token을 찾을 수 없습니다."));
+        RefreshToken refreshToken = refreshTokenRepository.findByRefreshToken(reissueDto.getRefreshToken())
+                .orElseThrow(() -> new IllegalArgumentException("DB에 저장되어 있는 refreshToken과 다릅니다. 다시 로그인 해주세요."));
 
-        if (!reissueDto.getRefreshToken().equals(refreshToken.getRefreshToken())) {
-            throw new IllegalArgumentException("DB에 저장되어 있는 refreshToken과 다릅니다. 다시 로그인 해주세요.");
-        }
+        String username = refreshToken.getUsername();
+
         // 리프레시 토큰을 검증한 후 토큰 재발급
         if (jwtTokenProvider.validateToken(reissueDto.getRefreshToken())) {
-            Authentication authentication = jwtTokenProvider.getAuthentication(reissueDto.getRefreshToken());
-            return jwtTokenProvider.generateToken(authentication);
+            log.info("refresh Token 검증 완료");
+
+            UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
+            new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+            Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+
+            JwtToken jwtToken = jwtTokenProvider.generateToken(authentication);
+            log.info("재발급 토큰 생성");
+
+            refreshTokenRepository.save(reissueDto.toEntity(username, jwtToken.getRefreshToken()));
+
+            return jwtToken;
         }
         throw new IllegalArgumentException("비정상 에러");
     }
 
     @Transactional
     @Override
-    public void logout(String username) {
+    public boolean logout(String username) {
         refreshTokenRepository.delete(refreshTokenRepository.findByUsername(username)
                     .orElseThrow(() -> new UsernameNotFoundException("비정상 에러(incorrect username).")));
+        return true;
     }
 
     @Transactional
     @Override
-    public void withdraw(String username) {
+    public boolean withdraw(String username) {
         refreshTokenRepository.delete(refreshTokenRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("비정상 에러(incorrect username).")));
+        log.info("refresh 토큰 삭제");
+
+        Member delmember = memberRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("비정상 에러(incorrect username)."));
+
+        //팔로우 관계 삭제
+        followService.deleteFollowRelation(delmember.getId());
+        log.info("팔로우 관계 삭제");
         //DB 삭제
-        memberRepository.delete(memberRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("비정상 에러(incorrect username).")));
+        memberRepository.delete(delmember);
+        log.info("회원 정보 삭제");
+
+        return true;
     }
 
     @Transactional
@@ -123,5 +149,25 @@ public class MemberServiceImpl implements MemberService{
         Member modifiedMember = memberRepository.save(member);
 
         return new ModifyResponseDto(modifiedMember);
+    }
+
+    @Transactional
+    @Override
+    public String checkNickname(CheckNameDto checkNameDto) {
+        String nickname = checkNameDto.getNickname();
+
+        if (memberRepository.existsByNickname(nickname)) {
+            return "이미 사용중인 닉네임입니다.";
+        } else {
+            return "사용 가능한 닉네임입니다.";
+        }
+    }
+
+    public static String resolveToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer")) {
+            return bearerToken.substring(7);
+        }
+        return null;
     }
 }
