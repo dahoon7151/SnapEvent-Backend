@@ -8,10 +8,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 @Slf4j
 @RestController
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
 
     private final MemberService memberService;
+    private final RestTemplate restTemplate;
 
     @PostMapping("/login")
     public ResponseEntity<JwtToken> login(@RequestBody LoginDto loginDto, HttpServletResponse response) {
@@ -97,9 +100,17 @@ public class MemberController {
         return "토큰 테스트 성공";
     }
 
-//    @PostMapping("/social/{registerId}")
-//    public ResponseEntity<?> socialLogin(@PathVariable(value = "registerId") String social) {
+//    @GetMapping("/social/{registerId}")
+//    public String socialLogin(@PathVariable(value = "registerId") String social) {
+//        String apiUrl = "";
+//        if (social.equals("google")){
+//            apiUrl = "https://snapevent.site/oauth2/authorization/google";
+//        } else if (social.equals("naver")) {
+//            apiUrl = "https://snapevent.site/oauth2/authorization/naver";
+//        } else if (social.equals("kakao")) {
+//            apiUrl = "https://snapevent.site/oauth2/authorization/kakao";
+//        }
 //
-//
+//        return restTemplate.getForObject(apiUrl, String.class);
 //    }
 }
