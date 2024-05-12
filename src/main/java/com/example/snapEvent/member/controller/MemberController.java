@@ -96,4 +96,10 @@ public class MemberController {
     public String test() {
         return "토큰 테스트 성공";
     }
+
+//    @PostMapping("/social/{registerId}")
+//    public ResponseEntity<?> socialLogin(@PathVariable(value = "registerId") String social) {
+//
+//
+//    }
 }

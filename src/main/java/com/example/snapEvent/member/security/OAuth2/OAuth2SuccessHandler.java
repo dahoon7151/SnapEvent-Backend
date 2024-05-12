@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
 
@@ -43,11 +44,10 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(jwtTokenJson);
 
-//        String targetUrl = UriComponentsBuilder.fromUriString("/")
-//                .queryParam("token", jwtToken.getAccessToken())
-//                .build().toUriString();
-//
-//        getRedirectStrategy().sendRedirect(request, response, targetUrl);
+        // 리다이렉트 반환  ////////////////////////////////////////////////////////// --- 수정 중
+        String targetUrl = "snapevent.site/main";
+
+        response.sendRedirect(targetUrl);
     }
 
     public RefreshToken toEntity(String username, String refreshToken) {

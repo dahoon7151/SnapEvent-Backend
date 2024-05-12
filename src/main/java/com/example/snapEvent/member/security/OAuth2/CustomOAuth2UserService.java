@@ -5,6 +5,7 @@ import com.example.snapEvent.member.dto.OAuthAttributes;
 import com.example.snapEvent.member.repository.MemberRepository;
 import com.example.snapEvent.member.security.CustomUserDetail;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
@@ -53,6 +55,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 .orElse(attributes.toEntity(encodedPassword, roles));
 
         memberRepository.save(member);
+        log.info("loadUser 메소드 실행 후 회원정보 저장");
 
         return new CustomUserDetail(createUserDetails(member), oAuth2User.getAttributes());
     }

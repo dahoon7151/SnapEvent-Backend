@@ -56,6 +56,7 @@ public class SecurityConfig {
 ////                        .loginProcessingUrl("/members/login") //이 url을 로그인 기능을 담당하게 함
 //                        .defaultSuccessUrl("/"))              // 성공하면 이 url로 가게 함
                 .oauth2Login(oauth2 -> oauth2
+//                        .loginProcessingUrl()
                         .successHandler(new OAuth2SuccessHandler(jwtTokenProvider, refreshTokenRepository))
                         .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint
                                 .userService(customOAuth2UserService)))
