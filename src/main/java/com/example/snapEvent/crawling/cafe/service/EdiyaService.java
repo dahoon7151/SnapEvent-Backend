@@ -14,10 +14,14 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.snapEvent.crawling.service.OliveYoungService.setSSL;
 
 @Service
 @Slf4j
@@ -26,12 +30,13 @@ public class EdiyaService {
 
     private final EdiyaRepository ediyaRepository;
 
-
-    public List<EdiyaDto> getEdiyaDatas() throws IOException {
+    public List<EdiyaDto> getEdiyaDatas() throws IOException, NoSuchAlgorithmException, KeyManagementException {
 
         List<EdiyaDto> ediyaDtoList = new ArrayList<>();
 
         String url = "https://ediya.com/contents/event.html?tb_name=event";
+
+        setSSL();
         Document docs = Jsoup.connect(url).get();
         Elements contents = docs.select(".board_e li");
         List<Element> limitedContents = contents.subList(0, 10);

@@ -23,6 +23,8 @@ public class OliveYoung {
     private String image;
     private String href;
 
+
+
     @Builder
     public OliveYoung(String title, String description, DateRange dateRange, String image, String href) {
         this.title = title;

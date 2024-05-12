@@ -14,10 +14,14 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.snapEvent.crawling.service.OliveYoungService.setSSL;
 
 @Service
 @RequiredArgsConstructor
@@ -27,10 +31,12 @@ public class SsfService {
     private final SsfRepository ssfRepository;
 
 
-    public List<SsfDto> getSsfDatas() throws IOException {
+    public List<SsfDto> getSsfDatas() throws IOException, NoSuchAlgorithmException, KeyManagementException {
         List<SsfDto> ssfDtoList = new ArrayList<>();
 
         String url = "https://www.ssfshop.com/event/list";
+
+        setSSL();
         Document docs = Jsoup.connect(url).get();
         Elements contents = docs.select("div.list-area ul.ssf-events li");
         List<Element> limitedContents = contents.subList(0, 10);
