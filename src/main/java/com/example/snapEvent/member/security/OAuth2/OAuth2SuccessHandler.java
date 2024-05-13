@@ -44,10 +44,10 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(jwtTokenJson);
 
-//        // 리다이렉트 반환  ////////////////////////////////////////////////////////// --- 수정 중
-//        String targetUrl = "snapevent.site/login";
-//
-//        response.sendRedirect(targetUrl);
+        // 리다이렉트 반환  ////////////////////////////////////////////////////////// --- 수정 중
+        String targetUrl = "snapevent.site/main";
+
+        response.sendRedirect(targetUrl);
     }
 
     public RefreshToken toEntity(String username, String refreshToken) {

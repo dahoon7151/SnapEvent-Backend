@@ -1,6 +1,7 @@
 package com.example.snapEvent.config;
 
 import com.example.snapEvent.member.security.CustomAuthenticationEntryPoint;
+import com.example.snapEvent.member.security.OAuth2.OAuth2FailureHandler;
 import com.example.snapEvent.member.security.OAuth2.OAuth2SuccessHandler;
 import com.example.snapEvent.member.security.jwt.ExceptionHandlerFilter;
 import com.example.snapEvent.member.security.jwt.JwtAuthenticationFilter;
@@ -42,21 +43,23 @@ public class SecurityConfig {
                         .requestMatchers("/oauth2/authorization/google",
                                 "/oauth2/authorization/naver",
                                 "/oauth2/authorization/kakao",
-                                "api/members/join",
-                                "api/members/login",
-                                "api/members/reissue",
-                                "api/members/checkname").permitAll()
+                                "/api/members/join",
+                                "/api/members/login",
+                                "/api/members/reissue",
+                                "/api/members/checkname",
+                                "/api/crawl",
+                                "/login",
+                                "/main",
+                                "/landing",
+                                "/Onboarding").permitAll()
                         // USER 권한이 있어야 요청할 수 있음
-                        .requestMatchers("api/members/test").hasRole("USER")
+                        .requestMatchers("/api/members/test").hasRole("USER")
 //                        // 이 밖에 모든 요청에 대해서 인증을 필요로 한다는 설정
 //                        .anyRequest().authenticated())
                         .anyRequest().permitAll()) // 테스트용 허용
-//                .formLogin(login -> login
-//                        .loginPage("/")                       //로그인 페이지 url
-////                        .loginProcessingUrl("/members/login") //이 url을 로그인 기능을 담당하게 함
-//                        .defaultSuccessUrl("/"))              // 성공하면 이 url로 가게 함
                 .oauth2Login(oauth2 -> oauth2
                         .successHandler(new OAuth2SuccessHandler(jwtTokenProvider, refreshTokenRepository))
+                        .failureHandler(new OAuth2FailureHandler())
                         .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint
                                 .userService(customOAuth2UserService)))
                 // JWT 인증을 위하여 직접 구현한 필터를 UsernamePasswordAuthenticationFilter 전에 실행
