@@ -47,11 +47,12 @@ public class SecurityConfig {
                                 "/api/members/login",
                                 "/api/members/reissue",
                                 "/api/members/checkname",
-                                "/api/crawl",
+                                "/api/crawl/**",
                                 "/login",
                                 "/main",
                                 "/landing",
-                                "/Onboarding").permitAll()
+                                "/Onboarding",
+                                "/api/posts/list/**").permitAll()
                         // USER 권한이 있어야 요청할 수 있음
                         .requestMatchers("/api/members/test").hasRole("USER")
 //                        // 이 밖에 모든 요청에 대해서 인증을 필요로 한다는 설정
