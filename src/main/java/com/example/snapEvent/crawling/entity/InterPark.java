@@ -21,6 +21,8 @@ public class InterPark {
     private String href;
     private String image;
 
+
+
     @Builder
     public InterPark(String title, String ticketOpenDate, String href, String image) {
         this.title = title;

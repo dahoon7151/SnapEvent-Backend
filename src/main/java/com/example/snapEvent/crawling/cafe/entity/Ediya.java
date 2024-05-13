@@ -23,6 +23,8 @@ public class Ediya {
     private String image;
     private String href;
 
+
+
     @Builder
     public Ediya(String title, DateRange dateRange, String image, String href) {
         this.title = title;

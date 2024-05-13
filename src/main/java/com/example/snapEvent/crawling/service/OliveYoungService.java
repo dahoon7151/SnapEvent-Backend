@@ -13,7 +13,13 @@ import org.jsoup.select.Elements;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import javax.net.ssl.*;
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -28,11 +34,12 @@ public class OliveYoungService {
     private final OliveYoungRepository oliveYoungRepository;
 
 
-    public List<OliveYoungDto> getOliveYoungDatas() throws IOException {
+    public List<OliveYoungDto> getOliveYoungDatas() throws IOException, NoSuchAlgorithmException, KeyManagementException {
         List<OliveYoungDto> oliveYoungDtoList = new ArrayList<>();
 
         String url = "https://www.oliveyoung.co.kr/store/main/getEventList.do?evtType=20&pageIdx=1&t_page=%EC%9D%B4%EB%B2%A4%ED%8A%B8&t_click=%EB%AA%A8%EB%93%A0%ED%9A%8C%EC%9B%90";
 
+        setSSL();
         Document docs = Jsoup.connect(url).get();
         Elements contents = docs.select("ul.event_thumb_list li");
 
@@ -68,6 +75,33 @@ public class OliveYoungService {
         }
 
         return oliveYoungDtoList;
+    }
+
+    public static void setSSL() throws NoSuchAlgorithmException, KeyManagementException {
+        TrustManager[] trustAllCerts = new TrustManager[] {
+                new X509TrustManager() {
+                    @Override
+                    public X509Certificate[] getAcceptedIssuers() {
+
+                        return null;
+                    }
+                    @Override
+                    public void checkClientTrusted(X509Certificate[] chain, String authType)
+                            throws CertificateException {
+
+
+                    }
+                    @Override
+                    public void checkServerTrusted(X509Certificate[] chain, String authType)
+                            throws CertificateException {
+
+                    }
+                }
+        };
+        SSLContext sc = SSLContext.getInstance("SSL");
+        sc.init(null, trustAllCerts, new SecureRandom());
+        HttpsURLConnection.setDefaultHostnameVerifier((hostname, session) -> true);
+        HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
     }
 
     private boolean isTitleExist(String title) {

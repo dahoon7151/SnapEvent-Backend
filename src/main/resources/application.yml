@@ -9,10 +9,6 @@ spring:
 
     ###################################################### 여기부터
   security:
-    # 스프링 시큐리티 설정
-    user:
-      name: admin
-      password: event1234
     oauth2:
       client:
         registration:
