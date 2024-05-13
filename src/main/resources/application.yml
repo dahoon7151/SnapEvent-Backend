@@ -15,19 +15,19 @@ spring:
           google:
             client-id: 184921769583-n5cvihrs9nlagk1ueer3e6auodgslasn.apps.googleusercontent.com
             client-secret: ${GOOGLE_CLIENT_SECRET}
-            redirect-uri: https://snapevent.site/login/oauth2/code/google
+            redirect-uri: https://snapevent.site:8080/login/oauth2/code/google
             scope: profile, email
           naver:
             client-id: 1jjZegCdp5LDf5M_jvZt
             client-secret: ${NAVER_CLIENT_SECRET}
-            redirect-uri: https://snapevent.site/login/oauth2/code/naver
+            redirect-uri: https://snapevent.site:8080/login/oauth2/code/naver
             authorization-grant-type: authorization_code
             scope: name, email, profile_image
             client-name: Naver
           kakao:
             client-id: e1dff2ab453c01c8e979841d84605cac
             client-secret: ${KAKAO_CLIENT_SECRET}
-            redirect-uri: https://snapevent.site/login/oauth2/code/kakao
+            redirect-uri: https://snapevent.site:8080/login/oauth2/code/kakao
             client-authentication-method: POST
             authorization-grant-type: authorization_code
             scope: profile_nickname, profile_image, account_email
