@@ -26,7 +26,7 @@ import java.util.List;
 public class PostController {
     private final PostService postService;
 
-    @GetMapping("/{page}/{pageCount}/{order}")
+    @GetMapping("/list/{page}/{pageCount}/{order}")
     public ResponseEntity<Page<PostResponseDto>> posts(@PathVariable(value = "page") int page,
                                                        @PathVariable(value = "pageCount") int pageCount,
                                                        @PathVariable(value = "order") String order) {
