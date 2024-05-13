@@ -1,4 +1,4 @@
-  spring:
+spring:
   config:
     activate:
       on-profile: dev
@@ -14,6 +14,7 @@
       hibernate:
         format_sql: true
         default_batch_fetch_size: 100
-  logging:
-    level:
-      com.example.snapEvent.notification: debug
+logging:
+  level:
+    com.example.snapEvent.notification: debug
+
