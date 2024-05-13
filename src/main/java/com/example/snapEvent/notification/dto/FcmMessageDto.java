@@ -16,6 +16,7 @@ public class FcmMessageDto {
     @AllArgsConstructor
     public static class Message {
         private FcmMessageDto.Notification notification;
+        private String token;
     }
 
     @Builder
