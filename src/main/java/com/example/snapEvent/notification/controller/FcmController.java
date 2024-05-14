@@ -24,6 +24,7 @@ public class FcmController {
 
     private final FcmService fcmService;
 
+    // * 디바이스로 FCM 메시지를 전송
     @PostMapping("/send")
     public ResponseEntity<ApiResponseWrapper<Object>> pushMessage(@RequestBody @Validated FcmSendDto fcmSendDto) throws IOException {
         log.debug("[+] 푸시 메시지를 전송합니다. ");
@@ -36,19 +37,5 @@ public class FcmController {
                 .resultMsg(SuccessCode.SELECT.getMessage())
                 .build();
         return new ResponseEntity<>(arw, HttpStatus.OK);
-    }
-
-    @GetMapping("/token")
-    public ResponseEntity<String> getAccessToken() throws IOException {
-        String firebaseConfigPath = "firebase/snapevent-push-firebase-adminsdk-kfsw3-daeb840e53.json";
-
-        GoogleCredentials googleCredentials = GoogleCredentials
-                .fromStream(new ClassPathResource(firebaseConfigPath).getInputStream())
-                .createScoped(List.of("<https://www.googleapis.com/auth/cloud-platform>"));
-
-        googleCredentials.refreshIfExpired();
-        String accessToken = googleCredentials.getAccessToken().getTokenValue();
-
-        return ResponseEntity.ok(accessToken);
     }
 }

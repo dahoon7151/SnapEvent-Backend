@@ -16,9 +16,10 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class FcmServiceImpl implements FcmService{
+public class FcmServiceImpl implements FcmService {
     @Override
     public int sendMessageTo(FcmSendDto fcmSendDto) throws IOException {
+        log.debug("fcmSendDto: {}", fcmSendDto.toString());
         String message = makeMessage(fcmSendDto);
         // RestTemplate을 활용하여 동기적으로 메시지 보냄
         RestTemplate restTemplate = new RestTemplate();
@@ -58,6 +59,7 @@ public class FcmServiceImpl implements FcmService{
         ObjectMapper om = new ObjectMapper();
         FcmMessageDto fcmMessageDto = FcmMessageDto.builder()
                 .message(FcmMessageDto.Message.builder()
+                        .token(fcmSendDto.getToken())
                         .notification(FcmMessageDto.Notification.builder()
                                 .title(fcmSendDto.getTitle())
                                 .body(fcmSendDto.getBody())
