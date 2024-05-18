@@ -52,3 +52,5 @@ src/main/java/com/example/snapEvent/follow/InitDb.class
 *.html
 *Init.java
 
+### test java file ###
+*Test*.java
