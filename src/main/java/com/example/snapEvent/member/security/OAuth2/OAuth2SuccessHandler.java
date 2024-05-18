@@ -47,7 +47,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         // 리다이렉트 반환  ////////////////////////////////////////////////////////// --- 수정 중
         String targetUrl = "snapevent.site/main";
 
-        response.sendRedirect(targetUrl);
+        getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 
     public RefreshToken toEntity(String username, String refreshToken) {

@@ -59,6 +59,8 @@ public class SecurityConfig {
 //                        .anyRequest().authenticated())
                         .anyRequest().permitAll()) // 테스트용 허용
                 .oauth2Login(oauth2 -> oauth2
+//                        .authorizationEndpoint(authorizationEndpointConfig -> authorizationEndpointConfig
+//                                .baseUri("/oauth2/authorization"))
                         .successHandler(new OAuth2SuccessHandler(jwtTokenProvider, refreshTokenRepository))
                         .failureHandler(new OAuth2FailureHandler())
                         .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint
