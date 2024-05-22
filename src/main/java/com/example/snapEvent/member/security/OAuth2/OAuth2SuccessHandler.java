@@ -45,7 +45,8 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         response.getWriter().write(jwtTokenJson);
 
         // 리다이렉트 반환  ////////////////////////////////////////////////////////// --- 수정 중
-        String targetUrl = "snapevent.site/main";
+        String targetUrl = UriComponentsBuilder.fromUriString("https://snapevent.site/main")
+                .build().toUriString();
 
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
