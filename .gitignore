@@ -54,3 +54,9 @@ src/main/java/com/example/snapEvent/follow/InitDb.class
 
 ### test java file ###
 *Test*.java
+src/main/java/com/example/snapEvent/calendar/CalendarQuickstart.java
+src/main/java/com/example/snapEvent/calendar/controller/HomeController.java
+src/main/resources/templates/goocal.mustache
+src/main/resources/templates/receiveAC.mustache
+com/example/snapEvent/calendar/onboarding/GoogleApiClient.java
+tokens/StoredCredential

@@ -2,6 +2,16 @@ spring:
   config:
     activate:
       on-profile: dev
+    #Google Calendar API Configuration
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 758833997626-d362vcquohh9nhb7niceiakan36cq7hf.apps.googleusercontent.com
+            client-secret: ${CLIENT_SECRET}
+            redirect-uri: http://localhost:8080/calendar/oauth2/code/google
+            scope: https://www.googleapis.com/auth/calendar, https://www.googleapis.com/auth/calendar.readonly, https://www.googleapis.com/auth/calendar.events
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/snapevent_03?serverTimezone=Asia/Seoul
@@ -16,5 +26,5 @@ spring:
         default_batch_fetch_size: 100
 logging:
   level:
-    com.example.snapEvent.notification: debug
+    com.example.snapEvent: debug
 
