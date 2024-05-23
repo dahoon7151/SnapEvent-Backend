@@ -3,11 +3,13 @@ package com.example.snapEvent.member.dto;
 import com.example.snapEvent.member.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.Map;
 
 @Getter
+@Slf4j
 public class OAuthAttributes {
     private Map<String, Object> attributes;     // OAuth2 반환하는 유저 정보
     private String nameAttributesKey;
@@ -29,10 +31,13 @@ public class OAuthAttributes {
                                      String userNameAttributeName,
                                      Map<String, Object> attributes) {
         if ("kakao".equals(registrationId)) {
+            log.info("카카오 로그인");
             return ofKakao(userNameAttributeName, attributes);
         } else if ("google".equals(registrationId)) {
+            log.info("구글 로그인");
             return ofGoogle(userNameAttributeName, attributes);
         } else if ("naver".equals(registrationId)) {
+            log.info("네이버 로그인");
             return ofNaver(userNameAttributeName, attributes);
         }
 
@@ -66,7 +71,7 @@ public class OAuthAttributes {
         Map<String, Object> response = (Map<String, Object>) attributes.get("response");
 
         return OAuthAttributes.builder()
-                .name(String.valueOf(response.get("nickname")))
+                .name(String.valueOf(response.get("name")))
                 .email(String.valueOf(response.get("email")))
                 .profileImageUrl(String.valueOf(response.get("profile_image")))
                 .attributes(response)

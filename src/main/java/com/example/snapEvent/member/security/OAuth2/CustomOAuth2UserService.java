@@ -52,7 +52,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         //만약에 DB에 등록된 이메일이 아니라면, save하여 DB에 등록(회원가입)을 진행시켜준다.
         Member member = memberRepository.findByUsername(attributes.getEmail())
-                .orElse(attributes.toEntity(encodedPassword, roles));
+                .orElseGet(() -> attributes.toEntity(encodedPassword, roles));
 
         memberRepository.save(member);
         log.info("loadUser 메소드 실행 후 회원정보 저장");
