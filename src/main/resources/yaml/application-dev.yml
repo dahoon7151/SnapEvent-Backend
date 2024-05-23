@@ -26,5 +26,5 @@ spring:
         default_batch_fetch_size: 100
 logging:
   level:
-    com.example.snapEvent.notification: debug
+    com.example.snapEvent: debug
 
