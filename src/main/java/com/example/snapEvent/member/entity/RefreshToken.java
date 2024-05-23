@@ -13,7 +13,11 @@ import lombok.*;
 public class RefreshToken extends BaseEntity {
 
     @Id
-    @Column(name = "TOKEN_USERNAME",nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "TOKEN_ID")
+    private Long id;
+
+    @Column(nullable = false)
     private String username;
 
     @Column(nullable = false)
