@@ -7,6 +7,7 @@ import com.example.snapEvent.board.entity.Post;
 import com.example.snapEvent.board.service.CommentService;
 import com.example.snapEvent.member.entity.Member;
 import com.example.snapEvent.member.security.CustomUserDetail;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.Response;
@@ -40,7 +41,7 @@ public class CommentController {
     @PostMapping("/{postId}/write")
     public ResponseEntity<CommentResponseDto> write(@PathVariable(value = "postId") Long postId,
                                                     @AuthenticationPrincipal CustomUserDetail customUserDetail,
-                                                    @RequestBody CommentDto commentDto) {
+                                                    @RequestBody @Valid CommentDto commentDto) {
         String username = customUserDetail.getUser().getUsername();
         log.info("사용자 : {}", username);
 
@@ -52,7 +53,7 @@ public class CommentController {
     @PatchMapping("/{commentId}/modify")
     public ResponseEntity<CommentResponseDto> modify(@PathVariable(value = "commentId") Long commentId,
                                                      @AuthenticationPrincipal CustomUserDetail customUserDetail,
-                                                     @RequestBody CommentDto commentDto) {
+                                                     @RequestBody @Valid CommentDto commentDto) {
         String username = customUserDetail.getUser().getUsername();
         log.info("사용자 : {}", username);
 
