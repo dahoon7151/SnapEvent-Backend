@@ -5,6 +5,7 @@ import com.example.snapEvent.member.entity.RefreshToken;
 import com.example.snapEvent.member.security.jwt.JwtTokenProvider;
 import com.example.snapEvent.member.repository.RefreshTokenRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,8 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response
-            , Authentication authentication) throws IOException {
+            , Authentication authentication) throws IOException, ServletException {
+        log.info("Oauth2 SuccessHandler 실행");
 
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
         String username = oAuth2User.getAttribute("email");
