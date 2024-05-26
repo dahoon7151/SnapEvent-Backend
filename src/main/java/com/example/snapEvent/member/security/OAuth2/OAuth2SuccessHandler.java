@@ -51,7 +51,8 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String targetUrl = UriComponentsBuilder.fromUriString("https://snapevent.site/main")
                 .build().toUriString();
 
-        getRedirectStrategy().sendRedirect(request, response, targetUrl);
+        response.sendRedirect(targetUrl);
+//        getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 
     public RefreshToken toEntity(String username, String refreshToken) {
