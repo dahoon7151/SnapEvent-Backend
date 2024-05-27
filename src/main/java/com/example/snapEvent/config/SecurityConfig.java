@@ -8,6 +8,7 @@ import com.example.snapEvent.member.security.jwt.JwtAuthenticationFilter;
 import com.example.snapEvent.member.security.jwt.JwtTokenProvider;
 import com.example.snapEvent.member.repository.RefreshTokenRepository;
 import com.example.snapEvent.member.security.OAuth2.CustomOAuth2UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +19,12 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -37,6 +44,16 @@ public class SecurityConfig {
                 // REST API이므로 basic auth 및 csrf 보안을 사용하지 않음
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
+                .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer
+                        .configurationSource(request -> {
+                            CorsConfiguration config = new CorsConfiguration();
+                            config.setAllowedOrigins(List.of("https://snapevent.site"));
+                            config.setAllowedMethods(List.of("GET","POST","PATCH","PUT","DELETE"));
+                            config.setAllowCredentials(true);
+                            config.setAllowedHeaders(List.of("*"));
+                            config.setMaxAge(3600L); //1시간
+                            return config;
+                        }))
                 // JWT를 사용하기 때문에 세션을 사용하지 않음
                 .sessionManagement(sessionManagementConfigurer -> sessionManagementConfigurer
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
