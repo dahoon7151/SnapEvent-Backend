@@ -44,7 +44,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         Cookie cookie = new Cookie("refreshToken", jwtToken.getRefreshToken());
         cookie.setDomain("snapevent.site");
-        cookie.setPath("/main");
+        cookie.setPath("/");
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
         response.addCookie(cookie);
