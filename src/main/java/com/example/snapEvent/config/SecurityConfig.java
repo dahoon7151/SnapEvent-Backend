@@ -47,11 +47,11 @@ public class SecurityConfig {
                 .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer
                         .configurationSource(request -> {
                             CorsConfiguration config = new CorsConfiguration();
-                            config.setAllowedOrigins(List.of("https://snapevent.site"));
+                            config.setAllowedOrigins(List.of("https://snapevent.site", "http://localhost:8080", "http://localhost:5173"));
                             config.setAllowedMethods(List.of("GET","POST","PATCH","PUT","DELETE"));
                             config.setAllowCredentials(true);
                             config.setAllowedHeaders(List.of("*"));
-                            config.setMaxAge(3600L); //1시간
+                            config.setMaxAge(1728000L); //1시간
                             return config;
                         }))
                 // JWT를 사용하기 때문에 세션을 사용하지 않음
