@@ -6,6 +6,7 @@ import com.example.snapEvent.member.security.jwt.JwtTokenProvider;
 import com.example.snapEvent.member.repository.RefreshTokenRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -41,18 +42,25 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         response.addHeader("Authorization", "Bearer " + jwtToken.getAccessToken());
         log.info("헤더에 JWT 반환 성공");
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        String jwtTokenJson = objectMapper.writeValueAsString(jwtToken);
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(jwtTokenJson);
+        Cookie cookie = new Cookie("refreshToken", jwtToken.getRefreshToken());
+        cookie.setDomain("snapevent.site");
+        cookie.setPath("/main");
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        response.addCookie(cookie);
+
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        String jwtTokenJson = objectMapper.writeValueAsString(jwtToken);
+//        response.setContentType("application/json");
+//        response.setCharacterEncoding("UTF-8");
+//        response.getWriter().write(jwtTokenJson);
 
         // 리다이렉트 반환  ////////////////////////////////////////////////////////// --- 수정 중
-//        String targetUrl = UriComponentsBuilder.fromUriString("https://snapevent.site/main")
-//                .build().toUriString();
-//
-//        response.sendRedirect(targetUrl);
-//        getRedirectStrategy().sendRedirect(request, response, targetUrl);
+        String targetUrl = UriComponentsBuilder.fromUriString("https://snapevent.site/main")
+                .queryParam("accessToken", jwtToken.getAccessToken())
+                .build().toUriString();
+
+        response.sendRedirect(targetUrl);
     }
 
     public RefreshToken toEntity(String username, String refreshToken) {

@@ -42,7 +42,8 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         // 해당 API에 대해서는 모든 요청을 허가
-                        .requestMatchers("/oauth2/authorization/google",
+                        .requestMatchers(
+                                "/oauth2/authorization/google",
                                 "/oauth2/authorization/naver",
                                 "/oauth2/authorization/kakao",
                                 "/api/members/join",
@@ -56,8 +57,16 @@ public class SecurityConfig {
                                 "/Onboarding",
                                 "/api/posts/list/**").permitAll()
                         // USER 권한이 있어야 요청할 수 있음
-                        .requestMatchers("/api/members/test").hasRole("USER")
-//                        // 이 밖에 모든 요청에 대해서 인증을 필요로 한다는 설정
+                        .requestMatchers(
+                                "/api/members/**",
+                                "/api/posts/**",
+                                "/api/comments/**",
+                                "/api/follow/**",
+                                "/api/unfollow/**",
+                                "/api/follower/**",
+                                "/api/following/**",
+                                "/api/subs/**").hasRole("USER")
+                        // 이 밖에 모든 요청에 대해서 인증을 필요로 한다는 설정
 //                        .anyRequest().authenticated())
                         .anyRequest().permitAll()) // 테스트용 허용
                 .oauth2Login(oauth2 -> oauth2

@@ -10,4 +10,11 @@ public class JwtToken {
     private String grantType;
     private String accessToken;
     private String refreshToken;
+
+    public JwtToken hideRT(JwtToken jwtToken){
+        return JwtToken.builder()
+                .grantType(jwtToken.grantType)
+                .accessToken(jwtToken.accessToken)
+                .build();
+    }
 }

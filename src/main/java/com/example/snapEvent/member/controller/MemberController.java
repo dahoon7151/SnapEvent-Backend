@@ -3,6 +3,7 @@ package com.example.snapEvent.member.controller;
 import com.example.snapEvent.member.dto.*;
 import com.example.snapEvent.member.security.CustomUserDetail;
 import com.example.snapEvent.member.service.MemberService;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -32,8 +33,16 @@ public class MemberController {
         );
         JwtToken jwtToken = memberService.login(loginDto);
         response.addHeader("Authorization", "Bearer " + jwtToken.getAccessToken());
+        JwtToken tokenResponse = jwtToken.hideRT(jwtToken);
+        log.info("refreshToken 숨기기");
+        Cookie cookie = new Cookie("refreshToken", jwtToken.getRefreshToken());
+        cookie.setDomain("snapevent.site");
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        response.addCookie(cookie);
 
-        return ResponseEntity.status(HttpStatus.OK).body(jwtToken);
+        return ResponseEntity.status(HttpStatus.OK).body(tokenResponse);
     }
 
     @PostMapping("/join")
