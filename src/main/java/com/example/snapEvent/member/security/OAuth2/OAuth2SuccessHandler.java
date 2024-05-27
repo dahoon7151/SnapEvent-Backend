@@ -47,6 +47,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         cookie.setPath("/");
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
+        cookie.setMaxAge(7*24*60*60);
         response.addCookie(cookie);
 
 //        ObjectMapper objectMapper = new ObjectMapper();

@@ -82,14 +82,14 @@ public class MemberServiceImpl implements MemberService{
 
     @Transactional
     @Override
-    public JwtToken reissue(ReissueDto reissueDto) {
-        RefreshToken refreshToken = refreshTokenRepository.findByRefreshToken(reissueDto.getRefreshToken())
+    public JwtToken reissue(String token) {
+        RefreshToken refreshToken = refreshTokenRepository.findByRefreshToken(token)
                 .orElseThrow(() -> new IllegalArgumentException("DB에 저장되어 있는 refreshToken과 다릅니다. 다시 로그인 해주세요."));
 
         String username = refreshToken.getUsername();
 
         // 리프레시 토큰을 검증한 후 토큰 재발급
-        if (jwtTokenProvider.validateToken(reissueDto.getRefreshToken())) {
+        if (jwtTokenProvider.validateToken(token)) {
             log.info("refresh Token 검증 완료");
 
             UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
@@ -99,7 +99,10 @@ public class MemberServiceImpl implements MemberService{
             JwtToken jwtToken = jwtTokenProvider.generateToken(authentication);
             log.info("재발급 토큰 생성");
 
-            refreshTokenRepository.save(reissueDto.toEntity(username, jwtToken.getRefreshToken()));
+            refreshTokenRepository.save(RefreshToken.builder()
+                    .username(username)
+                    .refreshToken(token)
+                    .build());
 
             return jwtToken;
         }

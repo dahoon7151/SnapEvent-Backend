@@ -13,6 +13,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -23,7 +24,6 @@ import org.springframework.web.client.RestTemplate;
 public class MemberController {
 
     private final MemberService memberService;
-    private final RestTemplate restTemplate;
 
     @PostMapping("/login")
     public ResponseEntity<JwtToken> login(@RequestBody LoginDto loginDto, HttpServletResponse response) {
@@ -33,13 +33,14 @@ public class MemberController {
         );
         JwtToken jwtToken = memberService.login(loginDto);
         response.addHeader("Authorization", "Bearer " + jwtToken.getAccessToken());
+
         JwtToken tokenResponse = jwtToken.hideRT(jwtToken);
-        log.info("refreshToken 숨기기");
         Cookie cookie = new Cookie("refreshToken", jwtToken.getRefreshToken());
         cookie.setDomain("snapevent.site");
         cookie.setPath("/");
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
+        cookie.setMaxAge(7*24*60*60);
         response.addCookie(cookie);
 
         return ResponseEntity.status(HttpStatus.OK).body(tokenResponse);
@@ -59,12 +60,22 @@ public class MemberController {
     }
 
     @PostMapping("/reissue")
-    public ResponseEntity<JwtToken> reissue(@RequestBody ReissueDto reissueDto,
-                                            HttpServletResponse response) {
-        JwtToken jwtToken = memberService.reissue(reissueDto);
+    public ResponseEntity<JwtToken> reissue(HttpServletRequest request, HttpServletResponse response) {
+        String token = request.getHeader("refreshToken");
+        log.info("쿠키에서 refresh 토큰 추출");
+        JwtToken jwtToken = memberService.reissue(token);
         response.addHeader("Authorization", "Bearer " + jwtToken.getAccessToken());
 
-        return ResponseEntity.status(HttpStatus.OK).body(jwtToken);
+        JwtToken tokenResponse = jwtToken.hideRT(jwtToken);
+        Cookie cookie = new Cookie("refreshToken", jwtToken.getRefreshToken());
+        cookie.setDomain("snapevent.site");
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        cookie.setMaxAge(7*24*60*60);
+        response.addCookie(cookie);
+
+        return ResponseEntity.status(HttpStatus.OK).body(tokenResponse);
     }
 
 
