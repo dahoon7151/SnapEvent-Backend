@@ -60,7 +60,7 @@ public class MemberController {
     }
 
     @PostMapping("/reissue")
-    public ResponseEntity<JwtToken> reissue(@CookieValue(name = "refreshToken") String token, HttpServletResponse response) {
+    public ResponseEntity<JwtToken> reissue(@CookieValue(value = "refreshToken") String token, HttpServletResponse response) {
         log.info("controller 토큰 재발급");
         log.info("쿠키 추출 refresh 토큰 : {}", token);
         if (token==null) {
