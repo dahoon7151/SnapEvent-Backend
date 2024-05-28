@@ -60,14 +60,12 @@ public class MemberController {
     }
 
     @PostMapping("/reissue")
-    public ResponseEntity<JwtToken> reissue(HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<JwtToken> reissue(@CookieValue(name = "refreshToken") String token, HttpServletResponse response) {
         log.info("controller 토큰 재발급");
-        String token = request.getHeader("refreshToken");
         log.info("쿠키 추출 refresh 토큰 : {}", token);
         if (token==null) {
             throw new IllegalArgumentException("쿠키에서 토큰을 조회하지 못했습니다.");
         }
-        log.info("쿠키에서 refresh 토큰 추출");
         JwtToken jwtToken = memberService.reissue(token);
         response.addHeader("Authorization", "Bearer " + jwtToken.getAccessToken());
 
