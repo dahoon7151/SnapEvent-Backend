@@ -39,7 +39,7 @@ public class MemberController {
         cookie.setDomain("snapevent.site");
         cookie.setPath("/");
         cookie.setHttpOnly(true);
-        cookie.setSecure(true);
+        cookie.setSecure(false);
         cookie.setMaxAge(7*24*60*60);
         response.addCookie(cookie);
 
@@ -76,7 +76,7 @@ public class MemberController {
         cookie.setDomain("snapevent.site");
         cookie.setPath("/");
         cookie.setHttpOnly(true);
-        cookie.setSecure(true);
+        cookie.setSecure(false);
         cookie.setMaxAge(7*24*60*60);
         response.addCookie(cookie);
 
