@@ -51,7 +51,7 @@ public class SecurityConfig {
                             config.setAllowedMethods(List.of("GET","POST","PATCH","PUT","DELETE"));
                             config.setAllowCredentials(true);
                             config.setAllowedHeaders(List.of("*"));
-                            config.setMaxAge(1728000L); //1시간
+                            config.setMaxAge(1728000L);
                             return config;
                         }))
                 // JWT를 사용하기 때문에 세션을 사용하지 않음
@@ -81,8 +81,7 @@ public class SecurityConfig {
                                 "/api/follow/**",
                                 "/api/unfollow/**",
                                 "/api/follower/**",
-                                "/api/following/**",
-                                "/api/subs/**").hasRole("USER")
+                                "/api/following/**").hasRole("USER")
                         // 이 밖에 모든 요청에 대해서 인증을 필요로 한다는 설정
 //                        .anyRequest().authenticated())
                         .anyRequest().permitAll()) // 테스트용 허용
