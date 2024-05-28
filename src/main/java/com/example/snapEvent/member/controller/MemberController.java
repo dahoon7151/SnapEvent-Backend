@@ -36,7 +36,7 @@ public class MemberController {
 
         JwtToken tokenResponse = jwtToken.hideRT(jwtToken);
         Cookie cookie = new Cookie("refreshToken", jwtToken.getRefreshToken());
-        cookie.setDomain(".snapevent.site");
+        cookie.setDomain("snapevent.site");
         cookie.setPath("/");
         cookie.setHttpOnly(true);
         cookie.setSecure(false);
@@ -73,7 +73,7 @@ public class MemberController {
 
         JwtToken tokenResponse = jwtToken.hideRT(jwtToken);
         Cookie cookie = new Cookie("refreshToken", jwtToken.getRefreshToken());
-        cookie.setDomain(".snapevent.site");
+        cookie.setDomain("snapevent.site");
         cookie.setPath("/");
         cookie.setHttpOnly(true);
         cookie.setSecure(false);

@@ -43,7 +43,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         log.info("헤더에 JWT 반환 성공");
 
         Cookie cookie = new Cookie("refreshToken", jwtToken.getRefreshToken());
-        cookie.setDomain(".snapevent.site");
+        cookie.setDomain("snapevent.site");
         cookie.setPath("/");
         cookie.setHttpOnly(true);
         cookie.setSecure(false);
