@@ -13,6 +13,8 @@ public class WebCorsConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedMethods(ALLOWED_METHOD_NAMES.split(","))
                 .allowedOriginPatterns("http://localhost:3000", "http://localhost:5173", "https://snapevent.site")
-                .exposedHeaders("Authorization");
+                .exposedHeaders("Authorization")
+                .exposedHeaders("Set-Cookie")
+                .allowCredentials(true); // 자바스크립트 코드가 응답 자체에 접근할 수 있게 허용
     }
 }
