@@ -62,7 +62,7 @@ public class MemberController {
     @PostMapping("/reissue")
     public ResponseEntity<JwtToken> reissue(HttpServletRequest request, HttpServletResponse response) {
         String token = request.getHeader("refreshToken");
-        if (token.isEmpty()) {
+        if (token==null) {
             throw new IllegalArgumentException("쿠키에서 토큰을 조회하지 못했습니다.");
         }
         log.info("쿠키에서 refresh 토큰 추출");
