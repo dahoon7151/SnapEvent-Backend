@@ -77,8 +77,8 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/api/members/test").hasRole("USER")
                         // 이 밖에 모든 요청에 대해서 인증을 필요로 한다는 설정
-//                        .anyRequest().authenticated())
-                        .anyRequest().permitAll()) // 테스트용 허용
+                        .anyRequest().authenticated())
+//                        .anyRequest().permitAll()) // 테스트용 허용
                 .oauth2Login(oauth2 -> oauth2
 //                        .authorizationEndpoint(authorizationEndpointConfig -> authorizationEndpointConfig
 //                                .baseUri("/oauth2/authorization"))
