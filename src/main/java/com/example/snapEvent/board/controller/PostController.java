@@ -30,6 +30,7 @@ public class PostController {
     public ResponseEntity<Page<PostResponseDto>> posts(@PathVariable(value = "page") int page,
                                                        @PathVariable(value = "pageCount") int pageCount,
                                                        @PathVariable(value = "order") String order) {
+        log.info("controller 글 목록 조회");
         Page<PostResponseDto> postList = postService.sortPostlist(page-1, pageCount, order);
 
         return ResponseEntity.status(HttpStatus.OK).body(postList);
@@ -38,6 +39,7 @@ public class PostController {
     @GetMapping("/{id}")
     public ResponseEntity<PostResponseDto> post(@PathVariable(value = "id") Long id,
                                                 @AuthenticationPrincipal CustomUserDetail customUserDetail) {
+        log.info("controller 글 상세조회");
         String username = customUserDetail.getUser().getUsername();
         log.info("사용자 : {}", username);
 
@@ -49,6 +51,7 @@ public class PostController {
     @PostMapping("/write")
     public ResponseEntity<PostResponseDto> write(@AuthenticationPrincipal CustomUserDetail customUserDetail,
                                                  @RequestBody @Valid PostDto postDto) {
+        log.info("controller 글 작성");
         String username = customUserDetail.getUser().getUsername();
         log.info("작성자 : {}", username);
         PostResponseDto postResponseDto = postService.writePost(username, postDto);
@@ -59,6 +62,7 @@ public class PostController {
     @PostMapping("/{id}/like")
     public ResponseEntity<LikeResponseDto> like(@PathVariable(value = "id") Long id,
                                                 @AuthenticationPrincipal CustomUserDetail customUserDetail) {
+        log.info("controller 좋아요");
         String username = customUserDetail.getUser().getUsername();
         log.info("사용자 : {}", username);
 
@@ -71,6 +75,7 @@ public class PostController {
     public ResponseEntity<PostResponseDto> modify(@PathVariable(value = "id") Long id,
                                                   @RequestBody @Valid PostDto postDto,
                                                   @AuthenticationPrincipal CustomUserDetail customUserDetail) {
+        log.info("controller 글 수정");
         String username = customUserDetail.getUser().getUsername();
         log.info("사용자 : {}", username);
 
@@ -82,6 +87,7 @@ public class PostController {
     @DeleteMapping("/{id}/delete")
     public ResponseEntity<String> delete(@PathVariable(value = "id") Long id,
                                          @AuthenticationPrincipal CustomUserDetail customUserDetail) {
+        log.info("controller 글 삭제");
         String username = customUserDetail.getUser().getUsername();
         log.info("사용자 : {}", username);
 
@@ -92,6 +98,7 @@ public class PostController {
 
     @GetMapping("/{id}/near")
     public ResponseEntity<PostResponseDto> nearPost(@PathVariable(value = "id") Long id) {
+        log.info("controller 앞뒤 글 조회");
         PostResponseDto nearDto = postService.showNearPost(id);
 
         return ResponseEntity.status(HttpStatus.OK).body(nearDto);

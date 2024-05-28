@@ -27,7 +27,7 @@ public class MemberController {
 
     @PostMapping("/login")
     public ResponseEntity<JwtToken> login(@RequestBody LoginDto loginDto, HttpServletResponse response) {
-        log.info("로그인 - 아이디 : {}, 비밀번호 : {}",
+        log.info("controller 로그인 - 아이디 : {}, 비밀번호 : {}",
                 loginDto.getUsername(),
                 loginDto.getPassword()
         );
@@ -48,7 +48,7 @@ public class MemberController {
 
     @PostMapping("/join")
     public ResponseEntity<MemberDto> join(@RequestBody @Valid JoinDto joinDto) {
-        log.info("회원가입 - 아이디 : {}, 비밀번호 : {}, 재확인 비밀번호 : {}, 닉네임 : {}",
+        log.info("controller 회원가입 - 아이디 : {}, 비밀번호 : {}, 재확인 비밀번호 : {}, 닉네임 : {}",
                 joinDto.getUsername(),
                 joinDto.getPassword(),
                 joinDto.getCheckPassword(),
@@ -61,6 +61,7 @@ public class MemberController {
 
     @PostMapping("/reissue")
     public ResponseEntity<JwtToken> reissue(HttpServletRequest request, HttpServletResponse response) {
+        log.info("controller 토큰 재발급");
         String token = request.getHeader("refreshToken");
         if (token==null) {
             throw new IllegalArgumentException("쿠키에서 토큰을 조회하지 못했습니다.");
@@ -84,6 +85,7 @@ public class MemberController {
 
     @DeleteMapping("/logout")
     public ResponseEntity<String> logout(@AuthenticationPrincipal CustomUserDetail customUserDetail) {
+        log.info("controller 로그아웃");
         String username = customUserDetail.getUser().getUsername();
         log.info("사용자 이름 : {}", username);
         memberService.logout(username);
@@ -93,6 +95,7 @@ public class MemberController {
 
     @DeleteMapping("/withdraw")
     public ResponseEntity<String> withdraw(@AuthenticationPrincipal CustomUserDetail customUserDetail) {
+        log.info("controller 탈퇴");
         String username = customUserDetail.getUser().getUsername();
         log.info("탈퇴 유저 이름 : {}", username);
         memberService.withdraw(username);
@@ -104,6 +107,7 @@ public class MemberController {
     public ResponseEntity<ModifyResponseDto> modify(
             @AuthenticationPrincipal CustomUserDetail customUserDetail,
             @RequestBody @Valid ModifyDto modifyDto) {
+        log.info("controller 회원정보 수정");
         String username = customUserDetail.getUser().getUsername();
         log.info("사용자 이름 : {}", username);
         ModifyResponseDto modifyResponseDto = memberService.modify(username, modifyDto);
@@ -113,6 +117,7 @@ public class MemberController {
 
     @GetMapping("/checkname")
     public ResponseEntity<String> checkName(@RequestBody CheckNameDto checkNameDto) {
+        log.info("controller 중복확인");
         String checkRedundant = memberService.checkNickname(checkNameDto);
 
         return ResponseEntity.status(HttpStatus.OK).body(checkRedundant);
@@ -123,17 +128,4 @@ public class MemberController {
         return "토큰 테스트 성공";
     }
 
-//    @GetMapping("/social/{registerId}")
-//    public String socialLogin(@PathVariable(value = "registerId") String social) {
-//        String apiUrl = "";
-//        if (social.equals("google")){
-//            apiUrl = "https://snapevent.site/oauth2/authorization/google";
-//        } else if (social.equals("naver")) {
-//            apiUrl = "https://snapevent.site/oauth2/authorization/naver";
-//        } else if (social.equals("kakao")) {
-//            apiUrl = "https://snapevent.site/oauth2/authorization/kakao";
-//        }
-//
-//        return restTemplate.getForObject(apiUrl, String.class);
-//    }
 }

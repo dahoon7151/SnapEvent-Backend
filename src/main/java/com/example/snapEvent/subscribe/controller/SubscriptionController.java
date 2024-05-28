@@ -27,6 +27,7 @@ public class SubscriptionController {
     public ResponseEntity<List<SubscribeResponseDto>> subscribe(
             @AuthenticationPrincipal CustomUserDetail customUserDetail,
             @RequestBody SubscribeDto subscribeDto) {
+        log.info("controller 구독");
         String username = customUserDetail.getUser().getUsername();
         log.info("사용자 : {}", username);
 
@@ -38,6 +39,7 @@ public class SubscriptionController {
     @GetMapping("/showlist")
     public ResponseEntity<List<SubscribeResponseDto>> showList(
             @AuthenticationPrincipal CustomUserDetail customUserDetail) {
+        log.info("controller 구독 목록 조회");
         String username = customUserDetail.getUser().getUsername();
         log.info("사용자 : {}", username);
 
@@ -49,6 +51,7 @@ public class SubscriptionController {
     @DeleteMapping("/cancel/{sitename}")
     public ResponseEntity<String> cancel(@PathVariable(value = "sitename") String site,
                                          @AuthenticationPrincipal CustomUserDetail customUserDetail) {
+        log.info("controller 구독취소");
         SiteName siteName = SiteName.valueOf(site);
         log.info("사이트명 Enum 변환");
         String username = customUserDetail.getUser().getUsername();
@@ -62,6 +65,7 @@ public class SubscriptionController {
     @GetMapping("/showlist/{nickname}")
     public ResponseEntity<List<SubscribeResponseDto>> showFollowerList(
             @PathVariable(value = "nickname") String follwerNickname) {
+        log.info("controller 팔로워 구독목록조회");
         List<SubscribeResponseDto> subscribeResponseDtos = subscriptionService.showFollowerSubList(follwerNickname);
 
         return ResponseEntity.status(HttpStatus.OK).body(subscribeResponseDtos);

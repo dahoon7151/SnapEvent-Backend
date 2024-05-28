@@ -48,7 +48,7 @@ public class SecurityConfig {
                         .configurationSource(request -> {
                             CorsConfiguration config = new CorsConfiguration();
                             config.setAllowedOrigins(List.of("https://snapevent.site", "http://localhost:8080", "http://localhost:5173"));
-                            config.setAllowedMethods(List.of("GET","POST","PATCH","PUT","DELETE"));
+                            config.setAllowedMethods(List.of("GET","POST","PATCH","PUT","DELETE","OPTION"));
                             config.setAllowCredentials(true);
                             config.setAllowedHeaders(List.of("*"));
                             config.setMaxAge(1728000L);

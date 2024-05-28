@@ -30,6 +30,7 @@ public class CommentController {
     @GetMapping("/{postId}")
     public ResponseEntity<List<CommentResponseDto>> comments(@PathVariable(value = "postId") Long postId,
                                                              @AuthenticationPrincipal CustomUserDetail customUserDetail) {
+        log.info("controller 댓글 조회");
         String username = customUserDetail.getUser().getUsername();
         log.info("사용자 : {}", username);
 
@@ -42,6 +43,7 @@ public class CommentController {
     public ResponseEntity<CommentResponseDto> write(@PathVariable(value = "postId") Long postId,
                                                     @AuthenticationPrincipal CustomUserDetail customUserDetail,
                                                     @RequestBody @Valid CommentDto commentDto) {
+        log.info("controller 댓글 작성");
         String username = customUserDetail.getUser().getUsername();
         log.info("사용자 : {}", username);
 
@@ -54,6 +56,7 @@ public class CommentController {
     public ResponseEntity<CommentResponseDto> modify(@PathVariable(value = "commentId") Long commentId,
                                                      @AuthenticationPrincipal CustomUserDetail customUserDetail,
                                                      @RequestBody @Valid CommentDto commentDto) {
+        log.info("controller 댓글 수정");
         String username = customUserDetail.getUser().getUsername();
         log.info("사용자 : {}", username);
 
@@ -65,6 +68,7 @@ public class CommentController {
     @DeleteMapping("/{commentId}/delete")
     public ResponseEntity<String> delete(@PathVariable(value = "commentId") Long commentId,
                                          @AuthenticationPrincipal CustomUserDetail customUserDetail) {
+        log.info("controller 댓글 삭제");
         String username = customUserDetail.getUser().getUsername();
         log.info("사용자 : {}", username);
 
