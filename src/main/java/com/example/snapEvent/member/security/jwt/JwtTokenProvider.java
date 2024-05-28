@@ -57,6 +57,7 @@ public class JwtTokenProvider {
                 .setExpiration(accessTokenExpiresIn)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
+        log.info("accessToken : {}", accessToken);
 
         // Refresh Token 생성 (7일)
         String refreshToken = Jwts.builder()
