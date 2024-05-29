@@ -114,7 +114,7 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).body(modifyResponseDto);
     }
 
-    @GetMapping("/checkname")
+    @PostMapping("/checkname")
     public ResponseEntity<String> checkName(@RequestBody CheckNameDto checkNameDto) {
         log.info("controller 중복확인");
         String checkRedundant = memberService.checkNickname(checkNameDto);
