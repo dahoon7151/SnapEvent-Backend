@@ -12,7 +12,7 @@ public class WebCorsConfig implements WebMvcConfigurer {
     public void addCorsMappings(final CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedMethods(ALLOWED_METHOD_NAMES.split(","))
-                .allowedOriginPatterns("http://localhost:3000", "http://localhost:5173", "https://snapevent.site")
+                .allowedOriginPatterns("http://localhost:3000", "http://localhost:5173", "https://snapevent.site", "http://localhost:8080")
                 .exposedHeaders("Authorization")
                 .exposedHeaders("Set-Cookie")
                 .allowedHeaders("Cookie")
