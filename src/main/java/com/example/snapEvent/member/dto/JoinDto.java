@@ -30,7 +30,6 @@ public class JoinDto {
     @NotNull(message = "비밀번호는 공백일 수 없습니다.")
     private String checkPassword;
 
-    @Size(max = 20, min = 1, message = "닉네임은 20자 이하로 가능합니다.")
     private String nickname;
 
     @Builder.Default
