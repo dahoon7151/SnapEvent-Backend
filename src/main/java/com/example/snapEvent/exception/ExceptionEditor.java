@@ -23,7 +23,7 @@ public class ExceptionEditor {
     ) {
         BindingResult bindingResult = e.getBindingResult();
         return ResponseEntity
-                .status(HttpStatus.OK)
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(MethodInvalidResponse.builder()
                         .error(bindingResult.getFieldErrors().get(0).getCode())
                         .message(bindingResult.getFieldErrors().get(0).getDefaultMessage())
