@@ -9,10 +9,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -36,7 +38,7 @@ public class JoinDto {
     private List<String> roles = new ArrayList<>();
 
     public Member toEntity(String encodedPassword, List<String> roles) {
-
+        log.info("username: {}, nickname: {}", username, nickname);
         return Member.builder()
                 .username(username)
                 .password(encodedPassword)
