@@ -160,9 +160,9 @@ public class MemberServiceImpl implements MemberService{
         String nickname = checkNameDto.getNickname();
 
         if (memberRepository.existsByNickname(nickname)) {
-            return "이미 사용중인 닉네임입니다.";
+            return "true";
         } else {
-            return "사용 가능한 닉네임입니다.";
+            return "false";
         }
     }
 
