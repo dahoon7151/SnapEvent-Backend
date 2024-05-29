@@ -156,13 +156,13 @@ public class MemberServiceImpl implements MemberService{
 
     @Transactional
     @Override
-    public String checkNickname(CheckNameDto checkNameDto) {
+    public boolean checkNickname(CheckNameDto checkNameDto) {
         String nickname = checkNameDto.getNickname();
 
         if (memberRepository.existsByNickname(nickname)) {
-            return "true";
+            return true;
         } else {
-            return "false";
+            return false;
         }
     }
 

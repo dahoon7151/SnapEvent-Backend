@@ -4,18 +4,14 @@ import com.example.snapEvent.member.dto.*;
 import com.example.snapEvent.member.security.CustomUserDetail;
 import com.example.snapEvent.member.service.MemberService;
 import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 @Slf4j
 @RestController
@@ -115,9 +111,9 @@ public class MemberController {
     }
 
     @PostMapping("/checkname")
-    public ResponseEntity<String> checkName(@RequestBody CheckNameDto checkNameDto) {
+    public ResponseEntity<Boolean> checkName(@RequestBody CheckNameDto checkNameDto) {
         log.info("controller 중복확인");
-        String checkRedundant = memberService.checkNickname(checkNameDto);
+        boolean checkRedundant = memberService.checkNickname(checkNameDto);
 
         return ResponseEntity.status(HttpStatus.OK).body(checkRedundant);
     }

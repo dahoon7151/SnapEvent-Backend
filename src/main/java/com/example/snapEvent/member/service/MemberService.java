@@ -16,5 +16,5 @@ public interface MemberService {
 
     public ModifyResponseDto modify(String username, ModifyDto modifyDto);
 
-    public String checkNickname(CheckNameDto checkNameDto);
+    public boolean checkNickname(CheckNameDto checkNameDto);
 }
