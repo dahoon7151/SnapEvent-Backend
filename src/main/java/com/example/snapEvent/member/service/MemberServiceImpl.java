@@ -158,6 +158,7 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public boolean checkNickname(CheckNameDto checkNameDto) {
         String nickname = checkNameDto.getNickname();
+        log.info("닉네임 : {}", nickname);
 
         if (memberRepository.existsByNickname(nickname)) {
             return true;
