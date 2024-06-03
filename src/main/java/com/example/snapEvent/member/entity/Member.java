@@ -22,7 +22,7 @@ public class Member extends BaseTimeEntity {
     @Column(name = "MEMBER_ID", updatable = false, unique = true, nullable = false)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String username; // 활동 ID(userId -> username)
 
     @Column(nullable = false)
