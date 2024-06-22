@@ -39,10 +39,6 @@ public class Member extends BaseTimeEntity {
     @Builder.Default
     private List<String> roles = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", orphanRemoval = true)
-    @Builder.Default
-    private List<Like> likes = new ArrayList<>();
-
     public Member update(String encodedPassword, String nickname) {
         this.password = encodedPassword;
         this.nickname = nickname;
