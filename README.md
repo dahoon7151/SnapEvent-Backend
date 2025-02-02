@@ -44,7 +44,7 @@ SnapEvent는 사용자가 원하는 브랜드의 세일 정보를 실시간으�
 ---
 
 ## 🔍 데이터베이스 설계 (ERD)
-![ERD Diagram](https://link-to-erd-image)
+![ERD Diagram]([https://link-to-erd-image](https://github.com/user-attachments/assets/cb75c3c6-82fc-4d73-bbb9-1c49bf6913a9))
 
 ---
 
