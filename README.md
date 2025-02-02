@@ -10,6 +10,19 @@ SnapEvent는 사용자가 원하는 브랜드의 세일 정보를 실시간으�
 
 ---
 
+## 📌 초기 기획 및 설계
+
+### **마인드맵 및 초기 기획**
+![Mind Map](https://link-to-mind-map-image)
+
+### **Wireframe 및 UI 설계**
+![Wireframe](https://link-to-wireframe-image)
+
+### **초기 서비스 Flow Chart**
+![Flow Chart](https://link-to-flow-chart-image)
+
+---
+
 ## 🏗 시스템 아키텍처
 ![System Architecture](https://link-to-system-architecture-image)
 
