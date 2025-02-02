@@ -12,10 +12,6 @@ SnapEvent는 사용자가 원하는 브랜드의 세일 정보를 실시간으�
 
 ## 📌 초기 기획 및 설계
 
-### **마인드맵 및 브레인스토밍**
-![Mind Map](https://github.com/user-attachments/assets/9b3a4285-19b5-4013-a874-ff2eb6dae04d)
-![Mind Map](https://github.com/user-attachments/assets/119915e4-6eca-407a-9d76-19f5d6115a54)
-
 ### **Wireframe 및 UI 설계**
 ![Wireframe](https://link-to-wireframe-image)
 
