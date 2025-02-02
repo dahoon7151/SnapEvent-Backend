@@ -26,11 +26,6 @@ SnapEvent는 사용자가 원하는 브랜드의 세일 정보를 실시간으�
 
 ---
 
-## 🏗 시스템 아키텍처
-![System Architecture](https://link-to-system-architecture-image)
-
----
-
 ## 🛠 사용한 기술 스택
 ### **Backend**
 - Spring Boot, Java, JPA, Spring Security
@@ -100,8 +95,7 @@ SnapEvent는 사용자가 원하는 브랜드의 세일 정보를 실시간으�
 🔹 **AWS Route 53**: 도메인 연결  
 🔹 **Nginx**: 리버스 프록시 설정 및 SSL 적용  
 
-### **배포 다이어그램**
-![Deployment Diagram](https://link-to-deployment-diagram-image)
+![Deployment ScreenShot](https://link-to-deployment-diagram-image)
 
 ---
 
