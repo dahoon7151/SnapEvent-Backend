@@ -95,7 +95,10 @@ SnapEvent는 사용자가 원하는 브랜드의 세일 정보를 실시간으�
 🔹 **AWS Route 53**: 도메인 연결  
 🔹 **Nginx**: 리버스 프록시 설정 및 SSL 적용  
 
-![Deployment ScreenShot](https://link-to-deployment-diagram-image)
+
+![Image](https://github.com/user-attachments/assets/7fc26497-7c01-49d2-9887-db8eeab9c8c9)
+
+![Image](https://github.com/user-attachments/assets/e603b74a-ef48-43e4-9628-e94ffba98c42)
 
 ---
 
