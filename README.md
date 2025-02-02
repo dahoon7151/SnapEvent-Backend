@@ -13,10 +13,16 @@ SnapEvent는 사용자가 원하는 브랜드의 세일 정보를 실시간으�
 ## 📌 초기 기획 및 설계
 
 ### **Wireframe 및 UI 설계**
-![Wireframe](https://link-to-wireframe-image)
+![Wireframe](https://github.com/user-attachments/assets/be34afc5-f558-4141-b241-837590acd8f8)
+
+![UI](https://github.com/user-attachments/assets/f1b1fe90-d3f7-4a40-8e43-f8fae5b27e6f)
+
+![UI](https://github.com/user-attachments/assets/00d0c905-edbd-4920-bd94-f6a1a069be1c)
+
+![UI](https://github.com/user-attachments/assets/8cc4ea39-97b5-42ba-b259-626e7d9cc0cb)
 
 ### **초기 서비스 Flow Chart**
-![Flow Chart](https://link-to-flow-chart-image)
+![Flow Chart](https://github.com/user-attachments/assets/21aca9a3-823a-400c-af84-abdb08b5c3af)
 
 ---
 
